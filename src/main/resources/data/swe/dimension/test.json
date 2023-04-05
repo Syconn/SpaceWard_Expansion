@@ -1,0 +1,11 @@
+{
+  "type": "swe:test",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "swe:test",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "swe:test"
+    }
+  }
+}
