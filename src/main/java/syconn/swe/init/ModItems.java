@@ -20,8 +20,6 @@ public class ModItems {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 
-
-
     private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier)
     {
         return register(id, blockSupplier, block1 -> new BlockItem(block1, new Item.Properties()));
