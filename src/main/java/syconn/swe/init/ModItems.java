@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import syconn.swe.item.Parachute;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -17,8 +18,9 @@ import static syconn.swe.Main.MODID;
 public class ModItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
-
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+
+    public static final RegistryObject<Parachute> PARACHUTE = ITEMS.register("parachute", Parachute::new);
 
     private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier)
     {
