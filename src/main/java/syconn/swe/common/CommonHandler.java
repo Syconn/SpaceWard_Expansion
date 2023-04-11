@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -16,6 +17,8 @@ import net.minecraft.world.level.block.NetherPortalBlock;
 import net.minecraft.world.level.portal.PortalForcer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -23,13 +26,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import syconn.swe.Main;
+import syconn.swe.init.ModCapabilities;
 import syconn.swe.init.ModDim;
+import syconn.swe.item.Parachute;
 import syconn.swe.worldgen.dimension.DimChanger;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommonHandler {
 
-    public CommonHandler() {}
+    public CommonHandler() {
+        MinecraftForge.EVENT_BUS.register(new ModCapabilities());
+    }
 
     @SubscribeEvent
     public static void entityTickEvent(LivingEvent.LivingTickEvent e){
@@ -54,6 +61,15 @@ public class CommonHandler {
                 }
                 p.changeDimension(serverlevel, new DimChanger());
             }
+
+            p.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(ss -> {
+                if (p.getInventory().armor.get(2).getItem() instanceof Parachute){
+                    if (p.fallDistance > 0 && !ss.parachute())
+                        ss.parachute(true);
+                    else if (p.fallDistance == 0)
+                        ss.parachute(false);
+                } else ss.parachute(false);
+            });
         }
     }
 
