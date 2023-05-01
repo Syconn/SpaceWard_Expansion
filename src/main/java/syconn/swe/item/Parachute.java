@@ -1,22 +1,21 @@
 package syconn.swe.item;
 
-import net.minecraft.client.model.ElytraModel;
-import net.minecraft.client.renderer.entity.layers.ElytraLayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import syconn.swe.capabilities.SpaceSuit;
-import syconn.swe.init.ModCapabilities;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
+import syconn.swe.util.Dyeable;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class Parachute extends Item implements Equipable, Dyeable {
 
@@ -25,21 +24,21 @@ public class Parachute extends Item implements Equipable, Dyeable {
         DispenserBlock.registerBehavior(this, ArmorItem.DISPENSE_ITEM_BEHAVIOR);
     }
 
-    public InteractionResultHolder<ItemStack> use(Level l, Player p, InteractionHand h) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level l, @NotNull Player p, @NotNull InteractionHand h) {
         return this.swapWithEquipmentSlot(this, l, p, h);
     }
 
     @Override
-    public Optional<TooltipComponent> getTooltipImage(ItemStack p_150902_) {
+    public @NotNull Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack p_150902_) {
         return super.getTooltipImage(p_150902_);
     }
 
     @Override
-    public EquipmentSlot getEquipmentSlot() {
+    public @NotNull EquipmentSlot getEquipmentSlot() {
         return EquipmentSlot.CHEST;
     }
 
-    public SoundEvent getEquipSound() {
+    public @NotNull SoundEvent getEquipSound() {
         return SoundEvents.ARMOR_EQUIP_ELYTRA;
     }
 }

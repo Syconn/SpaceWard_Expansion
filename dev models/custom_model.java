@@ -1,32 +1,15 @@
-package syconn.swe.client.model;
+// Made with Blockbench 4.7.1
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
-import syconn.swe.Main;
 
-import java.util.function.Function;
-
-public class ParachuteModel extends Model {
+public class custom_model<T extends Entity> extends EntityModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Main.MODID, "backpack"), "main");
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "custom_model"), "main");
 	private final ModelPart top;
 	private final ModelPart bottom;
 
-	public ParachuteModel(ModelPart root)
-	{
-		this(root, RenderType::entityCutoutNoCull);
-	}
-
-	public ParachuteModel(ModelPart root, Function<ResourceLocation, RenderType> renderType)
-	{
-		super(renderType);
+	public custom_model(ModelPart root) {
 		this.top = root.getChild("top");
 		this.bottom = root.getChild("bottom");
 	}
@@ -43,8 +26,13 @@ public class ParachuteModel extends Model {
 	}
 
 	@Override
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
+
+	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		top.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		bottom.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
+		bottom.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }

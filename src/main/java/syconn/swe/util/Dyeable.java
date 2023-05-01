@@ -1,4 +1,4 @@
-package syconn.swe.item;
+package syconn.swe.util;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.DyeItem;

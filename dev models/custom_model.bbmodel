@@ -4,43 +4,84 @@
 		"model_format": "modded_entity",
 		"box_uv": true
 	},
-	"name": "ParachuteLayer",
+	"name": "custom_model",
 	"model_identifier": "",
 	"modded_entity_version": "1.17",
 	"modded_entity_flip_y": true,
 	"visible_box": [1, 1, 0],
 	"variable_placeholders": "",
 	"variable_placeholder_buttons": [],
+	"unhandled_root_fields": {},
 	"resolution": {
 		"width": 32,
 		"height": 32
 	},
 	"elements": [
 		{
-			"name": "cube",
+			"name": "bottom",
 			"box_uv": true,
 			"rescale": false,
 			"locked": false,
 			"from": [-5, 0, -1],
-			"to": [5, 12, 2],
+			"to": [5, 9, 2],
 			"autouv": 0,
 			"color": 2,
 			"origin": [0, 0, 0],
+			"uv_offset": [0, 6],
 			"faces": {
 				"north": {
-					"uv": [3, 3, 13, 15],
+					"uv": [3, 9, 13, 18],
 					"texture": 0
 				},
 				"east": {
-					"uv": [0, 3, 3, 15],
+					"uv": [0, 9, 3, 18],
 					"texture": 0
 				},
 				"south": {
-					"uv": [16, 3, 26, 15],
+					"uv": [16, 9, 26, 18],
 					"texture": 0
 				},
 				"west": {
-					"uv": [13, 3, 16, 15],
+					"uv": [13, 9, 16, 18],
+					"texture": 0
+				},
+				"up": {
+					"uv": [13, 9, 3, 6],
+					"texture": 0
+				},
+				"down": {
+					"uv": [23, 6, 13, 9],
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "430f48ad-e832-af8a-8921-b3eef8eaf679"
+		},
+		{
+			"name": "top",
+			"box_uv": true,
+			"rescale": false,
+			"locked": false,
+			"from": [-5, 9, -1],
+			"to": [5, 12, 2],
+			"autouv": 0,
+			"color": 6,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [3, 3, 13, 6],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 3, 3, 6],
+					"texture": 0
+				},
+				"south": {
+					"uv": [16, 3, 26, 6],
+					"texture": 0
+				},
+				"west": {
+					"uv": [13, 3, 16, 6],
 					"texture": 0
 				},
 				"up": {
@@ -53,10 +94,39 @@
 				}
 			},
 			"type": "cube",
-			"uuid": "430f48ad-e832-af8a-8921-b3eef8eaf679"
+			"uuid": "22116c34-3837-cea9-6d1b-e09ab2656287"
 		}
 	],
-	"outliner": ["430f48ad-e832-af8a-8921-b3eef8eaf679"],
+	"outliner": [
+		{
+			"name": "top",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"uuid": "6975b364-e4dc-f6c3-dac0-4208b19a7e1e",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": ["22116c34-3837-cea9-6d1b-e09ab2656287"]
+		},
+		{
+			"name": "bottom",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"uuid": "58f4ff3d-8512-571e-be46-133ebab4057f",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": ["430f48ad-e832-af8a-8921-b3eef8eaf679"]
+		}
+	],
 	"textures": [
 		{
 			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\entity\\layers\\parachute.png",
@@ -65,7 +135,8 @@
 			"namespace": "",
 			"id": "0",
 			"particle": false,
-			"render_mode": "default",
+			"render_mode": "emissive",
+			"render_sides": "auto",
 			"frame_time": 1,
 			"frame_order_type": "loop",
 			"frame_order": "",
@@ -75,7 +146,7 @@
 			"saved": true,
 			"uuid": "ad25ab33-ef26-c0dc-1aa8-77e640a83f9b",
 			"relative_path": "../../src/main/resources/assets/swe/textures/entity/layers/parachute.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAC1JREFUWEft0EERAAAAAUH6lxbDZxU4s815PffjAAECBAgQIECAAAECBAgQIDAaPwAh6O5R/QAAAABJRU5ErkJggg=="
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAE9JREFUWEft1iEOACAMQ1F6/0MXO8RSAVN81AgLKQ8zrbJsu+5va0lKdxwNfwZ4/eqOvPsOEQABBBBAAAEE0sQyfR5HJgIggAACCCAwLbABh/xIIRaXFZsAAAAASUVORK5CYII="
 		}
 	]
 }

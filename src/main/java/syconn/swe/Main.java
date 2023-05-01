@@ -1,14 +1,13 @@
 package syconn.swe;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,31 +17,35 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 import syconn.swe.client.ClientHandler;
 import syconn.swe.common.CommonHandler;
+import syconn.swe.datagen.ItemModelGen;
+import syconn.swe.datagen.LangGen;
 import syconn.swe.init.ModItems;
-import syconn.swe.item.Dyeable;
+import syconn.swe.item.Parachute;
+import syconn.swe.util.Dyeable;
 import syconn.swe.worldgen.dimension.MoonSpecialEffects;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(Main.MODID)
 public class Main {
 
     public static final String MODID = "swe";
-    public static final Logger LOGGER = LogUtils.getLogger();
-
     public Main() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            modEventBus.addListener(this::addCreative);
+            modEventBus.addListener(this::createTab);
+            modEventBus.addListener(ClientHandler::onRegisterLayers);
             modEventBus.addListener(ClientHandler::addLayers);
+            modEventBus.addListener(ClientHandler::renderOverlay);
+            modEventBus.addListener(ClientHandler::addLayers);
+            modEventBus.addListener(ClientHandler::coloredItems);
         });
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
+        modEventBus.addListener(this::dataGenerator);
         modEventBus.addListener(this::dimensionEffects);
-        modEventBus.addListener(ClientHandler::addLayers);
-        modEventBus.addListener(ClientHandler::coloredItems);
 
         ModItems.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
@@ -58,21 +61,18 @@ public class Main {
         MinecraftForge.EVENT_BUS.register(new ClientHandler());
     }
 
+    public void dataGenerator(GatherDataEvent e){
+        e.getGenerator().addProvider(true, new ItemModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(true, new LangGen(e.getGenerator().getPackOutput()));
+    }
+
     public void dimensionEffects(RegisterDimensionSpecialEffectsEvent e){
         e.register(new ResourceLocation(MODID, "moon"), new MoonSpecialEffects());
     }
-    public void addCreative(CreativeModeTabEvent.BuildContents e){
-        if (e.getTab() == CreativeModeTabs.TOOLS_AND_UTILITIES){
-            for (DyeColor c : DyeColor.values()){
-                ItemStack s = new ItemStack(ModItems.PARACHUTE.get());
-                Dyeable.setColor(s.getOrCreateTag(), c.getFireworkColor());
-                e.accept(s);
-            }
-        }
+    public void createTab(CreativeModeTabEvent.Register e){
+        e.registerCreativeModeTab(new ResourceLocation(MODID, "space"), builder -> builder.noScrollBar().title(Component.translatable("itemGroup.space")).icon(() -> new ItemStack(ModItems.SPACE_HELMET.get())).displayItems((a, p) -> ModItems.addItems(p)).build());
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-
-    }
+    public void onServerStarting(ServerStartingEvent event) {}
 }

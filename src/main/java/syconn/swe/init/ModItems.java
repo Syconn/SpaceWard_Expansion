@@ -1,13 +1,14 @@
 package syconn.swe.init;
 
-import net.minecraft.core.Registry;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import syconn.swe.item.Parachute;
+import syconn.swe.item.SpaceArmor;
+import syconn.swe.util.Dyeable;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -21,6 +22,11 @@ public class ModItems {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 
     public static final RegistryObject<Parachute> PARACHUTE = ITEMS.register("parachute", Parachute::new);
+    public static final RegistryObject<SpaceArmor> SPACE_HELMET = ITEMS.register("space_helmet", () -> new SpaceArmor(ArmorItem.Type.HELMET, new Item.Properties().defaultDurability(200)));
+    public static final RegistryObject<SpaceArmor> SPACE_CHESTPLATE = ITEMS.register("space_chestplate", () -> new SpaceArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties().defaultDurability(200)));
+    public static final RegistryObject<SpaceArmor> SPACE_LEGGINGS = ITEMS.register("space_leggings", () -> new SpaceArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().defaultDurability(200)));
+    public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
+
 
     private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier)
     {
@@ -35,5 +41,17 @@ public class ModItems {
             ITEMS.register(id, () -> supplier.apply(registryObject.get()));
         }
         return registryObject;
+    }
+
+    public static void addItems(CreativeModeTab.Output e){
+        for (DyeColor c : DyeColor.values()){
+            ItemStack s = new ItemStack(ModItems.PARACHUTE.get());
+            Dyeable.setColor(s.getOrCreateTag(), c.getFireworkColor());
+            e.accept(s);
+        }
+        for (RegistryObject<Item> i : ModItems.ITEMS.getEntries()){
+            if (i.get() instanceof Parachute) continue;
+            e.accept(i.get());
+        }
     }
 }

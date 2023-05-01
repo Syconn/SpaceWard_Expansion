@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "syconn.swe.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "swe.refmap.json",
+  "minVersion": "0.8",
+  "mixins": [
+    "PlayerMixin"
+  ],
+  "client": [
+    "PlayerRenderer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
