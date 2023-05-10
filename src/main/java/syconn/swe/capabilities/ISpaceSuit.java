@@ -1,12 +1,16 @@
 package syconn.swe.capabilities;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.AutoRegisterCapability;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import syconn.swe.util.Animator;
 
 @AutoRegisterCapability
-public interface ISpaceSuit extends INBTSerializable<CompoundTag> {
+public interface ISpaceSuit extends INBTSerializable<CompoundTag>, IItemHandlerModifiable {
 
     boolean parachute();
     Animator chuteAnim();
@@ -14,4 +18,5 @@ public interface ISpaceSuit extends INBTSerializable<CompoundTag> {
     int maxO2();
     void setO2(int o2);
     void parachute(boolean p);
+    NonNullList<ItemStack> getInv();
 }

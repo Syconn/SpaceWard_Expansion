@@ -1,6 +1,9 @@
 package syconn.swe;
 
-import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.block.model.ItemOverride;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -17,15 +20,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
 import syconn.swe.client.ClientHandler;
 import syconn.swe.common.CommonHandler;
 import syconn.swe.datagen.ItemModelGen;
 import syconn.swe.datagen.LangGen;
+import syconn.swe.init.ModContainers;
 import syconn.swe.init.ModItems;
-import syconn.swe.item.Parachute;
-import syconn.swe.util.Dyeable;
 import syconn.swe.worldgen.dimension.MoonSpecialEffects;
 
 @Mod(Main.MODID)
@@ -47,6 +47,7 @@ public class Main {
         modEventBus.addListener(this::dataGenerator);
         modEventBus.addListener(this::dimensionEffects);
 
+        ModContainers.REGISTER.register(modEventBus);
         ModItems.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
 
@@ -72,7 +73,4 @@ public class Main {
     public void createTab(CreativeModeTabEvent.Register e){
         e.registerCreativeModeTab(new ResourceLocation(MODID, "space"), builder -> builder.noScrollBar().title(Component.translatable("itemGroup.space")).icon(() -> new ItemStack(ModItems.SPACE_HELMET.get())).displayItems((a, p) -> ModItems.addItems(p)).build());
     }
-
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {}
 }

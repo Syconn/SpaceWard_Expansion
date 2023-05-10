@@ -3,20 +3,17 @@ package syconn.swe.init;
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import syconn.swe.Main;
 
 import java.util.EnumMap;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
-public enum ModArmourTypes implements StringRepresentable, ArmorMaterial {
+public enum ModArmorTypes implements StringRepresentable, ArmorMaterial {
 
     SPACE_SUIT("space_suit", 15, (map) -> {
         map.put(ArmorItem.Type.BOOTS, 2);
@@ -39,7 +36,7 @@ public enum ModArmourTypes implements StringRepresentable, ArmorMaterial {
     private final float knockbackResistance;
     private final Ingredient repairIngredient;
 
-    ModArmourTypes(String name, int durability, Consumer<EnumMap<ArmorItem.Type, Integer>> prot_value, int enchantVal, SoundEvent sound, float toughness, float kb, Ingredient ingred) {
+    ModArmorTypes(String name, int durability, Consumer<EnumMap<ArmorItem.Type, Integer>> prot_value, int enchantVal, SoundEvent sound, float toughness, float kb, Ingredient ingred) {
         this.name = name;
         this.durabilityMultiplier = durability;
         this.protectionFunctionForType = Util.make(new EnumMap<>(ArmorItem.Type.class), prot_value);

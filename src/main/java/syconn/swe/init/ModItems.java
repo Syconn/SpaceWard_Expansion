@@ -6,8 +6,10 @@ import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import syconn.swe.item.Canister;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
+import syconn.swe.util.CanisterStorageType;
 import syconn.swe.util.Dyeable;
 
 import javax.annotation.Nullable;
@@ -27,6 +29,7 @@ public class ModItems {
     public static final RegistryObject<SpaceArmor> SPACE_LEGGINGS = ITEMS.register("space_leggings", () -> new SpaceArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
 
+    public static final RegistryObject<Canister> CANISTER = ITEMS.register("canister", Canister::new);
 
     private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier)
     {
@@ -49,8 +52,11 @@ public class ModItems {
             Dyeable.setColor(s.getOrCreateTag(), c.getFireworkColor());
             e.accept(s);
         }
+        for (CanisterStorageType t : CanisterStorageType.values()){
+            e.accept(Canister.create(400, 400, t));
+        }
         for (RegistryObject<Item> i : ModItems.ITEMS.getEntries()){
-            if (i.get() instanceof Parachute) continue;
+            if (i.get() instanceof Parachute || i.get() instanceof Canister) continue;
             e.accept(i.get());
         }
     }

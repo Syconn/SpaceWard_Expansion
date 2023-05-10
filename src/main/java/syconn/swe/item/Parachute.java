@@ -17,7 +17,7 @@ import syconn.swe.util.Dyeable;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class Parachute extends Item implements Equipable, Dyeable {
+public class Parachute extends EquipmentItem implements Equipable, Dyeable {
 
     public Parachute() {
         super(new Properties().stacksTo(1));
@@ -40,5 +40,10 @@ public class Parachute extends Item implements Equipable, Dyeable {
 
     public @NotNull SoundEvent getEquipSound() {
         return SoundEvents.ARMOR_EQUIP_ELYTRA;
+    }
+
+    @Override
+    public Slot getSlot() {
+        return Slot.PARACHUTE;
     }
 }
