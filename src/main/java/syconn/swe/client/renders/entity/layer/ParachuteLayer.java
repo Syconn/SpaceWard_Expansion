@@ -20,9 +20,13 @@ import net.minecraftforge.client.model.ItemLayerModel;
 import syconn.swe.Main;
 import syconn.swe.client.model.ChuteModel;
 import syconn.swe.client.model.ParachuteModel;
+import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModCapabilities;
+import syconn.swe.item.EquipmentItem;
 import syconn.swe.item.Parachute;
+import syconn.swe.item.SpaceArmor;
 import syconn.swe.util.Dyeable;
+import syconn.swe.util.Helper;
 
 import java.awt.*;
 
@@ -39,9 +43,12 @@ public class ParachuteLayer<P extends Player, M extends PlayerModel<P>> extends 
 
     @Override
     public void render(PoseStack ps, MultiBufferSource bs, int packedLight, P p, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
-        ItemStack itemstack = p.getItemBySlot(EquipmentSlot.CHEST);
+        ItemStack itemstack;
+        if (SpaceArmor.hasParachute(p)) itemstack = Helper.inventory(p).getItemBySlot(EquipmentItem.Slot.PARACHUTE);
+        else itemstack = p.getItemBySlot(EquipmentSlot.CHEST);
+
         if (itemstack.getItem() instanceof Parachute) {
-            int i = Dyeable.getColor(itemstack.getOrCreateTag());
+            int i = Dyeable.getColor(itemstack);
             float f = (float)(i >> 16 & 255) / 255.0F;
             float f1 = (float)(i >> 8 & 255) / 255.0F;
             float f2 = (float)(i & 255) / 255.0F;

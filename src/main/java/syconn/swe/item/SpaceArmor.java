@@ -3,6 +3,7 @@ package syconn.swe.item;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModArmorTypes;
 
 public class SpaceArmor extends ArmorItem {
@@ -13,5 +14,9 @@ public class SpaceArmor extends ArmorItem {
     public static boolean hasFullKit(Player p){
         return p.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ArmorItem && p.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ArmorItem
                 && p.getItemBySlot(EquipmentSlot.LEGS).getItem() instanceof ArmorItem && p.getItemBySlot(EquipmentSlot.FEET).getItem() instanceof ArmorItem;
+    }
+
+    public static boolean hasParachute(Player p){
+        return p.getInventory() instanceof ExtendedPlayerInventory i && i.getItemBySlot(EquipmentItem.Slot.PARACHUTE).getItem() instanceof Parachute && hasFullKit(p);
     }
 }

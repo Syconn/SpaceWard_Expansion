@@ -40,8 +40,8 @@ public class ClientHandler {
         });
     }
 
-    public static void coloredItems(RegisterColorHandlersEvent.Item e){
-        e.register((s, layer) -> layer == 0 ? Dyeable.getColor(s.getOrCreateTag()) : -1, ModItems.PARACHUTE.get());
+    public static void coloredItems(RegisterColorHandlersEvent.Item e) {
+        e.register((s, layer) -> layer == 0 ? Dyeable.getColor(s) : -1, ModItems.PARACHUTE.get());
         e.register((s, layer) -> layer == 1 ? Canister.getType(s).getColor() : -1, ModItems.CANISTER.get());
     }
 

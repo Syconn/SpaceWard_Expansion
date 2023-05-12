@@ -49,7 +49,7 @@ public class ModItems {
     public static void addItems(CreativeModeTab.Output e){
         for (DyeColor c : DyeColor.values()){
             ItemStack s = new ItemStack(ModItems.PARACHUTE.get());
-            Dyeable.setColor(s.getOrCreateTag(), c.getFireworkColor());
+            Dyeable.setColor(s, c.getFireworkColor());
             e.accept(s);
         }
         for (CanisterStorageType t : CanisterStorageType.values()){

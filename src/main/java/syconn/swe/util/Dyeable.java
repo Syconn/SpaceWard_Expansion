@@ -12,16 +12,16 @@ public interface Dyeable {
 
     String COLOR = "color";
 
-    default boolean hasColor(CompoundTag t){
-        return t.contains(COLOR);
+    default boolean hasColor(ItemStack t){
+        return t.getOrCreateTag().contains(COLOR);
     }
 
-    static int getColor(CompoundTag t){
-        return t.getInt(COLOR);
+    static int getColor(ItemStack t){
+        return t.getOrCreateTag().getInt(COLOR);
     }
 
-    static void setColor(CompoundTag t, int c){
-        t.putInt(COLOR, c);
+    static void setColor(ItemStack t, int c){
+        t.getOrCreateTag().putInt(COLOR, c);
     }
 
     static ItemStack dye(ItemStack p_41119_, List<DyeItem> p_41120_) {

@@ -6,11 +6,14 @@ import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +25,7 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import syconn.swe.client.ClientHandler;
 import syconn.swe.common.CommonHandler;
+import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.datagen.ItemModelGen;
 import syconn.swe.datagen.LangGen;
 import syconn.swe.init.ModContainers;
@@ -72,5 +76,10 @@ public class Main {
     }
     public void createTab(CreativeModeTabEvent.Register e){
         e.registerCreativeModeTab(new ResourceLocation(MODID, "space"), builder -> builder.noScrollBar().title(Component.translatable("itemGroup.space")).icon(() -> new ItemStack(ModItems.SPACE_HELMET.get())).displayItems((a, p) -> ModItems.addItems(p)).build());
+    }
+
+    @SubscribeEvent
+    public void loadData(AddReloadListenerEvent e){
+        e.addListener(new DimSettingsManager());
     }
 }

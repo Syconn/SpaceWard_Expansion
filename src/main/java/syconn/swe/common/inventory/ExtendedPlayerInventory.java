@@ -5,18 +5,20 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import syconn.swe.capabilities.ISpaceSuit;
 import syconn.swe.init.ModCapabilities;
+import syconn.swe.item.EquipmentItem;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class ExtendedPlayerInventory extends Inventory {
 
-    public final NonNullList<ItemStack> space_utilities;
+    private final NonNullList<ItemStack> space_utilities;
     private final List<NonNullList<ItemStack>> allInventories;
 
     private final ISpaceSuit suit;
@@ -31,6 +33,12 @@ public class ExtendedPlayerInventory extends Inventory {
     public NonNullList<ItemStack> getSpaceUtil()
     {
         return suit.getInv();
+    }
+
+    public ItemStack getItemBySlot(EquipmentItem.Slot s){
+        if (s == EquipmentItem.Slot.OXYGEN)
+            return space_utilities.get(0);
+        else return space_utilities.get(1);
     }
 
     @Override
