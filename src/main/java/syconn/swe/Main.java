@@ -26,6 +26,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import syconn.swe.client.ClientHandler;
 import syconn.swe.common.CommonHandler;
 import syconn.swe.common.data.DimSettingsManager;
+import syconn.swe.datagen.BlockModelGen;
 import syconn.swe.datagen.ItemModelGen;
 import syconn.swe.datagen.LangGen;
 import syconn.swe.init.ModContainers;
@@ -69,6 +70,7 @@ public class Main {
 
     public void dataGenerator(GatherDataEvent e){
         e.getGenerator().addProvider(true, new ItemModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(true, new BlockModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
         e.getGenerator().addProvider(true, new LangGen(e.getGenerator().getPackOutput()));
     }
 

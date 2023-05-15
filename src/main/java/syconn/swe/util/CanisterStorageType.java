@@ -34,6 +34,6 @@ public enum CanisterStorageType implements StringRepresentable {
 
     @Override
     public String getSerializedName() {
-        return name();
+        return name().toLowerCase();
     }
 }

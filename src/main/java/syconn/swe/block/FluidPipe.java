@@ -29,8 +29,7 @@ public class FluidPipe extends FluidTransportBlock {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53334_) {
-        super.createBlockStateDefinition(p_53334_);
-        p_53334_.add(NORTH, EAST, WEST, SOUTH);
+        p_53334_.add(NORTH, EAST, WEST, SOUTH, FLUID_TYPE);
     }
 
     @Nullable
