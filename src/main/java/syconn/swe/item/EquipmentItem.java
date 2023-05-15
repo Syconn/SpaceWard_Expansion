@@ -1,7 +1,9 @@
 package syconn.swe.item;
 
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public abstract class EquipmentItem extends Item {
 
@@ -15,8 +17,15 @@ public abstract class EquipmentItem extends Item {
 
     public abstract Slot getSlot();
 
+    /**
+     * Called to tick equipment in the equipment slot. Override to do something
+     */
+    public void onEquipmentTick(ItemStack stack, Level level, Player player) {
+
+    }
+
     public enum Slot {
-        OXYGEN("empty_canister"),
+        TANK("empty_canister"),
         PARACHUTE("empty_parachute");
 
         String loc;

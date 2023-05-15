@@ -2,11 +2,10 @@ package syconn.swe.common;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,14 +15,15 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import syconn.swe.Main;
+import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModCapabilities;
+import syconn.swe.init.ModDamageTypes;
 import syconn.swe.init.ModDim;
 import syconn.swe.item.EquipmentItem;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
 import syconn.swe.worldgen.dimension.DimChanger;
-import syconn.swe.worldgen.dimension.DimSettings;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommonHandler {
@@ -36,7 +36,7 @@ public class CommonHandler {
     public static void entityTickEvent(LivingEvent.LivingTickEvent e){
         if (e.getEntity().isAlive()) {
             AttributeInstance gravity = e.getEntity().getAttribute(ForgeMod.ENTITY_GRAVITY.get());
-            double g = DimSettings.get(e.getEntity().level.dimension()).getG();
+            double g = DimSettingsManager.getSettings(e.getEntity().level.dimension()).gravity();
             if (gravity.getValue() != g) gravity.setBaseValue(g);
             e.getEntity().getCapability(ModCapabilities.SPACE_SUIT).ifPresent(iSpaceSuit -> { if (iSpaceSuit.parachute()) gravity.setBaseValue(g / 12.0); });
         }
@@ -58,12 +58,19 @@ public class CommonHandler {
                 else if (p.fallDistance == 0) ss.parachute(false);
             } else ss.parachute(false);
         });
-        if (ModDim.onMoon(p)){
-            if (!p.getAbilities().instabuild) {
+        if (!DimSettingsManager.getSettings(p).breathable()){
+            if (!p.isCreative()) {
                 p.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(ss -> {
                     ss.setO2(ss.maxO2());
+                    if (ss.O2() == -20) {
+                        ss.setO2(0);
+                        p.hurt(p.level.damageSources().source(ModDamageTypes.ANOXIA), 2.0F);
+                    }
                 });
             }
+        }
+        if (p.getInventory() instanceof ExtendedPlayerInventory i) {
+            i.getSpaceUtil().forEach(stack -> { if (stack.getItem() instanceof EquipmentItem eq) eq.onEquipmentTick(stack, p.level, p); });
         }
     }
 

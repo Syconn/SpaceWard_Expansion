@@ -1,18 +1,18 @@
 package syconn.swe.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
-import net.minecraftforge.common.ForgeMod;
-import syconn.swe.capabilities.ISpaceSuit;
+import syconn.swe.common.data.DimSettingsManager;
+import syconn.swe.common.data.types.DimensionSettings;
 import syconn.swe.init.ModCapabilities;
-import syconn.swe.worldgen.dimension.DimSettings;
+import syconn.swe.item.Canister;
+import syconn.swe.item.EquipmentItem;
+import syconn.swe.item.SpaceArmor;
+import syconn.swe.util.CanisterStorageType;
 
 import static net.minecraft.client.gui.GuiComponent.blit;
 
@@ -22,7 +22,7 @@ public class SpaceSuitOverlay {
 
     public static IGuiOverlay O2_OVERLAY = (gui, poseStack, partialTick, width, height) -> {
         Player player = (Player) minecraft.getCameraEntity();
-        if (player != null && !gui.getMinecraft().options.hideGui && gui.shouldDrawSurvivalElements() && DimSettings.displayOxygen(player)) {
+        if (player != null && !gui.getMinecraft().options.hideGui && gui.shouldDrawSurvivalElements() && displayOxygen(player)) {
             player.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(iSpaceSuit -> {
                 RenderSystem.enableBlend();
                 int left = width / 2 + 91;
@@ -38,4 +38,10 @@ public class SpaceSuitOverlay {
             });
         }
     };
+
+    public static boolean displayOxygen(Player p){
+        ItemStack stack = SpaceArmor.getGear(EquipmentItem.Slot.TANK, p);
+        if (stack != null && Canister.getType(stack) == CanisterStorageType.O2 && Canister.getValue(stack) > 0) return false;
+        return !DimSettingsManager.getSettings(p).breathable();
+    }
 }

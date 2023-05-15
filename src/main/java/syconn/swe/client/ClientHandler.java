@@ -1,10 +1,10 @@
 package syconn.swe.client;
 
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
@@ -15,13 +15,14 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.Main;
+import syconn.swe.block.FluidBaseBlock;
 import syconn.swe.client.gui.SpaceSuitOverlay;
 import syconn.swe.client.model.ChuteModel;
 import syconn.swe.client.model.ParachuteModel;
-import syconn.swe.client.renders.entity.layer.ParachuteLayer;
+import syconn.swe.client.model.TankModel;
+import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
 import syconn.swe.client.screen.RenderUtil;
 import syconn.swe.init.ModItems;
 import syconn.swe.item.Canister;
@@ -45,6 +46,10 @@ public class ClientHandler {
         e.register((s, layer) -> layer == 1 ? Canister.getType(s).getColor() : -1, ModItems.CANISTER.get());
     }
 
+    public static void coloredBlocks(RegisterColorHandlersEvent.Block e) {
+        e.register((state, tint, pos, layer) -> layer == 0 ? state.getValue(FluidBaseBlock.FLUID_TYPE).getColor() : -1, ModItems.FLUID_PIPE.get());
+    }
+
     public static void addLayers(EntityRenderersEvent.AddLayers e){
         addBackpackLayer(e.getSkin("default"), e.getEntityModels());
         addBackpackLayer(e.getSkin("slim"), e.getEntityModels());
@@ -54,13 +59,15 @@ public class ClientHandler {
     {
         if(renderer instanceof PlayerRenderer playerRenderer)
         {
-            playerRenderer.addLayer(new ParachuteLayer<>(playerRenderer, s));
+            playerRenderer.addLayer(new SpaceSuitLayer<>(playerRenderer, s));
         }
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ParachuteModel.LAYER_LOCATION, ParachuteModel::createBodyLayer);
         event.registerLayerDefinition(ChuteModel.LAYER_LOCATION, ChuteModel::createBodyLayer);
+        event.registerLayerDefinition(TankModel.LAYER_LOCATION, TankModel::createBodyLayer);
+
     }
 
     public static void renderOverlay(RegisterGuiOverlaysEvent e){

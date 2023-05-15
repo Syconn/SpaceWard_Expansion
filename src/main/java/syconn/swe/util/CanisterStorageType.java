@@ -1,8 +1,9 @@
 package syconn.swe.util;
 
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 
-public enum CanisterStorageType {
+public enum CanisterStorageType implements StringRepresentable {
 
     WATER(0, DyeColor.LIGHT_BLUE.getFireworkColor()),
     LAVA(1, DyeColor.ORANGE.getFireworkColor()),
@@ -29,5 +30,10 @@ public enum CanisterStorageType {
         for (CanisterStorageType type : values()){
             if (type.type == i) return type;
         } return null;
+    }
+
+    @Override
+    public String getSerializedName() {
+        return name();
     }
 }

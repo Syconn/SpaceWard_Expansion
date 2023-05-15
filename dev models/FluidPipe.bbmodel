@@ -1,0 +1,84 @@
+{
+	"meta": {
+		"format_version": "4.5",
+		"model_format": "java_block",
+		"box_uv": false
+	},
+	"name": "FluidPipe",
+	"parent": "",
+	"ambientocclusion": true,
+	"front_gui_light": false,
+	"visible_box": [1, 1, 0],
+	"variable_placeholders": "",
+	"variable_placeholder_buttons": [],
+	"unhandled_root_fields": {},
+	"resolution": {
+		"width": 32,
+		"height": 32
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [5, 5, 5],
+			"to": [11, 11, 11],
+			"autouv": 0,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 6, 6, 12],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 6, 6, 12],
+					"texture": 0
+				},
+				"south": {
+					"uv": [0, 6, 6, 12],
+					"texture": 0
+				},
+				"west": {
+					"uv": [0, 6, 6, 12],
+					"texture": 0
+				},
+				"up": {
+					"uv": [0, 6, 6, 12],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 6, 6, 12],
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "e29936f1-be64-370f-96f8-f0a6390751e1"
+		}
+	],
+	"outliner": ["e29936f1-be64-370f-96f8-f0a6390751e1"],
+	"textures": [
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\center_fluid_pipe.png",
+			"name": "center_fluid_pipe.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "0",
+			"particle": true,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "a028e8ce-6121-768c-7d29-d8bedd0c40c3",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/center_fluid_pipe.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAHtJREFUWEdjZBhgwDjA9jOMOmA0BBj//v37H1tCZGZmpkvogB2AbNn///9Z/v3793tAHHDh1cv/BmLiGI6iZVaFW7biws3/EQbq4GBHDxW6OADZEro7YEATIS2Dlxiz6ZLV8Dlk1AGjITAaAqMhMBoCoyEwGgKjITAaAgArTzMhyGO8PQAAAABJRU5ErkJggg=="
+		}
+	],
+	"display": {}
+}

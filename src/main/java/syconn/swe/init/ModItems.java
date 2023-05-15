@@ -6,6 +6,7 @@ import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import syconn.swe.block.FluidPipe;
 import syconn.swe.item.Canister;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
@@ -28,8 +29,9 @@ public class ModItems {
     public static final RegistryObject<SpaceArmor> SPACE_CHESTPLATE = ITEMS.register("space_chestplate", () -> new SpaceArmor(ArmorItem.Type.CHESTPLATE, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<SpaceArmor> SPACE_LEGGINGS = ITEMS.register("space_leggings", () -> new SpaceArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
-
     public static final RegistryObject<Canister> CANISTER = ITEMS.register("canister", Canister::new);
+
+    public static final RegistryObject<FluidPipe> FLUID_PIPE = register("fluid_pipe", FluidPipe::new);
 
     private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier)
     {
@@ -53,7 +55,7 @@ public class ModItems {
             e.accept(s);
         }
         for (CanisterStorageType t : CanisterStorageType.values()){
-            e.accept(Canister.create(400, 400, t));
+            e.accept(Canister.create(1296, 1296, t));
         }
         for (RegistryObject<Item> i : ModItems.ITEMS.getEntries()){
             if (i.get() instanceof Parachute || i.get() instanceof Canister) continue;

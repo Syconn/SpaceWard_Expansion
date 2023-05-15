@@ -2,10 +2,7 @@ package syconn.swe.common.inventory;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +33,7 @@ public class ExtendedPlayerInventory extends Inventory {
     }
 
     public ItemStack getItemBySlot(EquipmentItem.Slot s){
-        if (s == EquipmentItem.Slot.OXYGEN)
+        if (s == EquipmentItem.Slot.TANK)
             return space_utilities.get(0);
         else return space_utilities.get(1);
     }
@@ -236,5 +233,15 @@ public class ExtendedPlayerInventory extends Inventory {
                 }
             }
         }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        space_utilities.forEach(e -> {
+            if (e.getItem() instanceof EquipmentItem eq) {
+                eq.onEquipmentTick(e, player.level, player);
+            }
+        });
     }
 }

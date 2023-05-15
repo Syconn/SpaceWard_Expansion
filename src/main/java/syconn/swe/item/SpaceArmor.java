@@ -3,8 +3,11 @@ package syconn.swe.item;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModArmorTypes;
+import syconn.swe.util.Helper;
 
 public class SpaceArmor extends ArmorItem {
     public SpaceArmor(Type p_266831_, Properties p_40388_) {
@@ -18,5 +21,11 @@ public class SpaceArmor extends ArmorItem {
 
     public static boolean hasParachute(Player p){
         return p.getInventory() instanceof ExtendedPlayerInventory i && i.getItemBySlot(EquipmentItem.Slot.PARACHUTE).getItem() instanceof Parachute && hasFullKit(p);
+    }
+
+    public static @Nullable ItemStack getGear(EquipmentItem.Slot slot, Player p){
+        if (p.getInventory() instanceof ExtendedPlayerInventory i){
+            return i.getItemBySlot(slot);
+        } return null;
     }
 }

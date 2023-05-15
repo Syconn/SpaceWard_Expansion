@@ -44,6 +44,7 @@ public class Main {
             modEventBus.addListener(ClientHandler::addLayers);
             modEventBus.addListener(ClientHandler::renderOverlay);
             modEventBus.addListener(ClientHandler::addLayers);
+            modEventBus.addListener(ClientHandler::coloredBlocks);
             modEventBus.addListener(ClientHandler::coloredItems);
         });
         modEventBus.addListener(this::commonSetup);

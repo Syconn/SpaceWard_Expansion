@@ -1,10 +1,23 @@
 package syconn.swe.item;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import syconn.swe.common.container.slot.EquipmentItemSlot;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
+import syconn.swe.capabilities.ISpaceSuit;
+import syconn.swe.client.gui.SpaceSuitOverlay;
+import syconn.swe.init.ModCapabilities;
 import syconn.swe.init.ModItems;
 import syconn.swe.util.CanisterStorageType;
+import java.util.List;
 
+/** USED FOR LIQUIDS ONLY */
 public class Canister extends EquipmentItem {
 
     public static String TYPE = "type";
@@ -29,12 +42,41 @@ public class Canister extends EquipmentItem {
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return Math.round(13.0F - (float)getValue(stack) * 13.0F / (float)getMaxValue(stack));
+        return 13 * getValue(stack) / getMaxValue(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
+
+        if (getType(stack) != CanisterStorageType.EMPTY) {
+            list.add(Component.empty());
+            list.add(Component.literal(getValue(stack) + "mb / " + getMaxValue(stack) + "mb").withStyle(ChatFormatting.YELLOW));
+        }
+        super.appendHoverText(stack, level, list, flag);
+    }
+
+    @Override
+    public void onEquipmentTick(ItemStack stack, Level level, Player player) {
+        if (!level.isClientSide){
+            if (getType(stack) == CanisterStorageType.LAVA) {
+                player.setSecondsOnFire(2);
+            } else if (getType(stack) == CanisterStorageType.O2 && SpaceSuitOverlay.displayOxygen(player) && !player.isCreative()) {
+                setValue(stack, getValue(stack) - 1);
+            }
+        }
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        if (getType(stack) != CanisterStorageType.EMPTY) {
+            return Component.literal(StringUtils.capitalize(getType(stack).name().toLowerCase()) + " ").append(super.getName(stack));
+        }
+        return super.getName(stack);
     }
 
     @Override
     public Slot getSlot() {
-        return Slot.OXYGEN;
+        return Slot.TANK;
     }
 
     public static ItemStack create(int c, int m, CanisterStorageType type){
@@ -53,7 +95,8 @@ public class Canister extends EquipmentItem {
     }
 
     public static void setValue(ItemStack stack, int v){
-        stack.getOrCreateTag().putInt(CURRENT, v);
+        if (v >= 0 && v <= getMaxValue(stack)) stack.getOrCreateTag().putInt(CURRENT, v);
+        else if (v <= 0) stack.getOrCreateTag().putInt(TYPE, CanisterStorageType.EMPTY.getType());
     }
 
     public static int getValue(ItemStack stack){

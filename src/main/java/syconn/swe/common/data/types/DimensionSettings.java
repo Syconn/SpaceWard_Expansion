@@ -1,15 +1,15 @@
 package syconn.swe.common.data.types;
 
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import syconn.swe.init.ModDim;
-import syconn.swe.item.SpaceArmor;
-import syconn.swe.worldgen.dimension.DimSettings;
+import com.google.gson.JsonObject;
 
-public record DimensionSettings(int gravity, boolean breathable) {
+public record DimensionSettings(double gravity, boolean breathable) {
 
-    public boolean displayOxygen(Player p){
-        return !(SpaceArmor.hasFullKit(p) || breathable());
+    @Override
+    public String toString() {
+        return "Gravitational Force: " + gravity + " Breathable: " + breathable;
+    }
+
+    public static DimensionSettings fromGson(JsonObject o){
+        return new DimensionSettings(o.get("gravity").getAsDouble(), o.get("breathable").getAsBoolean());
     }
 }

@@ -5,12 +5,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
 import syconn.swe.item.EquipmentItem;
 import syconn.swe.util.Animator;
+
+import java.util.Random;
 
 public class SpaceSuit implements ISpaceSuit {
 
@@ -50,13 +54,19 @@ public class SpaceSuit implements ISpaceSuit {
     }
 
     @Override
+    public void decreaseO2(Player p) {
+        int i = EnchantmentHelper.getRespiration(p);
+        setO2(i > 0 && new Random().nextInt(i + 1) > 0 ? O2() : O2() - 1);
+    }
+
+    @Override
     public int maxO2() {
         return 300;
     }
 
     @Override
     public void setO2(int o2) {
-        oxygen = Mth.clamp(o2, 0, maxO2());
+        oxygen = o2;
     }
 
     @Override
