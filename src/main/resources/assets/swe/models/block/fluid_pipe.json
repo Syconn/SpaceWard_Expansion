@@ -5,6 +5,7 @@
 		"0": "swe:block/center_fluid_pipe",
 		"particle": "swe:block/center_fluid_pipe"
 	},
+	"render_type": "minecraft:cutout",
 	"elements": [
 		{
 			"from": [5, 5, 5],

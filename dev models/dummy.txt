@@ -1,6 +1,6 @@
 public VoxelShape makeShape(){
 	VoxelShape shape = VoxelShapes.empty();
-	shape = VoxelShapes.join(shape, , IBooleanFunction.OR);
+	shape = VoxelShapes.join(shape, VoxelShapes.box(0.3125, 0.3125, 0.3125, 0.6875, 0.6875, 0.6875), IBooleanFunction.OR);
 
 	return shape;
 }

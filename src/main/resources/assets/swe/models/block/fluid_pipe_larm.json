@@ -7,6 +7,7 @@
 		"3": "swe:block/pipe_liquid",
 		"particle": "swe:block/larm_fluid_pipe"
 	},
+	"render_type": "minecraft:cutout",
 	"elements": [
 		{
 			"from": [5, 5, 0],

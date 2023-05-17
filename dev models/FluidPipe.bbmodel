@@ -77,8 +77,7 @@
 			"saved": true,
 			"uuid": "a028e8ce-6121-768c-7d29-d8bedd0c40c3",
 			"relative_path": "../../src/main/resources/assets/swe/textures/block/center_fluid_pipe.png",
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAHtJREFUWEdjZBhgwDjA9jOMOmA0BBj//v37H1tCZGZmpkvogB2AbNn///9Z/v3793tAHHDh1cv/BmLiGI6iZVaFW7biws3/EQbq4GBHDxW6OADZEro7YEATIS2Dlxiz6ZLV8Dlk1AGjITAaAqMhMBoCoyEwGgKjITAaAgArTzMhyGO8PQAAAABJRU5ErkJggg=="
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAIJJREFUWEdj/Pv3738GLICZmZkRmzi1xRhBDqCXZdgcj+KAC69e/jcQE6eLz2GOgTtgxYWb/yMM1OlqOcgRgyMKBjwRDrgD0HMBPXMG1lwwIA5AzgUD4gDkdEB3BwxoIqR22U6qeXQv+dAdOOqA0RAYDYHREBgNgdEQGA2B0RAYDQEAuS5QIWbhnZ8AAAAASUVORK5CYII="
 		}
-	],
-	"display": {}
+	]
 }

@@ -1,21 +1,24 @@
 package syconn.swe.util;
 
+import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 
 public enum CanisterStorageType implements StringRepresentable {
 
-    WATER(0, DyeColor.LIGHT_BLUE.getFireworkColor()),
-    LAVA(1, DyeColor.ORANGE.getFireworkColor()),
-    O2(2, DyeColor.WHITE.getFireworkColor()),
-    EMPTY(3, -1);
+    WATER("water", 0, DyeColor.LIGHT_BLUE.getFireworkColor()),
+    LAVA("lava", 1, DyeColor.ORANGE.getFireworkColor()),
+    O2("o2", 2, DyeColor.WHITE.getFireworkColor()),
+    EMPTY("empty", 3, -1);
 
     final int type;
     final int color;
+    final String name;
 
-    CanisterStorageType(int type, int color) {
+    CanisterStorageType(String name, int type, int color) {
         this.type = type;
         this.color = color;
+        this.name = name;
     }
 
     public int getType() {
@@ -34,6 +37,11 @@ public enum CanisterStorageType implements StringRepresentable {
 
     @Override
     public String getSerializedName() {
-        return name().toLowerCase();
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
