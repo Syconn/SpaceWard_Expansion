@@ -20,10 +20,7 @@ public class PipeModule {
     private boolean n, e, s, w;
 
     PipeModule(boolean n, boolean e, boolean s, boolean w) {
-        this.n = n;
-        this.e = e;
-        this.s = s;
-        this.w = w;
+        this.n = n; this.e = e; this.s = s; this.w = w;
     }
 
     public PipeModule(BlockState state){
@@ -31,10 +28,7 @@ public class PipeModule {
     }
 
     public PipeModule() {
-        n = false;
-        s = false;
-        e = false;
-        w = false;
+        n = false; s = false; e = false; w = false;
     }
 
     private boolean isQuad(){
