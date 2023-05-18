@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class PipeModule {
 
-    private boolean n, e, s, w;
+    private final boolean n, e, s, w;
 
     PipeModule(boolean n, boolean e, boolean s, boolean w) {
         this.n = n; this.e = e; this.s = s; this.w = w;
