@@ -43,7 +43,7 @@ public class BlockModelGen extends BlockStateProvider {
 
             return ConfiguredModel.builder()
                     .modelFile(generated(getPipeModel(north, south, west, east) + (type == CanisterStorageType.EMPTY && getPipeSides(north, south, west, east) > 0 ? "_empty" : "")))
-                    .rotationX(getPipeRotation(north, south, west, east))
+                    .rotationY(getPipeRotation(north, south, west, east))
                     .uvLock(false)
                     .build();
         });
@@ -53,19 +53,16 @@ public class BlockModelGen extends BlockStateProvider {
         int sides = getPipeSides(n, s, e, w);
         switch (sides) {
             case 1: {
-                if (n) return 0;
                 if (e) return 90;
                 if (s) return 180;
                 if (w) return 270;
             }
             case 2: {
-                if ((n && e) || (n && s)) return 0;
-                if (e && s) return 90;
-                if ((s && w) || (w && e)) return 180;
-                if (w && n) return 270;
+                if (e && w || e && s) return 90;
+                if (s && w) return 180;
+                if (n && w) return 270;
             }
             case 3 : {
-                if (n && e && s) return 0;
                 if (e && s && w) return 90;
                 if (s && w && n) return 180;
                 if (w && n && e) return 270;
