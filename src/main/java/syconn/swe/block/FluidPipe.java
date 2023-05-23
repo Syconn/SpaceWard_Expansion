@@ -21,6 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import syconn.swe.common.be.PipeBlockEntity;
 import syconn.swe.util.CanisterStorageType;
 import syconn.swe.util.PipeModule;
 
@@ -31,7 +32,7 @@ public class FluidPipe extends FluidTransportBlock {
 
     public FluidPipe() {
         super(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().dynamicShape());
-        this.registerDefaultState(this.stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(FLUID_TYPE, CanisterStorageType.EMPTY));
+        this.registerDefaultState(this.stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(FLUID_TYPE, CanisterStorageType.EMPTY));
     }
 
     public RenderShape getRenderShape(BlockState p_51307_) {
@@ -45,29 +46,22 @@ public class FluidPipe extends FluidTransportBlock {
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        if (!ctx.getPlayer().level.isClientSide) return new PipeModule().getStateForPlacement(super.getStateForPlacement(ctx), ctx.getClickedPos(), ctx.getLevel());
+        if (!ctx.getPlayer().level.isClientSide) return new PipeModule().getStateForPlacement(super.getStateForPlacement(ctx).setValue(FluidBaseBlock.FLUID_TYPE, CanisterStorageType.LAVA), ctx.getClickedPos(), ctx.getLevel());
         return super.getStateForPlacement(ctx);
     }
 
     @Override
     public BlockState updateShape(BlockState state, Direction p_60542_, BlockState p_60543_, LevelAccessor level, BlockPos pos, BlockPos p_60546_) {
-//        boolean n = false; boolean e = false; boolean s = false; boolean w = false;
-//
-//        if (level.getBlockState(pos.offset(Direction.NORTH.getStepX(), Direction.NORTH.getStepY(), Direction.NORTH.getStepZ())).getBlock() instanceof FluidBaseBlock) n = true;
-//        if (level.getBlockState(pos.offset(Direction.EAST.getStepX(), Direction.EAST.getStepY(), Direction.EAST.getStepZ())).getBlock() instanceof FluidBaseBlock) e = true;
-//        if (level.getBlockState(pos.offset(Direction.WEST.getStepX(), Direction.WEST.getStepY(), Direction.WEST.getStepZ())).getBlock() instanceof FluidBaseBlock) w = true;
-//        if (level.getBlockState(pos.offset(Direction.SOUTH.getStepX(), Direction.SOUTH.getStepY(), Direction.SOUTH.getStepZ())).getBlock() instanceof FluidBaseBlock) s = true;
-//        return state.setValue(WEST, w).setValue(NORTH, n).setValue(EAST, e).setValue(SOUTH, s);
         return new PipeModule().getStateForPlacement(state, pos, level);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53334_) {
-        p_53334_.add(NORTH, EAST, WEST, SOUTH, FLUID_TYPE);
+        p_53334_.add(NORTH, EAST, WEST, SOUTH, UP, DOWN, FLUID_TYPE);
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
-        return null;
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new PipeBlockEntity(pos, state);
     }
 }

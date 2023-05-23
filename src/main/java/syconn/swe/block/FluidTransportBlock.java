@@ -14,12 +14,9 @@ public abstract class FluidTransportBlock extends FluidBaseBlock {
     public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
     public static final BooleanProperty WEST = PipeBlock.WEST;
 
-    protected Map<Direction, BooleanProperty> DIRECTIONS = new HashMap<>(){{
-        put(Direction.NORTH, NORTH);
-        put(Direction.EAST, EAST);
-        put(Direction.SOUTH, SOUTH);
-        put(Direction.WEST, WEST);
-    }};
+    public static final BooleanProperty UP = PipeBlock.UP;
+
+    public static final BooleanProperty DOWN = PipeBlock.DOWN;
     protected FluidTransportBlock(Properties p_49224_) {
         super(p_49224_);
     }

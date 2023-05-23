@@ -29,6 +29,7 @@ import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.datagen.BlockModelGen;
 import syconn.swe.datagen.ItemModelGen;
 import syconn.swe.datagen.LangGen;
+import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModContainers;
 import syconn.swe.init.ModItems;
 import syconn.swe.worldgen.dimension.MoonSpecialEffects;
@@ -47,6 +48,7 @@ public class Main {
             modEventBus.addListener(ClientHandler::addLayers);
             modEventBus.addListener(ClientHandler::coloredBlocks);
             modEventBus.addListener(ClientHandler::coloredItems);
+            modEventBus.addListener(ClientHandler::entityRender);
         });
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
@@ -54,6 +56,7 @@ public class Main {
         modEventBus.addListener(this::dimensionEffects);
 
         ModContainers.REGISTER.register(modEventBus);
+        ModBlockEntity.REGISTER.register(modEventBus);
         ModItems.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
 

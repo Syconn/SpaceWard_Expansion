@@ -24,10 +24,13 @@ import syconn.swe.block.FluidBaseBlock;
 import syconn.swe.block.FluidTransportBlock;
 import syconn.swe.client.gui.SpaceSuitOverlay;
 import syconn.swe.client.model.ChuteModel;
+import syconn.swe.client.model.FluidPipeModel;
 import syconn.swe.client.model.ParachuteModel;
 import syconn.swe.client.model.TankModel;
+import syconn.swe.client.renders.ber.PipeBER;
 import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
 import syconn.swe.client.screen.RenderUtil;
+import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModItems;
 import syconn.swe.item.Canister;
 import syconn.swe.util.Dyeable;
@@ -71,7 +74,7 @@ public class ClientHandler {
         event.registerLayerDefinition(ParachuteModel.LAYER_LOCATION, ParachuteModel::createBodyLayer);
         event.registerLayerDefinition(ChuteModel.LAYER_LOCATION, ChuteModel::createBodyLayer);
         event.registerLayerDefinition(TankModel.LAYER_LOCATION, TankModel::createBodyLayer);
-
+        event.registerLayerDefinition(FluidPipeModel.LAYER_LOCATION, FluidPipeModel::createBodyLayer);
     }
 
     public static void renderOverlay(RegisterGuiOverlaysEvent e){
@@ -82,5 +85,9 @@ public class ClientHandler {
     public void onPlayerRenderScreen(ContainerScreenEvent.Render.Background event)
     {
         RenderUtil.overridePlayerScreen(event.getPoseStack(), event.getContainerScreen());
+    }
+
+    public static void entityRender(EntityRenderersEvent.RegisterRenderers e){
+        e.registerBlockEntityRenderer(ModBlockEntity.PIPE.get(), PipeBER::new);
     }
 }

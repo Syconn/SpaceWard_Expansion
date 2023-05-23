@@ -29,6 +29,10 @@ public enum CanisterStorageType implements StringRepresentable {
         return color;
     }
 
+    public boolean isEmpty(){
+        return this == EMPTY;
+    }
+
     public static CanisterStorageType get(int i){
         for (CanisterStorageType type : values()){
             if (type.type == i) return type;

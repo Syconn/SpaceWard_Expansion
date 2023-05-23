@@ -18,17 +18,19 @@ import java.util.stream.Stream;
 public class PipeModule {
 
     private final boolean n, e, s, w;
+    private final boolean u, d;
+    private final CanisterStorageType type;
 
-    PipeModule(boolean n, boolean e, boolean s, boolean w) {
-        this.n = n; this.e = e; this.s = s; this.w = w;
+    PipeModule(boolean n, boolean e, boolean s, boolean w, boolean u, boolean d, CanisterStorageType type) {
+        this.n = n; this.e = e; this.s = s; this.w = w; this.u = u; this.d = d; this.type = type;
     }
 
     public PipeModule(BlockState state){
-        this(state.getValue(PipeBlock.NORTH), state.getValue(PipeBlock.EAST), state.getValue(PipeBlock.SOUTH), state.getValue(PipeBlock.WEST));
+        this(state.getValue(PipeBlock.NORTH), state.getValue(PipeBlock.EAST), state.getValue(PipeBlock.SOUTH), state.getValue(PipeBlock.WEST), state.getValue(PipeBlock.UP), state.getValue(PipeBlock.DOWN), state.getValue(FluidBaseBlock.FLUID_TYPE));
     }
 
     public PipeModule() {
-        n = false; s = false; e = false; w = false;
+        this(false, false, false, false, false, false, CanisterStorageType.EMPTY);
     }
 
     private boolean isQuad(){
@@ -49,6 +51,18 @@ public class PipeModule {
 
     private boolean isSingle(){
         return getPipeSides(n, w, e, s) == 1;
+    }
+
+    public CanisterStorageType getType() {
+        return type;
+    }
+
+    public boolean isUp() {
+        return u;
+    }
+
+    public boolean isDown() {
+        return d;
     }
 
     private int getYRotation(){
@@ -108,7 +122,7 @@ public class PipeModule {
     }
 
     public BlockState getStateForPlacement(BlockState state, BlockPos pos, LevelAccessor l){
-        return state.setValue(PipeBlock.NORTH, isBlock(pos, l, Direction.NORTH)).setValue(PipeBlock.WEST, isBlock(pos, l, Direction.WEST)).setValue(PipeBlock.SOUTH, isBlock(pos, l, Direction.SOUTH)).setValue(PipeBlock.EAST, isBlock(pos, l, Direction.EAST));
+        return state.setValue(PipeBlock.NORTH, isBlock(pos, l, Direction.NORTH)).setValue(PipeBlock.WEST, isBlock(pos, l, Direction.WEST)).setValue(PipeBlock.SOUTH, isBlock(pos, l, Direction.SOUTH)).setValue(PipeBlock.EAST, isBlock(pos, l, Direction.EAST)).setValue(PipeBlock.UP, isBlock(pos, l, Direction.UP)).setValue(PipeBlock.DOWN, isBlock(pos, l, Direction.DOWN));
     }
 
     private boolean isBlock(BlockPos pos, LevelAccessor l, Direction d){
