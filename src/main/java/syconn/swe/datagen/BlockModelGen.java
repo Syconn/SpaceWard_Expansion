@@ -18,6 +18,7 @@ import syconn.swe.block.FluidBaseBlock;
 import syconn.swe.block.FluidPipe;
 import syconn.swe.init.ModItems;
 import syconn.swe.util.CanisterStorageType;
+import syconn.swe.util.PipeModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,58 +33,16 @@ public class BlockModelGen extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModItems.FLUID_PIPE.get()).getPath(), modLoc("block/fluid_pipe"));
-
         getVariantBuilder(ModItems.FLUID_PIPE.get()).forAllStates(state -> {
-            boolean north = state.getValue(PipeBlock.NORTH);
-            boolean south = state.getValue(PipeBlock.SOUTH);
-            boolean west = state.getValue(PipeBlock.WEST);
-            boolean east = state.getValue(PipeBlock.EAST);
-            CanisterStorageType type = state.getValue(FluidBaseBlock.FLUID_TYPE);
-
+            PipeModule mod = new PipeModule(state);
             return ConfiguredModel.builder()
-                    .modelFile(generated(getPipeModel(north, south, west, east) + (type == CanisterStorageType.EMPTY && getPipeSides(north, south, west, east) > 0 ? "_empty" : "")))
-                    .rotationY(getPipeRotation(north, south, west, east))
+                    .modelFile(generated(mod.getModel()))
+                    .rotationY(mod.getYRotation())
                     .uvLock(false)
                     .build();
         });
-    }
 
-    private int getPipeRotation(boolean n, boolean s, boolean w, boolean e){
-        int sides = getPipeSides(n, s, e, w);
-        switch (sides) {
-            case 1: {
-                if (e) return 90;
-                if (s) return 180;
-                if (w) return 270;
-            }
-            case 2: {
-                if (e && w || e && s) return 90;
-                if (s && w) return 180;
-                if (n && w) return 270;
-            }
-            case 3 : {
-                if (e && s && w) return 90;
-                if (s && w && n) return 180;
-                if (w && n && e) return 270;
-            }
-        }
-        return 0;
-    }
-
-    private String getPipeModel(boolean n, boolean s, boolean w, boolean e){
-        int sides = getPipeSides(n, s, w, e);
-        if (sides == 2) {
-            if ((n && s) || (w && e)) return "fluid_pipe_darm";
-            else return "fluid_pipe_larm";
-        }
-        return sides == 4 ? "fluid_pipe_qarm" : sides == 3 ? "fluid_pipe_tarm" : sides == 1 ? "fluid_pipe_sarm" : "fluid_pipe";
-    }
-
-    private int getPipeSides(boolean... s){
-        int c = 0;
-        for (boolean v : s) if (v) c++;
-        return c;
+        itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModItems.FLUID_PIPE.get()).getPath(), modLoc("block/fluid_pipe"));
     }
 
     private ModelFile generated(String loc) {

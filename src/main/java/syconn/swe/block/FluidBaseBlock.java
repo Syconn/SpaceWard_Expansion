@@ -2,7 +2,6 @@ package syconn.swe.block;
 
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LavaCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -20,4 +19,6 @@ public abstract class FluidBaseBlock extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_49915_) {
         p_49915_.add(FLUID_TYPE);
     }
+
+    public abstract boolean intractableBlock();
 }

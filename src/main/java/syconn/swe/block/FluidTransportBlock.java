@@ -20,4 +20,9 @@ public abstract class FluidTransportBlock extends FluidBaseBlock {
     protected FluidTransportBlock(Properties p_49224_) {
         super(p_49224_);
     }
+
+    @Override
+    public boolean intractableBlock() {
+        return false;
+    }
 }

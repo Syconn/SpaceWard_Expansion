@@ -2,8 +2,6 @@ package syconn.swe.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
@@ -50,7 +48,7 @@ public class PipeModule {
     }
 
     private boolean isSingle(){
-        return getPipeSides(n, w, e, s) == 1;
+        return getPipeSides() == 1;
     }
 
     public CanisterStorageType getType() {
@@ -65,8 +63,8 @@ public class PipeModule {
         return d;
     }
 
-    private int getYRotation(){
-        int sides = getPipeSides(n, s, e, w);
+    public int getYRotation(){
+        int sides = getPipeSides();
         switch (sides) {
             case 1: {
                 if (e) return 90;
@@ -87,9 +85,9 @@ public class PipeModule {
         return 0;
     }
 
-    private int getPipeSides(boolean... s){
+    private int getPipeSides(){
         int c = 0;
-        for (boolean v : s) if (v) c++;
+        for (boolean v : new boolean[] {n, s, e, w}) if (v) c++;
         return c;
     }
 
@@ -106,7 +104,7 @@ public class PipeModule {
             if (getYRotation() == 0) return Block.box(5, 5, 0, 11, 11, 11);
             if (getYRotation() == 90) return Block.box(5, 5, 5, 16, 11, 11);
             if (getYRotation() == 180) return Block.box(5, 5, 5, 11, 11, 16);
-            return Block.box(5, 5, 5, 11, 11, 16);
+            return Block.box(0, 5, 5, 11, 11, 11);
         }
         if (isLDouble()){
             if (getYRotation() == 0) return Shapes.join(Block.box(5, 5, 0, 11, 11, 11), Block.box(11, 5, 5, 16, 11, 11), BooleanOp.OR);
@@ -121,11 +119,46 @@ public class PipeModule {
         return Block.box(5, 5, 5, 11, 11, 11);
     }
 
-    public BlockState getStateForPlacement(BlockState state, BlockPos pos, LevelAccessor l){
+    public static BlockState getStateForPlacement(BlockState state, BlockPos pos, LevelAccessor l){
         return state.setValue(PipeBlock.NORTH, isBlock(pos, l, Direction.NORTH)).setValue(PipeBlock.WEST, isBlock(pos, l, Direction.WEST)).setValue(PipeBlock.SOUTH, isBlock(pos, l, Direction.SOUTH)).setValue(PipeBlock.EAST, isBlock(pos, l, Direction.EAST)).setValue(PipeBlock.UP, isBlock(pos, l, Direction.UP)).setValue(PipeBlock.DOWN, isBlock(pos, l, Direction.DOWN));
     }
 
-    private boolean isBlock(BlockPos pos, LevelAccessor l, Direction d){
+    private static boolean isBlock(BlockPos pos, LevelAccessor l, Direction d){
         return l.getBlockState(pos.offset(d.getStepX(), d.getStepY(), d.getStepZ())).getBlock() instanceof FluidBaseBlock;
+    }
+
+    public String getModel(){
+        return getPipeModel() + (type == CanisterStorageType.EMPTY && getPipeSides() > 0 ? "_empty" : "");
+    }
+
+    private String getPipeModel(){
+        int sides = getPipeSides();
+        if (sides == 2) {
+            if ((n && s) || (w && e)) return "fluid_pipe_darm";
+            else return "fluid_pipe_larm";
+        }
+        return sides == 4 ? "fluid_pipe_qarm" : sides == 3 ? "fluid_pipe_tarm" : sides == 1 ? "fluid_pipe_sarm" : "fluid_pipe";
+    }
+
+    public enum PipeType {
+        TRANSPORT(0),
+        EXTRACTOR(1),
+        INSERTER(2);
+
+        int id;
+        PipeType(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public static PipeType getType(int id){
+            for (PipeType type : values()) {
+                if (type.id == id) return type;
+            }
+            return null;
+        }
     }
 }

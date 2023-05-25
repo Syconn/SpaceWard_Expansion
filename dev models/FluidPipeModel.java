@@ -1,27 +1,17 @@
-package syconn.swe.client.model;
+// Made with Blockbench 4.7.2
+// Exported for Minecraft version 1.17 or later with Mojang mappings
+// Paste this class into your mod and generate all required imports
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.Model;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.BlockState;
-import syconn.swe.Main;
-import syconn.swe.util.PipeModule;
 
-public class FluidPipeModel extends Model {
-	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Main.MODID, "fluidpipemodel"), "main");
+public class FluidPipeModel<T extends Entity> extends EntityModel<T> {
+	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
+	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation("modid", "fluidpipemodel"), "main");
 	private final ModelPart top;
 	private final ModelPart top_fluid;
 	private final ModelPart bot;
 	private final ModelPart bot_fluid;
 
 	public FluidPipeModel(ModelPart root) {
-		super(RenderType::entityCutoutNoCull);
 		this.top = root.getChild("top");
 		this.top_fluid = root.getChild("top_fluid");
 		this.bot = root.getChild("bot");
@@ -44,18 +34,15 @@ public class FluidPipeModel extends Model {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		top.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
-		top_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		bot.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
-		bot_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
 	}
 
-	public void renderStateToBuffer(BlockState state, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		PipeModule mod = new PipeModule(state);
-		if (mod.isUp()) bot.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
-		if (mod.isUp() && !mod.getType().isEmpty()) bot_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		if (mod.isDown()) top.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
-		if (mod.isDown() && !mod.getType().isEmpty()) top_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		top.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		top_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		bot.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		bot_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 }
