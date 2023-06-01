@@ -104,7 +104,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     }
 
     private int getContainerSize(){
-        return 4;
+        return 2;
     }
 
     @Override
@@ -128,22 +128,22 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     public static void serverTick(Level level, BlockPos pos, BlockState state, TankBlockEntity e) {
         if (!level.isClientSide) {
             ItemStack heldItem = e.getItems().getStackInSlot(0);
-            if (heldItem.getItem() instanceof BucketItem) {
-                FluidUtil.getFluidHandler(heldItem).ifPresent(handler -> e.tank.fill(handler.getFluidInTank(0), IFluidHandler.FluidAction.EXECUTE));
-                e.getItems().extractItem(0, 1, false);
-                e.getItems().insertItem(1, new ItemStack(Items.BUCKET), false);
-            } else {
+            if (heldItem.getItem() instanceof BucketItem b) {
+                int fill = FluidUtil.getFluidHandler(heldItem).map(handler -> e.tank.fill(handler.getFluidInTank(0), IFluidHandler.FluidAction.EXECUTE)).orElse(0);
+                if (fill > 0) {
+                    e.getItems().extractItem(0, 1, false);
+                    e.getItems().insertItem(1, new ItemStack(Items.BUCKET), false);
+                }
+                else if (b.getFluid() instanceof EmptyFluid && !e.getFluidTank().isEmpty()) {
+                    FluidStack fluidStack = FluidUtil.getFluidHandler(heldItem).map(handler -> e.tank.drain(handler.getTankCapacity(0), IFluidHandler.FluidAction.EXECUTE)).orElse(FluidStack.EMPTY);
+                    e.getItems().extractItem(0, 1, false);
+                    if (fluidStack == FluidStack.EMPTY) e.getItems().insertItem(1, new ItemStack(Items.BUCKET), false);
+                    else e.getItems().insertItem(1, FluidUtil.getFilledBucket(fluidStack), false);
+                }
+            }
+            else if (e.getItems().getStackInSlot(0) != ItemStack.EMPTY){
                 e.getItems().insertItem(1, e.getItems().getStackInSlot(0), false);
                 e.getItems().extractItem(0, 1, false);
-            }
-            heldItem = e.getItems().getStackInSlot(2);
-            if (heldItem.getItem() instanceof BucketItem b && b.getFluid() instanceof EmptyFluid && !e.getFluidTank().isEmpty()) {
-                FluidStack fluidStack = FluidUtil.getFluidHandler(heldItem).map(handler -> e.tank.drain(1000, IFluidHandler.FluidAction.EXECUTE)).orElse(FluidStack.EMPTY);
-                e.getItems().extractItem(2, 1, false);
-                e.getItems().insertItem(3, FluidUtil.getFilledBucket(fluidStack), false);
-            } else {
-                e.getItems().insertItem(3, e.getItems().getStackInSlot(2), false);
-                e.getItems().extractItem(2, 1, false);
             }
         }
     }

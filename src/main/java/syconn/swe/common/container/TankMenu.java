@@ -25,8 +25,8 @@ public class TankMenu extends AbstractContainerMenu {
         be.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 14, 9)); //INPUT FILLED BUCKET
             this.addSlot(new SlotItemHandler(handler, 1, 14, 61)); //OUTPUT EMPTY BUCKET
-            this.addSlot(new SlotItemHandler(handler, 2, 72, 9)); //INPUT EMPTY BUCKET
-            this.addSlot(new SlotItemHandler(handler, 3, 72, 61)); //OUTPUT FILLED BUCKET
+//            this.addSlot(new SlotItemHandler(handler, 2, 72, 9)); //INPUT EMPTY BUCKET
+//            this.addSlot(new SlotItemHandler(handler, 3, 72, 61)); //OUTPUT FILLED BUCKET
         });
 
         for(int l = 0; l < 3; ++l) {

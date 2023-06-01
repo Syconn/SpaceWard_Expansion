@@ -2,22 +2,19 @@ package syconn.swe.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
-import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
+import org.joml.Quaternionf;
 import syconn.swe.Main;
 import syconn.swe.common.container.TankMenu;
 import syconn.swe.util.ResourceUtil;
@@ -40,15 +37,15 @@ public class TankScreen extends AbstractContainerScreen<TankMenu> {
         RenderSystem.setShaderTexture(0, BG);
         blit(pose, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
-//        pose.pushPose();
-//        pose.scale(0.5f, 0.5f, 0.5f);
-//        RenderSystem.setShaderTexture(0, ResourceUtil.getBlockTexture(Blocks.WATER.defaultBlockState(), Direction.UP));
-//        blit(pose, this.leftPos, this.topPos, 0, 0, 512, 512);
-//        pose.popPose();
-
-        System.out.println(Minecraft.getInstance().getBlockRenderer().getBlockModel(Blocks.WATER.defaultBlockState()).getParticleIcon());
-
-        menu.getBE().getFluidTank().getFluidInTank(0).getFluid();
+        FluidState state = menu.getBE().getFluidTank().getFluidInTank(0).getFluid().defaultFluidState();
+        if (IClientFluidTypeExtensions.of(state).getStillTexture() != null) {
+            RenderSystem.setShaderTexture(0, ResourceUtil.getFluidTexture(state));
+            int i = IClientFluidTypeExtensions.of(state).getTintColor();
+            int y = (int) ((double) (menu.getBE().getFluidTank().getFluidAmount()) / menu.getBE().getFluidTank().getCapacity() * 70);
+            RenderSystem.setShaderColor((float)(i >> 16 & 255) / 255.0F, (float)(i >> 8 & 255) / 255.0F, (float)(i & 255) / 255.0F, 255.0F);
+            blit(pose, leftPos + 34, topPos + 8 + (70 - y), 0, 70, 34, y);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        }
 
         // Fluid Bars
         RenderSystem.setShaderTexture(0, BG);
