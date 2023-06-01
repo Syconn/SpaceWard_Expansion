@@ -1,12 +1,7 @@
 package syconn.swe.block;
 
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class FluidTransportBlock extends FluidBaseBlock {
     public static final BooleanProperty NORTH = PipeBlock.NORTH;
@@ -23,6 +18,6 @@ public abstract class FluidTransportBlock extends FluidBaseBlock {
 
     @Override
     public boolean intractableBlock() {
-        return false;
+        return true;
     }
 }

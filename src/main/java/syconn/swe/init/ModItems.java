@@ -10,6 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import syconn.swe.block.FluidPipe;
+import syconn.swe.block.FluidTank;
 import syconn.swe.item.Canister;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
@@ -33,10 +34,10 @@ public class ModItems {
     public static final RegistryObject<SpaceArmor> SPACE_LEGGINGS = ITEMS.register("space_leggings", () -> new SpaceArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<Canister> CANISTER = ITEMS.register("canister", Canister::new);
-
     public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", () -> new Item(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<FluidPipe> FLUID_PIPE = register("fluid_pipe", FluidPipe::new);
+    public static final RegistryObject<Block> FLUID_TANK = register("fluid_tank", FluidTank::new);
 
     private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier)
     {

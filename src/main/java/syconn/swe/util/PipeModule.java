@@ -27,10 +27,6 @@ public class PipeModule {
         this(state.getValue(PipeBlock.NORTH), state.getValue(PipeBlock.EAST), state.getValue(PipeBlock.SOUTH), state.getValue(PipeBlock.WEST), state.getValue(PipeBlock.UP), state.getValue(PipeBlock.DOWN), state.getValue(FluidBaseBlock.FLUID_TYPE));
     }
 
-    public PipeModule() {
-        this(false, false, false, false, false, false, CanisterStorageType.EMPTY);
-    }
-
     private boolean isQuad(){
         return n && e && s && w;
     }
@@ -92,6 +88,13 @@ public class PipeModule {
     }
 
     public VoxelShape getShape(){
+        VoxelShape shape = getModelShape();
+        if (u) shape = Shapes.join(shape, Block.box(5, 11, 5, 11, 16, 11), BooleanOp.OR);
+        if (d) shape = Shapes.join(shape, Block.box(5, 0, 5, 11, 5, 11), BooleanOp.OR);
+        return shape;
+    }
+
+    private VoxelShape getModelShape(){
         if (isQuad()) return Stream.of(Block.box(0, 5, 5, 5, 11, 11), Block.box(5, 5, 0, 11, 11, 16),
                 Block.box(11, 5, 5, 16, 11, 11)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
         if (isTriple()){

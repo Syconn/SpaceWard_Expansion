@@ -1,5 +1,6 @@
 package syconn.swe.client;
 
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -30,7 +31,9 @@ import syconn.swe.client.model.TankModel;
 import syconn.swe.client.renders.ber.PipeBER;
 import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
 import syconn.swe.client.screen.RenderUtil;
+import syconn.swe.client.screen.TankScreen;
 import syconn.swe.init.ModBlockEntity;
+import syconn.swe.init.ModContainers;
 import syconn.swe.init.ModItems;
 import syconn.swe.item.Canister;
 import syconn.swe.util.Dyeable;
@@ -40,6 +43,7 @@ public class ClientHandler {
 
     public ClientHandler() {
         registerProperties();
+        MenuScreens.register(ModContainers.TANK_MENU.get(), TankScreen::new);
     }
 
     public static void registerProperties(){

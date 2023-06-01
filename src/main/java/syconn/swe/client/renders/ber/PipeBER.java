@@ -33,7 +33,7 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.pushPose();
             ps.translate(1, -0.5f, 0);
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
-            this.pm.renderStateToBuffer(be.getBlockState(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
+            this.pm.render(be.getBlockState(), be, ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
             ps.popPose();
         }
     }

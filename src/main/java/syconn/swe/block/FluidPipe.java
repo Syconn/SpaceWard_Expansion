@@ -67,7 +67,10 @@ public class FluidPipe extends FluidTransportBlock {
     @Override
     public InteractionResult use(BlockState state, Level l, BlockPos pos, Player p, InteractionHand hand, BlockHitResult result) {
         if (!l.isClientSide && p.getItemInHand(hand).getItem() == ModItems.WRENCH.get()) {
-            System.out.println(result.getLocation());
+            double x = result.getLocation().x - pos.getX();
+            double y = result.getLocation().y - pos.getY();
+            double z = result.getLocation().z - pos.getZ();
+            System.out.println(x + " " + y + " " + z);
         }
         return InteractionResult.PASS;
     }
