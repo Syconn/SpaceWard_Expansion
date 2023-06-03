@@ -19,7 +19,11 @@ public class LangGen extends LanguageProvider {
         add(ModItems.SPACE_CHESTPLATE.get(), "Space Chestplate");
         add(ModItems.SPACE_LEGGINGS.get(), "Space Leggings");
         add(ModItems.CANISTER.get(), "Canister");
+        add(ModItems.WRENCH.get(), "Wrench");
+
         add(ModItems.FLUID_PIPE.get(), "Fluid Pipe");
+        add(ModItems.FLUID_TANK.get(), "Fluid Tank");
+
         add("itemGroup.space", "Spaceward Expansion");
     }
 }

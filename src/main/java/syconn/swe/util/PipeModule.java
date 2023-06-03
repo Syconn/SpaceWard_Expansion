@@ -2,6 +2,7 @@ package syconn.swe.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
@@ -9,7 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import syconn.swe.block.FluidBaseBlock;
+import syconn.swe.common.be.PipeBlockEntity;
 
 import java.util.stream.Stream;
 
@@ -17,10 +20,10 @@ public class PipeModule {
 
     private final boolean n, e, s, w;
     private final boolean u, d;
-    private final CanisterStorageType type;
+    private final boolean has_fluid;
 
-    PipeModule(boolean n, boolean e, boolean s, boolean w, boolean u, boolean d, CanisterStorageType type) {
-        this.n = n; this.e = e; this.s = s; this.w = w; this.u = u; this.d = d; this.type = type;
+    PipeModule(boolean n, boolean e, boolean s, boolean w, boolean u, boolean d, boolean has_fluid) {
+        this.n = n; this.e = e; this.s = s; this.w = w; this.u = u; this.d = d; this.has_fluid = has_fluid;
     }
 
     public PipeModule(BlockState state){
@@ -47,8 +50,8 @@ public class PipeModule {
         return getPipeSides() == 1;
     }
 
-    public CanisterStorageType getType() {
-        return type;
+    public boolean hasFluid() {
+        return has_fluid;
     }
 
     public boolean isUp() {
@@ -123,15 +126,16 @@ public class PipeModule {
     }
 
     public static BlockState getStateForPlacement(BlockState state, BlockPos pos, LevelAccessor l){
-        return state.setValue(PipeBlock.NORTH, isBlock(pos, l, Direction.NORTH)).setValue(PipeBlock.WEST, isBlock(pos, l, Direction.WEST)).setValue(PipeBlock.SOUTH, isBlock(pos, l, Direction.SOUTH)).setValue(PipeBlock.EAST, isBlock(pos, l, Direction.EAST)).setValue(PipeBlock.UP, isBlock(pos, l, Direction.UP)).setValue(PipeBlock.DOWN, isBlock(pos, l, Direction.DOWN));
+        return state.setValue(FluidBaseBlock.FLUID_TYPE, state.getValue(FluidBaseBlock.FLUID_TYPE)).setValue(PipeBlock.NORTH, isBlock(pos, l, Direction.NORTH)).setValue(PipeBlock.WEST, isBlock(pos, l, Direction.WEST)).setValue(PipeBlock.SOUTH, isBlock(pos, l, Direction.SOUTH)).setValue(PipeBlock.EAST, isBlock(pos, l, Direction.EAST)).setValue(PipeBlock.UP, isBlock(pos, l, Direction.UP)).setValue(PipeBlock.DOWN, isBlock(pos, l, Direction.DOWN));
     }
 
     private static boolean isBlock(BlockPos pos, LevelAccessor l, Direction d){
-        return l.getBlockState(pos.offset(d.getStepX(), d.getStepY(), d.getStepZ())).getBlock() instanceof FluidBaseBlock;
+        BlockPos pos2 = pos.offset(d.getStepX(), d.getStepY(), d.getStepZ());
+        return l.getBlockEntity(pos2) != null && l.getBlockEntity(pos2).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent();
     }
 
     public String getModel(){
-        return getPipeModel() + (type == CanisterStorageType.EMPTY && getPipeSides() > 0 ? "_empty" : "");
+        return getPipeModel() + (!has_fluid && getPipeSides() > 0 ? "_empty" : "");
     }
 
     private String getPipeModel(){
@@ -143,25 +147,12 @@ public class PipeModule {
         return sides == 4 ? "fluid_pipe_qarm" : sides == 3 ? "fluid_pipe_tarm" : sides == 1 ? "fluid_pipe_sarm" : "fluid_pipe";
     }
 
-    public enum PipeType {
-        TRANSPORT(0),
-        EXTRACTOR(1),
-        INSERTER(2);
-
-        int id;
-        PipeType(int id) {
-            this.id = id;
+    public static void updateBE(LevelAccessor l, PipeBlockEntity be){
+        if (l.getBlockEntity(be.getImporter()) == null) {
+            be.setImporter(be.getImporter());
         }
-
-        public int getId() {
-            return id;
-        }
-
-        public static PipeType getType(int id){
-            for (PipeType type : values()) {
-                if (type.id == id) return type;
-            }
-            return null;
+        if (l.getBlockEntity(be.getExporter()) == null) {
+            be.setExporter(be.getExporter());
         }
     }
 }

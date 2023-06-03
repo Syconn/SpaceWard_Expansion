@@ -1,3 +1,5 @@
-// 1.19.4	2023-05-24T22:05:55.3653651	Block States: swe
-2f8428997df52195369a5a794120f864f42f705d assets/swe/blockstates/fluid_pipe.json
+// 1.19.4	2023-06-01T22:06:30.2118283	Block States: swe
+4a13d5dae471bad83a0710f1b2f749e759c54797 assets/swe/blockstates/fluid_pipe.json
+a4332eacf646dbba1ee90b1cc8346c806940f448 assets/swe/blockstates/fluid_tank.json
 0862301b6a761085586ff20d8f062ce22092f853 assets/swe/models/item/fluid_pipe.json
+707f332e8b0ff7fc1db93cf4d248c7e2b121d294 assets/swe/models/item/fluid_tank.json

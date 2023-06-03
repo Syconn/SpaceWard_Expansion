@@ -14,6 +14,7 @@ import syconn.swe.block.FluidTank;
 import syconn.swe.item.Canister;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
+import syconn.swe.item.Wrench;
 import syconn.swe.util.CanisterStorageType;
 import syconn.swe.util.Dyeable;
 
@@ -34,7 +35,7 @@ public class ModItems {
     public static final RegistryObject<SpaceArmor> SPACE_LEGGINGS = ITEMS.register("space_leggings", () -> new SpaceArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<Canister> CANISTER = ITEMS.register("canister", Canister::new);
-    public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", Wrench::new);
 
     public static final RegistryObject<FluidPipe> FLUID_PIPE = register("fluid_pipe", FluidPipe::new);
     public static final RegistryObject<Block> FLUID_TANK = register("fluid_tank", FluidTank::new);

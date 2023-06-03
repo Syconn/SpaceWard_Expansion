@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import syconn.swe.Main;
 import syconn.swe.common.be.PipeBlockEntity;
@@ -21,8 +20,8 @@ public class FluidPipeModel extends Model {
 	private final ModelPart bot;
 	private final ModelPart top_fluid;
 	private final ModelPart bot_fluid;
-	private final ModelPart Exporter;
-	private final ModelPart Importer;
+	private final ModelPart exporter;
+	private final ModelPart importer;
 
 	public FluidPipeModel(ModelPart root) {
 		super(RenderType::entityCutoutNoCull);
@@ -30,8 +29,8 @@ public class FluidPipeModel extends Model {
 		this.bot = root.getChild("bot");
 		this.top_fluid = root.getChild("top_fluid");
 		this.bot_fluid = root.getChild("bot_fluid");
-		this.Exporter = root.getChild("Exporter");
-		this.Importer = root.getChild("Importer");
+		this.exporter = root.getChild("Exporter");
+		this.importer = root.getChild("Importer");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -63,8 +62,16 @@ public class FluidPipeModel extends Model {
 	public void render(BlockState state, PipeBlockEntity be, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		PipeModule mod = new PipeModule(state);
 		if (mod.isUp()) bot.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
-		if (mod.isUp() && !mod.getType().isEmpty()) bot_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		if (mod.isUp() && mod.hasFluid()) bot_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 		if (mod.isDown()) top.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
-		if (mod.isDown() && !mod.getType().isEmpty()) top_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		if (mod.isDown() && mod.hasFluid()) top_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+	}
+
+	public void renderImport(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay){
+		importer.render(poseStack, vertexConsumer, packedLight, packedOverlay);
+	}
+
+	public void renderExport(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay){
+		exporter.render(poseStack, vertexConsumer, packedLight, packedOverlay);
 	}
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -37,7 +38,7 @@ public class FluidPipe extends FluidTransportBlock {
 
     public FluidPipe() {
         super(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().dynamicShape());
-        this.registerDefaultState(this.stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(FLUID_TYPE, CanisterStorageType.EMPTY));
+        this.registerDefaultState(this.stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(FLUID_TYPE, Boolean.FALSE));
     }
 
     public RenderShape getRenderShape(BlockState p_51307_) {
@@ -57,7 +58,14 @@ public class FluidPipe extends FluidTransportBlock {
 
     @Override
     public BlockState updateShape(BlockState state, Direction p_60542_, BlockState p_60543_, LevelAccessor level, BlockPos pos, BlockPos p_60546_) {
+        PipeModule.updateBE(level, level.getBlockEntity(pos, ModBlockEntity.PIPE.get()).get());
         return PipeModule.getStateForPlacement(state, pos, level);
+    }
+
+    @Override
+    public void onRemove(BlockState p_60515_, Level l, BlockPos pos, BlockState p_60518_, boolean p_60519_) {
+        if (p_60515_.hasBlockEntity() && (!p_60515_.is(p_60518_.getBlock()) || !p_60518_.hasBlockEntity()) && l.getBlockEntity(pos) instanceof PipeBlockEntity pe) pe.updateStates();
+        super.onRemove(p_60515_, l, pos, p_60518_, p_60519_);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53334_) {
@@ -66,11 +74,30 @@ public class FluidPipe extends FluidTransportBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level l, BlockPos pos, Player p, InteractionHand hand, BlockHitResult result) {
+        ItemStack stack = p.getItemInHand(hand);
         if (!l.isClientSide && p.getItemInHand(hand).getItem() == ModItems.WRENCH.get()) {
+            PipeBlockEntity be = l.getBlockEntity(pos, ModBlockEntity.PIPE.get()).get();
             double x = result.getLocation().x - pos.getX();
-            double y = result.getLocation().y - pos.getY();
             double z = result.getLocation().z - pos.getZ();
-            System.out.println(x + " " + y + " " + z);
+
+            if (z < 0.65 && z > 0.3){
+                if (x > 0.65) {
+                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.EAST)));
+                    else be.setExporter(new BlockPos(pos.relative(Direction.EAST)));
+                } else if (x < 0.31){
+                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.WEST)));
+                    else be.setExporter(new BlockPos(pos.relative(Direction.WEST)));
+                }
+            }
+            if (x < 0.65 && x > 0.3) {
+                if (z > 0.65) {
+                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.SOUTH)));
+                    else be.setExporter(new BlockPos(pos.relative(Direction.SOUTH)));
+                } else if (z < 0.31){
+                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.NORTH)));
+                    else be.setExporter(new BlockPos(pos.relative(Direction.NORTH)));
+                }
+            }
         }
         return InteractionResult.PASS;
     }

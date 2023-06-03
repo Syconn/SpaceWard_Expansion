@@ -51,13 +51,7 @@ public class FluidTank extends FluidBaseBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level l, BlockState p_153213_, BlockEntityType<T> p_153214_) {
-//        return !l.isClientSide ? createTickerHelper(p_153214_, ModBlockEntity.TANK.get(), TankBlockEntity::serverTick) : null;
         return createTickerHelper(p_153214_, ModBlockEntity.TANK.get(), TankBlockEntity::serverTick);
-    }
-
-    @Override
-    public boolean intractableBlock() {
-        return true;
     }
 
     @Nullable

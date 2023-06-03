@@ -41,8 +41,10 @@ public class BlockModelGen extends BlockStateProvider {
                     .uvLock(false)
                     .build();
         });
+        simpleBlock(ModItems.FLUID_TANK.get(), generated("fluid_tank"));
 
         itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModItems.FLUID_PIPE.get()).getPath(), modLoc("block/fluid_pipe"));
+        itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModItems.FLUID_TANK.get()).getPath(), modLoc("block/fluid_tank"));
     }
 
     private ModelFile generated(String loc) {

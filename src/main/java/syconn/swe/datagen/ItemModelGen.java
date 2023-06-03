@@ -23,6 +23,7 @@ public class ItemModelGen extends ItemModelProvider {
         singleTexture(ModItems.SPACE_CHESTPLATE.get());
         singleTexture(ModItems.SPACE_LEGGINGS.get());
         singleTexture(ModItems.SPACE_BOOTS.get());
+        singleTexture(ModItems.WRENCH.get());
 
         ItemModelBuilder model = getBuilder(ModItems.CANISTER.get().toString()).parent(generate()).texture("layer0", modLoc("item/canister"));
 

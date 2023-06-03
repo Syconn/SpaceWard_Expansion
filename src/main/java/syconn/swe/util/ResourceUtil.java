@@ -11,4 +11,9 @@ public class ResourceUtil {
         ResourceLocation loc = IClientFluidTypeExtensions.of(fluid).getFlowingTexture();
         return new ResourceLocation(loc.getNamespace(), "textures/" + loc.getPath() + ".png");
     }
+
+    public static ResourceLocation getFluidTexture(Fluid fluid){
+        ResourceLocation loc = IClientFluidTypeExtensions.of(fluid).getFlowingTexture();
+        return new ResourceLocation(loc.getNamespace(), "textures/" + loc.getPath() + ".png");
+    }
 }

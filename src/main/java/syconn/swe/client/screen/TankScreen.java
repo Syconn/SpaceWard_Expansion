@@ -51,9 +51,4 @@ public class TankScreen extends AbstractContainerScreen<TankMenu> {
         RenderSystem.setShaderTexture(0, BG);
         blit(pose, leftPos + 34, topPos + 8, 176, 0, 6, 70);
     }
-
-    @Override
-    public void render(PoseStack p_97795_, int p_97796_, int p_97797_, float p_97798_) {
-        super.render(p_97795_, p_97796_, p_97797_, p_97798_);
-    }
 }

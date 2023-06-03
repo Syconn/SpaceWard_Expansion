@@ -1,0 +1,179 @@
+{
+	"meta": {
+		"format_version": "4.5",
+		"model_format": "java_block",
+		"box_uv": false
+	},
+	"name": "FluidTank",
+	"parent": "",
+	"ambientocclusion": true,
+	"front_gui_light": false,
+	"visible_box": [1, 1, 0],
+	"variable_placeholders": "",
+	"variable_placeholder_buttons": [],
+	"unhandled_root_fields": {},
+	"resolution": {
+		"width": 16,
+		"height": 16
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [0, 0, 0],
+			"to": [16, 1, 16],
+			"autouv": 0,
+			"color": 7,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"south": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"west": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"up": {
+					"uv": [0, 0, 16, 16],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 16, 16],
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "147da7d7-7114-f4fa-6896-4562afcd7a92"
+		},
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [0, 15, 0],
+			"to": [16, 16, 16],
+			"autouv": 0,
+			"color": 7,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"south": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"west": {
+					"uv": [0, 0, 16, 1],
+					"texture": 0
+				},
+				"up": {
+					"uv": [0, 0, 16, 16],
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 16, 16],
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "a22cdab6-1b51-a10f-20e8-a854d3866ca2"
+		},
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [0, 1, 0],
+			"to": [16, 15, 16],
+			"autouv": 0,
+			"color": 6,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 16, 16],
+					"texture": 1
+				},
+				"east": {
+					"uv": [0, 0, 16, 16],
+					"texture": 1
+				},
+				"south": {
+					"uv": [0, 0, 16, 16],
+					"texture": 1
+				},
+				"west": {
+					"uv": [0, 0, 16, 16],
+					"texture": 1
+				},
+				"up": {
+					"uv": [0, 0, 0, 0]
+				},
+				"down": {
+					"uv": [0, 0, 0, 0]
+				}
+			},
+			"type": "cube",
+			"uuid": "fd85419a-3f52-9542-fb9e-d7408fa43444"
+		}
+	],
+	"outliner": ["147da7d7-7114-f4fa-6896-4562afcd7a92", "a22cdab6-1b51-a10f-20e8-a854d3866ca2", "fd85419a-3f52-9542-fb9e-d7408fa43444"],
+	"textures": [
+		{
+			"path": "C:\\Users\\Aidan\\Desktop\\assets\\minecraft\\textures\\block\\smithing_table_top.png",
+			"name": "smithing_table_top.png",
+			"folder": "block",
+			"namespace": "minecraft",
+			"id": "0",
+			"particle": true,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "7475a063-a559-49ee-2cad-50c6d0d9e4c5",
+			"relative_path": "../../../../Desktop/assets/minecraft/textures/block/smithing_table_top.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAV1JREFUOE+Fk7tOw0AQRcdQxN6A5EcKCNShCjWiAdGgiDKi5gf4U0o6oOIRKPBDAmynAKM70V3WmJBtZryzPntnZsebnF00IiJV9Q6jKwg21BqzqbYs32yMDmMeAO7Pdf0DwmHfX8CwGONekmyLAvL8RQ98fdb28Nq6b/0snakfhrFaxAixCsqP145MbhRFJuP9I3m4v7YAOFG0Jd7B4WkDGgDzeS293uJm+rBRvKvyXYWmPxCbAmpAQGBCqcrCqnGB2OQ30lAFrAHooM6ebiQIzJ/p8GfWoQPQ1vUHkmePLQB+ZEqIc6Hd3vHJtGF+OLRqVVUpw52RbasC2IH/AG5toAhKcHEL4LZtVR0A0BRGe+OGD4Q1QHvubq862fyuha3BshSWtZAXKcB9ygjg2VK+e6Mrh89c2zg9v2zS9Lk1KHgLcTJszYc7G4RZADY4shhT+pxSSIUPMFvIkf8GCmHNAhmD7gIAAAAASUVORK5CYII="
+		},
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\tank.png",
+			"name": "tank.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "1",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "45ca9e5b-6afc-1aa4-4bbe-61f51d990d22",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/tank.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAFlJREFUOE9j9PSO/79960JGBjIASC8j1Q248OrlfwMxcaJchOECUjSDfIxiwIoLN/9HGKgTZTMsuGgTBqRExqgL0KKRlMCjOBphCY6sWEBOrWQZgOxVqhgAABAnczE72+8GAAAAAElFTkSuQmCC"
+		}
+	]
+}

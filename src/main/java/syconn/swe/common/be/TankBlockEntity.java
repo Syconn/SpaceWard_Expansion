@@ -1,6 +1,5 @@
 package syconn.swe.common.be;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -16,15 +15,11 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BarrelBlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.EmptyFluid;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.FluidHandlerBlockEntity;
@@ -36,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.container.TankMenu;
 import syconn.swe.init.ModBlockEntity;
-import syconn.swe.init.ModItems;
 
 public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProvider {
 
@@ -109,7 +103,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("container.tank");
+        return Component.literal("Fluid Tank");
     }
 
     @Nullable
@@ -134,7 +128,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
                     e.getItems().extractItem(0, 1, false);
                     e.getItems().insertItem(1, new ItemStack(Items.BUCKET), false);
                 }
-                else if (b.getFluid() instanceof EmptyFluid && !e.getFluidTank().isEmpty()) {
+                else if (b.getFluid() instanceof EmptyFluid && !e.getFluidTank().isEmpty() && !(e.getItems().getStackInSlot(1).getItem() instanceof BucketItem)) {
                     FluidStack fluidStack = FluidUtil.getFluidHandler(heldItem).map(handler -> e.tank.drain(handler.getTankCapacity(0), IFluidHandler.FluidAction.EXECUTE)).orElse(FluidStack.EMPTY);
                     e.getItems().extractItem(0, 1, false);
                     if (fluidStack == FluidStack.EMPTY) e.getItems().insertItem(1, new ItemStack(Items.BUCKET), false);
@@ -144,6 +138,14 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
             else if (e.getItems().getStackInSlot(0) != ItemStack.EMPTY){
                 e.getItems().insertItem(1, e.getItems().getStackInSlot(0), false);
                 e.getItems().extractItem(0, 1, false);
+            }
+
+            if (!e.tank.isEmpty()) {
+                for (Direction d : Direction.values()){
+                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe && pe.getImporter().equals(pos)){
+                        pe.setSource(pos, level);
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package syconn.swe.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -16,6 +17,7 @@ import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,14 +26,13 @@ import syconn.swe.Main;
 import syconn.swe.block.FluidBaseBlock;
 import syconn.swe.block.FluidTransportBlock;
 import syconn.swe.client.gui.SpaceSuitOverlay;
-import syconn.swe.client.model.ChuteModel;
-import syconn.swe.client.model.FluidPipeModel;
-import syconn.swe.client.model.ParachuteModel;
-import syconn.swe.client.model.TankModel;
+import syconn.swe.client.model.*;
 import syconn.swe.client.renders.ber.PipeBER;
+import syconn.swe.client.renders.ber.TankBER;
 import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
 import syconn.swe.client.screen.RenderUtil;
 import syconn.swe.client.screen.TankScreen;
+import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModContainers;
 import syconn.swe.init.ModItems;
@@ -58,7 +59,7 @@ public class ClientHandler {
     }
 
     public static void coloredBlocks(RegisterColorHandlersEvent.Block e) {
-        e.register((state, tint, pos, layer) -> layer == 0 ? state.getValue(FluidBaseBlock.FLUID_TYPE).getColor() : -1, ModItems.FLUID_PIPE.get());
+        e.register((state, tint, pos, layer) -> layer == 0 ? IClientFluidTypeExtensions.of(Minecraft.getInstance().level.getBlockEntity(pos, ModBlockEntity.PIPE.get()).get().getFluidTank().getFluidInTank(0).getFluid().defaultFluidState()).getTintColor() : -1, ModItems.FLUID_PIPE.get());
     }
 
     public static void addLayers(EntityRenderersEvent.AddLayers e){
@@ -79,6 +80,7 @@ public class ClientHandler {
         event.registerLayerDefinition(ChuteModel.LAYER_LOCATION, ChuteModel::createBodyLayer);
         event.registerLayerDefinition(TankModel.LAYER_LOCATION, TankModel::createBodyLayer);
         event.registerLayerDefinition(FluidPipeModel.LAYER_LOCATION, FluidPipeModel::createBodyLayer);
+        event.registerLayerDefinition(FluidModel.LAYER_LOCATION, FluidModel::createBodyLayer);
     }
 
     public static void renderOverlay(RegisterGuiOverlaysEvent e){
@@ -93,5 +95,6 @@ public class ClientHandler {
 
     public static void entityRender(EntityRenderersEvent.RegisterRenderers e){
         e.registerBlockEntityRenderer(ModBlockEntity.PIPE.get(), PipeBER::new);
+        e.registerBlockEntityRenderer(ModBlockEntity.TANK.get(), TankBER::new);
     }
 }
