@@ -1,11 +1,11 @@
 package syconn.swe.init;
 
-import net.minecraft.world.flag.FeatureFlag;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.CreativeModeTabEvent;
-import net.minecraftforge.fluids.FluidUtil;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,7 +15,6 @@ import syconn.swe.item.Canister;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
 import syconn.swe.item.Wrench;
-import syconn.swe.util.CanisterStorageType;
 import syconn.swe.util.Dyeable;
 
 import javax.annotation.Nullable;
@@ -35,7 +34,7 @@ public class ModItems {
     public static final RegistryObject<SpaceArmor> SPACE_LEGGINGS = ITEMS.register("space_leggings", () -> new SpaceArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<Canister> CANISTER = ITEMS.register("canister", Canister::new);
-    public static final RegistryObject<Item> WRENCH = ITEMS.register("wrench", Wrench::new);
+    public static final RegistryObject<Wrench> WRENCH = ITEMS.register("wrench", Wrench::new);
 
     public static final RegistryObject<FluidPipe> FLUID_PIPE = register("fluid_pipe", FluidPipe::new);
     public static final RegistryObject<Block> FLUID_TANK = register("fluid_tank", FluidTank::new);
@@ -61,12 +60,12 @@ public class ModItems {
             Dyeable.setColor(s, c.getFireworkColor());
             e.accept(s);
         }
-        for (CanisterStorageType t : CanisterStorageType.values()){
-            e.accept(Canister.create(1296, 1296, t));
-        }
         for (RegistryObject<Item> i : ModItems.ITEMS.getEntries()){
             if (i.get() instanceof Parachute || i.get() instanceof Canister) continue;
             e.accept(i.get());
         }
+        e.accept(Canister.create(8000, 8000, Fluids.LAVA));
+        e.accept(Canister.create(8000, 8000, Fluids.WATER));
+        e.accept(Canister.create(0, 8000, Fluids.EMPTY));
     }
 }

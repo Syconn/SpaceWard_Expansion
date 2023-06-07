@@ -59,11 +59,15 @@ public class FluidPipeModel extends Model {
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {	}
 
-	public void render(BlockState state, PipeBlockEntity be, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderCase(BlockState state, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay) {
 		PipeModule mod = new PipeModule(state);
-		if (mod.isUp()) bot.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
+		if (mod.isUp()) bot.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
+		if (mod.isDown()) top.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
+	}
+
+	public void renderFluid(BlockState state, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		PipeModule mod = new PipeModule(state);
 		if (mod.isUp() && mod.hasFluid()) bot_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		if (mod.isDown()) top.render(poseStack, vertexConsumer, packedLight, packedOverlay, 1.0f, 1.0f, 1.0f, alpha);
 		if (mod.isDown() && mod.hasFluid()) top_fluid.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 

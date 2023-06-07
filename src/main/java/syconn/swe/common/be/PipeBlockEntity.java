@@ -18,33 +18,26 @@ import net.minecraftforge.fluids.capability.FluidHandlerBlockEntity;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import syconn.swe.block.FluidBaseBlock;
+import syconn.swe.block.FluidPipe;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.util.NbtHelper;
 import syconn.swe.util.PipeModule;
+import syconn.swe.util.ResourceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PipeBlockEntity extends FluidHandlerBlockEntity {
 
+    //EXPORTER AS LIST OF BLOCK POS
     private BlockPos importer = BlockPos.ZERO;
     private BlockPos exporter = BlockPos.ZERO;
     private BlockPos source = BlockPos.ZERO;
 
-    private static final int transferSpeed = 20;
+    private static final int transferSpeed = 80;
 
     public PipeBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntity.PIPE.get(), pos, state);
-        this.tank = new FluidTank(FluidType.BUCKET_VOLUME){
-            @Override
-            protected void onContentsChanged() {
-                update();
-            }
-        };
-    }
-
-    public FluidTank getFluidTank() {
-        return this.tank;
     }
 
     public BlockPos getImporter() {
@@ -109,9 +102,8 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity {
         }
 
         //TODO FIXES / CHANGES TO PERFECT
-        // - DISPLAYING LIQUID IN PIPES
-        // - PIPE MODEL BROKEN FOR T / F PART WITH FLUID
-        // - TANK FLUID RENDERING OUT OF BLOCK
+        // - UPWARDS / DOWNWWARD EXPORT/IMPORT
+        // - BETTER MULTI IMPORT/EXPORT SYSTEM
         // - PIPE UPGRADE - EXTRACTOR PRIORITIES - SPEED?
         if (!be.source.equals(BlockPos.ZERO) && !be.exporter.equals(BlockPos.ZERO)) {
             IFluidHandler export = l.getBlockEntity(be.exporter).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
@@ -141,7 +133,6 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tank.writeToNBT(tag);
         tag.put("importer", NbtUtils.writeBlockPos(importer));
         tag.put("exporter", NbtUtils.writeBlockPos(exporter));
         tag.put("source", NbtUtils.writeBlockPos(source));
@@ -150,7 +141,6 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity {
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = new CompoundTag();
-        tank.writeToNBT(tag);
         tag.put("importer", NbtUtils.writeBlockPos(importer));
         tag.put("exporter", NbtUtils.writeBlockPos(exporter));
         tag.put("source", NbtUtils.writeBlockPos(source));

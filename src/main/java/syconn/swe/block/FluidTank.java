@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.be.PipeBlockEntity;
 import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.init.ModBlockEntity;
+import syconn.swe.util.FluidHelper;
 
 public class FluidTank extends FluidBaseBlock {
 
@@ -36,8 +37,10 @@ public class FluidTank extends FluidBaseBlock {
         if (l.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            if(FluidUtil.interactWithFluidHandler(p, p_48710_, l, pos, p_48711_.getDirection()))
-            {
+            if(FluidUtil.interactWithFluidHandler(p, p_48710_, l, pos, p_48711_.getDirection())) {
+                return InteractionResult.SUCCESS;
+            }
+            else if (FluidHelper.interactWithFluidHandler(p.getItemInHand(p_48710_), l, pos)) {
                 return InteractionResult.SUCCESS;
             }
             BlockEntity blockentity = l.getBlockEntity(pos);

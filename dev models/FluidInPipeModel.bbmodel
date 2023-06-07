@@ -1,0 +1,285 @@
+{
+	"meta": {
+		"format_version": "4.5",
+		"model_format": "modded_entity",
+		"box_uv": true
+	},
+	"name": "FluidInPipeModel",
+	"model_identifier": "FluidInPipeModel",
+	"modded_entity_version": "1.17",
+	"modded_entity_flip_y": true,
+	"visible_box": [1, 1, 0],
+	"variable_placeholders": "",
+	"variable_placeholder_buttons": [],
+	"unhandled_root_fields": {},
+	"resolution": {
+		"width": 32,
+		"height": 32
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"box_uv": true,
+			"rescale": false,
+			"locked": false,
+			"from": [5.2, 5.1, 5.2],
+			"to": [16.3, 10.9, 10.9],
+			"autouv": 0,
+			"color": 0,
+			"origin": [0, 0, 0],
+			"uv_offset": [0, 0.75],
+			"faces": {
+				"north": {
+					"uv": [5.7, 6.45, 16.8, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 6.45, 5.7, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"south": {
+					"uv": [22.5, 6.45, 33.6, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"west": {
+					"uv": [16.8, 6.45, 22.5, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"up": {
+					"uv": [16.8, 6.45, 5.7, 0.75],
+					"tint": 0,
+					"texture": 0
+				},
+				"down": {
+					"uv": [27.9, 0.75, 16.8, 6.45],
+					"tint": 0,
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "c749d42f-74c2-4e1c-7974-b399a55ff952"
+		},
+		{
+			"name": "cube",
+			"box_uv": true,
+			"rescale": false,
+			"locked": false,
+			"from": [-0.2, 5.1, 5.2],
+			"to": [10.9, 10.9, 10.9],
+			"autouv": 0,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"uv_offset": [0, 0.75],
+			"faces": {
+				"north": {
+					"uv": [5.7, 6.45, 16.8, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"east": {
+					"uv": [0, 6.45, 5.7, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"south": {
+					"uv": [22.5, 6.45, 33.6, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"west": {
+					"uv": [16.8, 6.45, 22.5, 12.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"up": {
+					"uv": [16.8, 6.45, 5.7, 0.75],
+					"tint": 0,
+					"texture": 0
+				},
+				"down": {
+					"uv": [27.9, 0.75, 16.8, 6.45],
+					"tint": 0,
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "490b159e-7768-bbbc-f906-b1887654f31d"
+		},
+		{
+			"name": "cube",
+			"box_uv": true,
+			"rescale": false,
+			"locked": false,
+			"from": [5.2, 5.1, 5.2],
+			"to": [10.9, 10.9, 16.3],
+			"autouv": 0,
+			"color": 1,
+			"origin": [0, 0, 0],
+			"uv_offset": [-0.4, 0.35],
+			"faces": {
+				"north": {
+					"uv": [10.7, 11.45, 16.4, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"east": {
+					"uv": [-0.4, 11.45, 10.7, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"south": {
+					"uv": [27.5, 11.45, 33.2, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"west": {
+					"uv": [16.4, 11.45, 27.5, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"up": {
+					"uv": [16.4, 11.45, 10.7, 0.35],
+					"tint": 0,
+					"texture": 0
+				},
+				"down": {
+					"uv": [22.1, 0.35, 16.4, 11.45],
+					"tint": 0,
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "f26a3692-9217-256a-8999-437b5c23fff0"
+		},
+		{
+			"name": "cube",
+			"box_uv": true,
+			"rescale": false,
+			"locked": false,
+			"from": [5.2, 5.1, -0.2],
+			"to": [10.9, 10.9, 10.9],
+			"autouv": 0,
+			"color": 1,
+			"origin": [0, 0, 0],
+			"uv_offset": [-0.4, 0.35],
+			"faces": {
+				"north": {
+					"uv": [10.7, 11.45, 16.4, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"east": {
+					"uv": [-0.4, 11.45, 10.7, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"south": {
+					"uv": [27.5, 11.45, 33.2, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"west": {
+					"uv": [16.4, 11.45, 27.5, 17.25],
+					"tint": 0,
+					"texture": 0
+				},
+				"up": {
+					"uv": [16.4, 11.45, 10.7, 0.35],
+					"tint": 0,
+					"texture": 0
+				},
+				"down": {
+					"uv": [22.1, 0.35, 16.4, 11.45],
+					"tint": 0,
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "80d53936-7cf3-d00a-21d9-261bb559922b"
+		}
+	],
+	"outliner": [
+		{
+			"name": "east",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"uuid": "e1122a8b-d242-b855-beb3-79ae4b55a816",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": ["c749d42f-74c2-4e1c-7974-b399a55ff952"]
+		},
+		{
+			"name": "west",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"uuid": "1ab0529f-75c9-e2a3-c6a0-9389da33ea5f",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": ["490b159e-7768-bbbc-f906-b1887654f31d"]
+		},
+		{
+			"name": "north",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"uuid": "c4ac9d38-e38b-2ddd-c9f3-bea1f17daefa",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": ["80d53936-7cf3-d00a-21d9-261bb559922b"]
+		},
+		{
+			"name": "south",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"uuid": "0d820eab-b2f4-2ffd-3999-468171120517",
+			"export": true,
+			"mirror_uv": false,
+			"isOpen": true,
+			"locked": false,
+			"visibility": true,
+			"autouv": 0,
+			"children": ["f26a3692-9217-256a-8999-437b5c23fff0"]
+		}
+	],
+	"textures": [
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\pipe_liquid.png",
+			"name": "pipe_liquid.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "3",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "51f43ed7-b5bd-04c9-1eb9-b50996e40e9c",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/pipe_liquid.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAADxJREFUOE9j/P///38GMgAjIyMjSBuYAAFSDaKeAaTajO5bxlEDGCgPAzLSEIoWeEIi16BRA5ByI7mBCAAA2yP5st2U3QAAAABJRU5ErkJggg=="
+		}
+	]
+}

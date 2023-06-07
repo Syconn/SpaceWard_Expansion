@@ -62,6 +62,22 @@ public class PipeModule {
         return d;
     }
 
+    public boolean isNorth(){
+        return n;
+    }
+
+    public boolean isSouth(){
+        return s;
+    }
+
+    public boolean isWest(){
+        return w;
+    }
+
+    public boolean isEast(){
+        return e;
+    }
+
     public int getYRotation(){
         int sides = getPipeSides();
         switch (sides) {
@@ -135,7 +151,7 @@ public class PipeModule {
     }
 
     public String getModel(){
-        return getPipeModel() + (!has_fluid && getPipeSides() > 0 ? "_empty" : "");
+        return getPipeModel() + (getPipeSides() == 0 ? "" : "_empty");
     }
 
     private String getPipeModel(){

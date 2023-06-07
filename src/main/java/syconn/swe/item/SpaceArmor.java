@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModArmorTypes;
 import syconn.swe.util.Helper;
+import syconn.swe.util.SpaceSlot;
 
 public class SpaceArmor extends ArmorItem {
     public SpaceArmor(Type p_266831_, Properties p_40388_) {
@@ -20,10 +21,10 @@ public class SpaceArmor extends ArmorItem {
     }
 
     public static boolean hasParachute(Player p){
-        return p.getInventory() instanceof ExtendedPlayerInventory i && i.getItemBySlot(EquipmentItem.Slot.PARACHUTE).getItem() instanceof Parachute && hasFullKit(p);
+        return p.getInventory() instanceof ExtendedPlayerInventory i && i.getItemBySlot(SpaceSlot.PARACHUTE).getItem() instanceof Parachute && hasFullKit(p);
     }
 
-    public static @Nullable ItemStack getGear(EquipmentItem.Slot slot, Player p){
+    public static @Nullable ItemStack getGear(SpaceSlot slot, Player p){
         if (p.getInventory() instanceof ExtendedPlayerInventory i){
             return i.getItemBySlot(slot);
         } return null;

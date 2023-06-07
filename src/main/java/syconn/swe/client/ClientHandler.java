@@ -11,7 +11,9 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.Main;
 import syconn.swe.block.FluidBaseBlock;
+import syconn.swe.block.FluidPipe;
 import syconn.swe.block.FluidTransportBlock;
 import syconn.swe.client.gui.SpaceSuitOverlay;
 import syconn.swe.client.model.*;
@@ -32,12 +35,15 @@ import syconn.swe.client.renders.ber.TankBER;
 import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
 import syconn.swe.client.screen.RenderUtil;
 import syconn.swe.client.screen.TankScreen;
+import syconn.swe.common.be.PipeBlockEntity;
 import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModContainers;
 import syconn.swe.init.ModItems;
 import syconn.swe.item.Canister;
+import syconn.swe.util.ColorUtil;
 import syconn.swe.util.Dyeable;
+import syconn.swe.util.ResourceUtil;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = Main.MODID, value = Dist.CLIENT)
 public class ClientHandler {
@@ -55,12 +61,10 @@ public class ClientHandler {
 
     public static void coloredItems(RegisterColorHandlersEvent.Item e) {
         e.register((s, layer) -> layer == 0 ? Dyeable.getColor(s) : -1, ModItems.PARACHUTE.get());
-        e.register((s, layer) -> layer == 1 ? Canister.getType(s).getColor() : -1, ModItems.CANISTER.get());
+        e.register((s, layer) -> layer == 1 ? ColorUtil.getClosetColor(s.getBarColor()).getMaterialColor().col : -1, ModItems.CANISTER.get());
     }
 
-    public static void coloredBlocks(RegisterColorHandlersEvent.Block e) {
-        e.register((state, tint, pos, layer) -> layer == 0 ? IClientFluidTypeExtensions.of(Minecraft.getInstance().level.getBlockEntity(pos, ModBlockEntity.PIPE.get()).get().getFluidTank().getFluidInTank(0).getFluid().defaultFluidState()).getTintColor() : -1, ModItems.FLUID_PIPE.get());
-    }
+    public static void coloredBlocks(RegisterColorHandlersEvent.Block e) {}
 
     public static void addLayers(EntityRenderersEvent.AddLayers e){
         addBackpackLayer(e.getSkin("default"), e.getEntityModels());
@@ -81,6 +85,7 @@ public class ClientHandler {
         event.registerLayerDefinition(TankModel.LAYER_LOCATION, TankModel::createBodyLayer);
         event.registerLayerDefinition(FluidPipeModel.LAYER_LOCATION, FluidPipeModel::createBodyLayer);
         event.registerLayerDefinition(FluidModel.LAYER_LOCATION, FluidModel::createBodyLayer);
+        event.registerLayerDefinition(FluidInPipeModel.LAYER_LOCATION, FluidInPipeModel::createBodyLayer);
     }
 
     public static void renderOverlay(RegisterGuiOverlaysEvent e){

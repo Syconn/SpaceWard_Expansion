@@ -8,17 +8,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import syconn.swe.Main;
-import syconn.swe.item.EquipmentItem;
+import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.item.SpaceArmor;
+import syconn.swe.util.SpaceSlot;
 
 import javax.annotation.Nullable;
 
 public class EquipmentItemSlot extends SlotItemHandler {
 
     private final Player player;
-    private final EquipmentItem.Slot slot;
+    private final SpaceSlot slot;
 
-    public EquipmentItemSlot(Player p, EquipmentItem.Slot s, IItemHandler inventoryIn, int index, int xPosition, int yPosition)
+    public EquipmentItemSlot(Player p, SpaceSlot s, IItemHandler inventoryIn, int index, int xPosition, int yPosition)
     {
         super(inventoryIn, index, xPosition, yPosition);
         player = p;
@@ -40,6 +41,6 @@ public class EquipmentItemSlot extends SlotItemHandler {
     @Override
     public boolean mayPlace(ItemStack stack)
     {
-        return EquipmentItem.is(stack) && isActive() && ((EquipmentItem) stack.getItem()).getSlot() == slot;
+        return stack.getItem() instanceof EquipmentItem && isActive() && ((EquipmentItem) stack.getItem()).getSlot() == slot;
     }
 }

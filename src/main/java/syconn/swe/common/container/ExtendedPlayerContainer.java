@@ -9,7 +9,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import syconn.swe.common.container.slot.EquipmentItemSlot;
 import syconn.swe.init.ModCapabilities;
-import syconn.swe.item.EquipmentItem;
+import syconn.swe.item.extras.EquipmentItem;
+import syconn.swe.util.SpaceSlot;
 
 public class ExtendedPlayerContainer extends InventoryMenu {
 
@@ -17,8 +18,8 @@ public class ExtendedPlayerContainer extends InventoryMenu {
     {
         super(playerInventory, localWorld, playerIn);
         playerIn.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(suit -> {
-            this.addSlot(new EquipmentItemSlot(playerIn, EquipmentItem.Slot.TANK, suit, 0, 77, 44));
-            this.addSlot(new EquipmentItemSlot(playerIn, EquipmentItem.Slot.PARACHUTE, suit, 1, 77, 26));
+            this.addSlot(new EquipmentItemSlot(playerIn, SpaceSlot.TANK, suit, 0, 77, 44));
+            this.addSlot(new EquipmentItemSlot(playerIn, SpaceSlot.PARACHUTE, suit, 1, 77, 26));
         });
     }
 

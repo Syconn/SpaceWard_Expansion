@@ -8,7 +8,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import syconn.swe.capabilities.ISpaceSuit;
 import syconn.swe.init.ModCapabilities;
-import syconn.swe.item.EquipmentItem;
+import syconn.swe.item.extras.EquipmentItem;
+import syconn.swe.util.SpaceSlot;
 
 import java.util.Iterator;
 import java.util.List;
@@ -32,8 +33,8 @@ public class ExtendedPlayerInventory extends Inventory {
         return suit.getInv();
     }
 
-    public ItemStack getItemBySlot(EquipmentItem.Slot s){
-        if (s == EquipmentItem.Slot.TANK)
+    public ItemStack getItemBySlot(SpaceSlot s){
+        if (s == SpaceSlot.TANK)
             return space_utilities.get(0);
         else return space_utilities.get(1);
     }

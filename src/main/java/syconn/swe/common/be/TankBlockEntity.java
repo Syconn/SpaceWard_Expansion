@@ -31,8 +31,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.container.TankMenu;
 import syconn.swe.init.ModBlockEntity;
+import syconn.swe.item.Canister;
+import syconn.swe.item.extras.ItemFluidHandler;
+import syconn.swe.util.FluidHelper;
 
 public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProvider {
+
+    private int fillSpeed = 500;
 
     private final ItemStackHandler items = new ItemStackHandler(getContainerSize()) {
         @Override
@@ -98,7 +103,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     }
 
     private int getContainerSize(){
-        return 2;
+        return 3;
     }
 
     @Override
@@ -135,11 +140,14 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
                     else e.getItems().insertItem(1, FluidUtil.getFilledBucket(fluidStack), false);
                 }
             }
-            else if (e.getItems().getStackInSlot(0) != ItemStack.EMPTY){
-                e.getItems().insertItem(1, e.getItems().getStackInSlot(0), false);
+            else if (heldItem.getItem() instanceof ItemFluidHandler && e.getItems().getStackInSlot(1) == ItemStack.EMPTY) {
                 e.getItems().extractItem(0, 1, false);
+                e.getItems().insertItem(1, FluidHelper.fillTankReturnStack(heldItem, e.tank), false);
             }
-
+            ItemStack item = e.getItems().getStackInSlot(2);
+            if (item.getItem() instanceof ItemFluidHandler) {
+                FluidHelper.fillHandlerUpdateStack(item, e.tank, e.fillSpeed);
+            }
             if (!e.tank.isEmpty()) {
                 for (Direction d : Direction.values()){
                     if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe && pe.getImporter().equals(pos)){

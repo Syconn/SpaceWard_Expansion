@@ -7,17 +7,20 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Equipable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
+import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.util.Dyeable;
+import syconn.swe.util.SpaceSlot;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
-public class Parachute extends EquipmentItem implements Equipable, Dyeable {
+public class Parachute extends Item implements Equipable, Dyeable, EquipmentItem {
 
     public Parachute() {
         super(new Properties().stacksTo(1));
@@ -43,7 +46,12 @@ public class Parachute extends EquipmentItem implements Equipable, Dyeable {
     }
 
     @Override
-    public Slot getSlot() {
-        return Slot.PARACHUTE;
+    public SpaceSlot getSlot() {
+        return SpaceSlot.PARACHUTE;
+    }
+
+    @Override
+    public void onEquipmentTick(ItemStack stack, Level level, Player player) {
+
     }
 }

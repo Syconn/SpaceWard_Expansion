@@ -7,12 +7,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import syconn.swe.common.data.DimSettingsManager;
-import syconn.swe.common.data.types.DimensionSettings;
 import syconn.swe.init.ModCapabilities;
 import syconn.swe.item.Canister;
-import syconn.swe.item.EquipmentItem;
 import syconn.swe.item.SpaceArmor;
-import syconn.swe.util.CanisterStorageType;
+import syconn.swe.util.SpaceSlot;
 
 import static net.minecraft.client.gui.GuiComponent.blit;
 
@@ -40,8 +38,10 @@ public class SpaceSuitOverlay {
     };
 
     public static boolean displayOxygen(Player p){
-        ItemStack stack = SpaceArmor.getGear(EquipmentItem.Slot.TANK, p);
-        if (stack != null && Canister.getType(stack) == CanisterStorageType.O2 && Canister.getValue(stack) > 0) return false;
+        ItemStack stack = SpaceArmor.getGear(SpaceSlot.TANK, p);
+        // TODO FIX THIS LATER
+//        Canister canister = ((Canister) stack.getItem());
+//        if (stack != null && Canister.getType(stack) == CanisterStorageType.O2 && Canister.getValue(stack) > 0) return false;
         return !DimSettingsManager.getSettings(p).breathable();
     }
 }

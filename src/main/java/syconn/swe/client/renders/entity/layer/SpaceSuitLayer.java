@@ -14,9 +14,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Quaternionf;
+import net.minecraft.world.level.material.Fluids;
 import syconn.swe.Main;
 import syconn.swe.capabilities.ISpaceSuit;
 import syconn.swe.client.model.ChuteModel;
@@ -24,12 +23,11 @@ import syconn.swe.client.model.ParachuteModel;
 import syconn.swe.client.model.TankModel;
 import syconn.swe.init.ModCapabilities;
 import syconn.swe.item.Canister;
-import syconn.swe.item.EquipmentItem;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
-import syconn.swe.util.CanisterStorageType;
 import syconn.swe.util.Dyeable;
 import syconn.swe.util.Helper;
+import syconn.swe.util.SpaceSlot;
 
 public class SpaceSuitLayer<P extends Player, M extends PlayerModel<P>> extends RenderLayer<P, M> {
 
@@ -47,7 +45,7 @@ public class SpaceSuitLayer<P extends Player, M extends PlayerModel<P>> extends 
     @Override
     public void render(PoseStack ps, MultiBufferSource bs, int packedLight, P p, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_) {
         ItemStack itemstack;
-        if (SpaceArmor.hasParachute(p)) itemstack = Helper.inventory(p).getItemBySlot(EquipmentItem.Slot.PARACHUTE);
+        if (SpaceArmor.hasParachute(p)) itemstack = Helper.inventory(p).getItemBySlot(SpaceSlot.PARACHUTE);
         else itemstack = p.getItemBySlot(EquipmentSlot.CHEST);
 
         if (itemstack.getItem() instanceof Parachute) {
@@ -74,9 +72,9 @@ public class SpaceSuitLayer<P extends Player, M extends PlayerModel<P>> extends 
             }
         }
 
-        itemstack = SpaceArmor.getGear(EquipmentItem.Slot.TANK, p);
-        if (itemstack != null && itemstack.getItem() instanceof Canister) {
-            int i = Canister.getType(itemstack).getColor();
+        itemstack = SpaceArmor.getGear(SpaceSlot.TANK, p);
+        if (itemstack != null && itemstack.getItem() instanceof Canister canister) {
+            int i = canister.getColor(itemstack);
             float f = (float) (i >> 16 & 255) / 255.0F;
             float f1 = (float) (i >> 8 & 255) / 255.0F;
             float f2 = (float) (i & 255) / 255.0F;
@@ -84,7 +82,7 @@ public class SpaceSuitLayer<P extends Player, M extends PlayerModel<P>> extends 
             ps.translate(0F, -0.80F, 0.3F);
             ps.mulPose(Axis.YP.rotationDegrees(180F));
             VertexConsumer v2 = ItemRenderer.getArmorFoilBuffer(bs, RenderType.armorCutoutNoCull(new ResourceLocation(Main.MODID, "textures/entity/layers/tank.png")), false, false);
-            tm.renderToBuffer(ps, v2, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, Canister.getType(itemstack) == CanisterStorageType.EMPTY ? 255F : 230.0F);
+            tm.renderToBuffer(ps, v2, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, Canister.getType(itemstack) == Fluids.EMPTY ? 255F : 230.0F);
             ps.popPose();
         }
     }

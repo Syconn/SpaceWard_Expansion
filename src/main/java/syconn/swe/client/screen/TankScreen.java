@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.EnchantmentScreen;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -33,13 +34,19 @@ public class TankScreen extends AbstractContainerScreen<TankMenu> {
     }
 
     @Override
+    public void render(PoseStack p_97795_, int p_97796_, int p_97797_, float p_97798_) {
+        super.render(p_97795_, p_97796_, p_97797_, p_97798_);
+        this.renderTooltip(p_97795_, p_97796_, p_97797_);
+    }
+
+    @Override
     protected void renderBg(PoseStack pose, float p_97788_, int p_97789_, int p_97790_) {
         RenderSystem.setShaderTexture(0, BG);
         blit(pose, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         FluidState state = menu.getBE().getFluidTank().getFluidInTank(0).getFluid().defaultFluidState();
         if (IClientFluidTypeExtensions.of(state).getStillTexture() != null) {
-            RenderSystem.setShaderTexture(0, ResourceUtil.getFluidTexture(state));
+            RenderSystem.setShaderTexture(0, ResourceUtil.createFluidGuiTexture(state));
             int i = IClientFluidTypeExtensions.of(state).getTintColor();
             int y = (int) ((double) (menu.getBE().getFluidTank().getFluidAmount()) / menu.getBE().getFluidTank().getCapacity() * 70);
             RenderSystem.setShaderColor((float)(i >> 16 & 255) / 255.0F, (float)(i >> 8 & 255) / 255.0F, (float)(i & 255) / 255.0F, 255.0F);
