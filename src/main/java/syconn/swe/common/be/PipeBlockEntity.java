@@ -63,17 +63,22 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity {
     }
 
     public void setImporter(BlockPos importer) {
-        if (this.importer.equals(importer)) updateImporter();
-        else if (level.getBlockEntity(importer).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent() && !(level.getBlockEntity(importer) instanceof PipeBlockEntity)) this.importer = importer;
-        if (this.exporter.equals(importer)) exporter = BlockPos.ZERO;
-        update();
+        if (level.getBlockEntity(importer) != null) {
+            if (this.importer.equals(importer)) updateImporter();
+            else if (level.getBlockEntity(importer).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent() && !(level.getBlockEntity(importer) instanceof PipeBlockEntity))
+                this.importer = importer;
+            if (this.exporter.equals(importer)) exporter = BlockPos.ZERO;
+            update();
+        }
     }
 
     public void setExporter(BlockPos exporter) {
-        if (this.exporter.equals(exporter) || this.importer.equals(exporter)) this.exporter = BlockPos.ZERO;
-        else if (level.getBlockEntity(exporter).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent() && !(level.getBlockEntity(exporter) instanceof PipeBlockEntity)) this.exporter = exporter;
-        if (this.importer.equals(exporter)) updateImporter();
-        update();
+        if (level.getBlockEntity(exporter) != null) {
+            if (this.exporter.equals(exporter) || this.importer.equals(exporter)) this.exporter = BlockPos.ZERO;
+            else if (level.getBlockEntity(exporter).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent() && !(level.getBlockEntity(exporter) instanceof PipeBlockEntity)) this.exporter = exporter;
+            if (this.importer.equals(exporter)) updateImporter();
+            update();
+        }
     }
 
     private void updateImporter(){
@@ -90,6 +95,9 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity {
         }
     }
 
+    // TODO FIXES / CHANGES TO PERFECT
+    // - BETTER MULTI IMPORT/EXPORT SYSTEM
+    // - PIPE UPGRADE - EXTRACTOR PRIORITIES - SPEED - SETTINGS MENU?
     public static void serverTick(Level l, BlockPos pos, BlockState state, PipeBlockEntity be){
         if (!isValidSource(l, be)) {
             if (!be.tank.isEmpty()) be.tank.drain(be.tank.getFluidAmount(), IFluidHandler.FluidAction.EXECUTE);
@@ -100,12 +108,13 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity {
             state = state.setValue(FluidBaseBlock.FLUID_TYPE, true);
             l.setBlock(pos, state, 3);
         }
-
-        //TODO FIXES / CHANGES TO PERFECT
-        // - UPWARDS / DOWNWWARD EXPORT/IMPORT
-        // - BETTER MULTI IMPORT/EXPORT SYSTEM
-        // - PIPE UPGRADE - EXTRACTOR PRIORITIES - SPEED?
-        if (!be.source.equals(BlockPos.ZERO) && !be.exporter.equals(BlockPos.ZERO)) {
+        if (l.getBlockEntity(be.importer) == null || !l.getBlockEntity(be.importer).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent() && be.importer != BlockPos.ZERO){
+            be.importer = BlockPos.ZERO;
+        }
+        if (l.getBlockEntity(be.exporter) == null || !l.getBlockEntity(be.exporter).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent() && be.exporter != BlockPos.ZERO){
+            be.exporter = BlockPos.ZERO;
+        }
+        if (!be.source.equals(BlockPos.ZERO) && !be.exporter.equals(BlockPos.ZERO) && l.getBlockEntity(be.exporter) != null && l.getBlockEntity(be.source) != null) {
             IFluidHandler export = l.getBlockEntity(be.exporter).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
             IFluidHandler source = l.getBlockEntity(be.source).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
 

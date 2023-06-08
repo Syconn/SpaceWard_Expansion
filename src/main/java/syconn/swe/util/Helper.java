@@ -11,12 +11,25 @@ public class Helper {
         return ((ExtendedPlayerInventory) p.getInventory());
     }
 
-    public static int rotationFromDir(Direction d){
+    public static int exportFromDirection(Direction d){
         return switch (d){
             case DOWN, EAST, UP -> 0;
             case NORTH -> 90;
             case SOUTH -> 270;
             case WEST -> 180;
+        };
+    }
+
+    public static double[] exportPosFromDir(Direction d, boolean i){
+        if (i) return switch (d){
+                default -> new double[]{0, 0, 0};
+                case UP -> new double[]{1.5, 1.7, 0};
+                case DOWN -> new double[]{-0.5, -0.7, 0};
+            };
+        return switch (d){
+            default -> new double[]{0, 0, 0};
+            case UP -> new double[]{1.5, 1, 0};
+            case DOWN -> new double[]{-0.5, 0, 0};
         };
     }
 

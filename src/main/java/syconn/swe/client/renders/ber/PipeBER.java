@@ -18,6 +18,7 @@ import syconn.swe.Main;
 import syconn.swe.client.model.FluidInPipeModel;
 import syconn.swe.client.model.FluidPipeModel;
 import syconn.swe.common.be.PipeBlockEntity;
+import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.util.Helper;
 import syconn.swe.util.PipeModule;
@@ -37,41 +38,50 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
     public void render(PipeBlockEntity be, float p_112308_, PoseStack ps, MultiBufferSource bs, int packedLight, int p_112312_) {
         PipeModule mod = new PipeModule(be.getBlockState());
         if (mod.isDown() || mod.isUp()) {
-            int i = -1;
-            if (!be.getSource().equals(BlockPos.ZERO)) i = ResourceUtil.getColorCorrected(Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).get().getFluidTank().getFluid().getFluid());
-            float f = (float)(i >> 16 & 255) / 255.0F;
-            float f1 = (float)(i >> 8 & 255) / 255.0F;
-            float f2 = (float)(i & 255) / 255.0F;
             ps.pushPose();
             ps.translate(1, -0.5f, 0);
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
             this.pm.renderCase(be.getBlockState(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
-            ps.scale(1, 1.1f, 1);
-            this.pm.renderFluid(be.getBlockState(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
+            ps.scale(1, 1.01f, 1);
+            if (Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).isPresent()) {
+                TankBlockEntity te = Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).get();
+                int i = IClientFluidTypeExtensions.of(te.getFluidTank().getFluid().getFluid()).getTintColor();
+                float f = (float)(i >> 16 & 255) / 255.0F;
+                float f1 = (float)(i >> 8 & 255) / 255.0F;
+                float f2 = (float)(i & 255) / 255.0F;
+                vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(te.getGuiTexture()));
+                this.pm.renderFluid(be.getBlockState(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
+            }
             ps.popPose();
         }
 
         if (mod.hasFluid() && Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).isPresent()){
-            int i = -1;
-            if (!be.getSource().equals(BlockPos.ZERO)) i = ResourceUtil.getColorCorrected(Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).get().getFluidTank().getFluid().getFluid());
+            TankBlockEntity te = Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).get();
+            int i = IClientFluidTypeExtensions.of(te.getFluidTank().getFluid().getFluid()).getTintColor();
             float f = (float)(i >> 16 & 255) / 255.0F;
             float f1 = (float)(i >> 8 & 255) / 255.0F;
             float f2 = (float)(i & 255) / 255.0F;
             ps.pushPose();
             ps.translate(1, -0.5f, 0);
-            VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/block/pipe_liquid.png")));
+            VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(te.getGuiTexture()));
             this.fm.renderFromModule(new PipeModule(be.getBlockState()), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
             ps.popPose();
         }
 
         if (!be.getImporter().equals(BlockPos.ZERO)) {
             Direction d = Helper.dirToBlockPos(be.getBlockPos(), be.getImporter());
+            double[] pos = Helper.exportPosFromDir(d, false);
+            float rot = 0F;
+            if (d == Direction.DOWN) rot = 270f;
+            if (d == Direction.UP) rot = 90f;
             ps.pushPose();
             if (d == Direction.EAST) ps.translate(1, -0.5f, 0);
             if (d == Direction.WEST) ps.translate(0, -0.5f, 1);
             if (d == Direction.SOUTH) ps.translate(1, -0.5f, 1);
             if (d == Direction.NORTH) ps.translate(0, -0.5f, 0);
-            ps.mulPose(Axis.YP.rotationDegrees(Helper.rotationFromDir(d)));
+            ps.translate(pos[0], pos[1], pos[2]);
+            ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(d)));
+            ps.mulPose(Axis.ZP.rotationDegrees(rot));
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
             this.pm.renderImport(ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
             ps.popPose();
@@ -79,12 +89,18 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
 
         if (!be.getExporter().equals(BlockPos.ZERO)) {
             Direction d = Helper.dirToBlockPos(be.getBlockPos(), be.getExporter());
+            double[] pos = Helper.exportPosFromDir(d, true);
+            float rot = 0F;
+            if (d == Direction.DOWN) rot = 270f;
+            if (d == Direction.UP) rot = 90f;
             ps.pushPose();
             if (d == Direction.EAST) ps.translate(1.7, -0.5f, 0);
             if (d == Direction.WEST) ps.translate(-0.7, -0.5f, 1);
             if (d == Direction.SOUTH) ps.translate(1, -0.5f, 1.7);
             if (d == Direction.NORTH) ps.translate(0, -0.5f, -.7);
-            ps.mulPose(Axis.YP.rotationDegrees(Helper.rotationFromDir(d)));
+            ps.translate(pos[0], pos[1], pos[2]);
+            ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(d)));
+            ps.mulPose(Axis.ZP.rotationDegrees(rot));
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
             this.pm.renderExport(ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
             ps.popPose();

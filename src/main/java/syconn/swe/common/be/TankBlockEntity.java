@@ -1,5 +1,8 @@
 package syconn.swe.common.be;
 
+import com.mojang.blaze3d.platform.NativeImage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -7,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -30,20 +34,23 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.container.TankMenu;
+import syconn.swe.common.data.PixelImage;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.item.Canister;
 import syconn.swe.item.extras.ItemFluidHandler;
 import syconn.swe.util.FluidHelper;
+import syconn.swe.util.ResourceUtil;
 
 public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProvider {
 
     private int fillSpeed = 500;
+    private PixelImage bfluid;
+    private PixelImage gfluid;
 
     private final ItemStackHandler items = new ItemStackHandler(getContainerSize()) {
         @Override
         protected void onContentsChanged(int slot) {
-            setChanged();
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+            update();
         }
     };
     private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> items);
@@ -53,10 +60,21 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         this.tank = new FluidTank(16000){
             @Override
             protected void onContentsChanged() {
-                setChanged();
-                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+                update();
+            }
+
+            @Override
+            public int fill(FluidStack resource, FluidAction action) {
+                if (fluid.isEmpty()) updateTextures(resource);
+                return super.fill(resource, action);
             }
         };
+    }
+
+    private void updateTextures(FluidStack resource) {
+        bfluid = new PixelImage(ResourceUtil.createFluidBlockTexture(resource.getFluid()));
+        gfluid = new PixelImage(ResourceUtil.createFluidGuiTexture(resource.getFluid()));
+        update();
     }
 
     public FluidTank getFluidTank()
@@ -68,12 +86,20 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         return items;
     }
 
+    public ResourceLocation getFluidTexture() {
+        return Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
+    }
+
+    public ResourceLocation getGuiTexture() {
+        return Minecraft.getInstance().getTextureManager().register("bfluid", gfluid.getImageFromPixels());
+    }
+
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("Inventory")) {
-            items.deserializeNBT(tag.getCompound("Inventory"));
-        }
+        if (tag.contains("Inventory")) items.deserializeNBT(tag.getCompound("Inventory"));
+        if (tag.contains("bfluid")) bfluid = PixelImage.read(tag.getCompound("bfluid"));
+        if (tag.contains("gfluid")) gfluid = PixelImage.read(tag.getCompound("gfluid"));
     }
 
     @Override
@@ -81,6 +107,8 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         super.saveAdditional(tag);
         tank.writeToNBT(tag);
         tag.put("Inventory", items.serializeNBT());
+        if (bfluid != null) tag.put("bfluid", bfluid.write());
+        if (gfluid != null) tag.put("gfluid", gfluid.write());
     }
 
     @Override
@@ -88,6 +116,8 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         CompoundTag tag = new CompoundTag();
         tank.writeToNBT(tag);
         tag.put("items", items.serializeNBT());
+        if (bfluid != null) tag.put("bfluid", bfluid.write());
+        if (gfluid != null) tag.put("gfluid", gfluid.write());
         return tag;
     }
 
@@ -156,5 +186,10 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
                 }
             }
         }
+    }
+
+    private void update(){
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
     }
 }

@@ -73,9 +73,16 @@ public class FluidPipe extends FluidTransportBlock {
         if (!l.isClientSide && p.getItemInHand(hand).getItem() == ModItems.WRENCH.get()) {
             PipeBlockEntity be = l.getBlockEntity(pos, ModBlockEntity.PIPE.get()).get();
             double x = result.getLocation().x - pos.getX();
+            double y = result.getLocation().y - pos.getY();
             double z = result.getLocation().z - pos.getZ();
 
-            if (z < 0.65 && z > 0.3){
+            if (y > 0.7) {
+                if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.UP)));
+                else be.setExporter(new BlockPos(pos.relative(Direction.UP)));
+            } else if (y < 0.3) {
+                if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.DOWN)));
+                else be.setExporter(new BlockPos(pos.relative(Direction.DOWN)));
+            } else if (z < 0.69 && z > 0.3){
                 if (x > 0.65) {
                     if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.EAST)));
                     else be.setExporter(new BlockPos(pos.relative(Direction.EAST)));
@@ -83,8 +90,7 @@ public class FluidPipe extends FluidTransportBlock {
                     if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.WEST)));
                     else be.setExporter(new BlockPos(pos.relative(Direction.WEST)));
                 }
-            }
-            if (x < 0.65 && x > 0.3) {
+            } else if (x < 0.69 && x > 0.3) {
                 if (z > 0.65) {
                     if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.SOUTH)));
                     else be.setExporter(new BlockPos(pos.relative(Direction.SOUTH)));
