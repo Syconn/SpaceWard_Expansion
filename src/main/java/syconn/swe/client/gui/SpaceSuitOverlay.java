@@ -8,9 +8,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.init.ModCapabilities;
-import syconn.swe.item.Canister;
 import syconn.swe.item.SpaceArmor;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 import static net.minecraft.client.gui.GuiComponent.blit;
 

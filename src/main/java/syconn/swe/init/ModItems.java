@@ -11,10 +11,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import syconn.swe.block.FluidPipe;
 import syconn.swe.block.FluidTank;
-import syconn.swe.item.Canister;
-import syconn.swe.item.Parachute;
-import syconn.swe.item.SpaceArmor;
-import syconn.swe.item.Wrench;
+import syconn.swe.item.*;
 import syconn.swe.util.Dyeable;
 
 import javax.annotation.Nullable;
@@ -35,6 +32,11 @@ public class ModItems {
     public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<Canister> CANISTER = ITEMS.register("canister", Canister::new);
     public static final RegistryObject<Wrench> WRENCH = ITEMS.register("wrench", Wrench::new);
+    public static final RegistryObject<UpgradeItem> DIAMOND_UPGRADE = ITEMS.register("diamond_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<UpgradeItem> IRON_UPGRADE = ITEMS.register("iron_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<UpgradeItem> GOLD_UPGRADE = ITEMS.register("gold_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<UpgradeItem> EMERALD_UPGRADE = ITEMS.register("emerald_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<UpgradeItem> NETHERITE_UPGRADE = ITEMS.register("netherite_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1).fireResistant()));
 
     public static final RegistryObject<FluidPipe> FLUID_PIPE = register("fluid_pipe", FluidPipe::new);
     public static final RegistryObject<Block> FLUID_TANK = register("fluid_tank", FluidTank::new);

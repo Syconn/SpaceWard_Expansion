@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,8 +20,8 @@ import syconn.swe.common.be.PipeBlockEntity;
 import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.util.Helper;
-import syconn.swe.util.PipeModule;
-import syconn.swe.util.ResourceUtil;
+import syconn.swe.util.data.FluidPointSystem;
+import syconn.swe.util.data.PipeModule;
 
 public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
 
@@ -68,38 +67,36 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.popPose();
         }
 
-        if (!be.getImporter().equals(BlockPos.ZERO)) {
-            Direction d = Helper.dirToBlockPos(be.getBlockPos(), be.getImporter());
-            double[] pos = Helper.exportPosFromDir(d, false);
+        for (FluidPointSystem.FluidPoint point : be.getSystem().getImports()) {
+            double[] pos = Helper.exportPosFromDir(point.d(), false);
             float rot = 0F;
-            if (d == Direction.DOWN) rot = 270f;
-            if (d == Direction.UP) rot = 90f;
+            if (point.d() == Direction.DOWN) rot = 270f;
+            if (point.d() == Direction.UP) rot = 90f;
             ps.pushPose();
-            if (d == Direction.EAST) ps.translate(1, -0.5f, 0);
-            if (d == Direction.WEST) ps.translate(0, -0.5f, 1);
-            if (d == Direction.SOUTH) ps.translate(1, -0.5f, 1);
-            if (d == Direction.NORTH) ps.translate(0, -0.5f, 0);
+            if (point.d() == Direction.EAST) ps.translate(1, -0.5f, 0);
+            if (point.d() == Direction.WEST) ps.translate(0, -0.5f, 1);
+            if (point.d() == Direction.SOUTH) ps.translate(1, -0.5f, 1);
+            if (point.d() == Direction.NORTH) ps.translate(0, -0.5f, 0);
             ps.translate(pos[0], pos[1], pos[2]);
-            ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(d)));
+            ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(point.d())));
             ps.mulPose(Axis.ZP.rotationDegrees(rot));
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
             this.pm.renderImport(ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
             ps.popPose();
         }
 
-        if (!be.getExporter().equals(BlockPos.ZERO)) {
-            Direction d = Helper.dirToBlockPos(be.getBlockPos(), be.getExporter());
-            double[] pos = Helper.exportPosFromDir(d, true);
+        for (FluidPointSystem.FluidPoint point : be.getSystem().getExports()) {
+            double[] pos = Helper.exportPosFromDir(point.d(), true);
             float rot = 0F;
-            if (d == Direction.DOWN) rot = 270f;
-            if (d == Direction.UP) rot = 90f;
+            if (point.d() == Direction.DOWN) rot = 270f;
+            if (point.d() == Direction.UP) rot = 90f;
             ps.pushPose();
-            if (d == Direction.EAST) ps.translate(1.7, -0.5f, 0);
-            if (d == Direction.WEST) ps.translate(-0.7, -0.5f, 1);
-            if (d == Direction.SOUTH) ps.translate(1, -0.5f, 1.7);
-            if (d == Direction.NORTH) ps.translate(0, -0.5f, -.7);
+            if (point.d() == Direction.EAST) ps.translate(1.7, -0.5f, 0);
+            if (point.d() == Direction.WEST) ps.translate(-0.7, -0.5f, 1);
+            if (point.d() == Direction.SOUTH) ps.translate(1, -0.5f, 1.7);
+            if (point.d() == Direction.NORTH) ps.translate(0, -0.5f, -.7);
             ps.translate(pos[0], pos[1], pos[2]);
-            ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(d)));
+            ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(point.d())));
             ps.mulPose(Axis.ZP.rotationDegrees(rot));
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
             this.pm.renderExport(ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);

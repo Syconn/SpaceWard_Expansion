@@ -6,7 +6,7 @@ import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import syconn.swe.Main;
 import syconn.swe.init.ModItems;
-import syconn.swe.util.PipeModule;
+import syconn.swe.util.data.PipeModule;
 
 public class BlockModelGen extends BlockStateProvider {
 

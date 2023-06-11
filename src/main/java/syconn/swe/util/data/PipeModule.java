@@ -1,4 +1,4 @@
-package syconn.swe.util;
+package syconn.swe.util.data;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -163,12 +163,9 @@ public class PipeModule {
         return sides == 4 ? "fluid_pipe_qarm" : sides == 3 ? "fluid_pipe_tarm" : sides == 1 ? "fluid_pipe_sarm" : "fluid_pipe";
     }
 
-    public static void updateBE(LevelAccessor l, PipeBlockEntity be){
-        if (l.getBlockEntity(be.getImporter()) == null) {
-            be.setImporter(be.getImporter());
-        }
-        if (l.getBlockEntity(be.getExporter()) == null) {
-            be.setExporter(be.getExporter());
-        }
+    public static void updateBE(LevelAccessor l, PipeBlockEntity be) {
+        be.updateStates();
+        be.getSystem().handleBlockUpdate(l);
+        be.update();
     }
 }

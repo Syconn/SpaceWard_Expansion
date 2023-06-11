@@ -33,6 +33,7 @@ import syconn.swe.client.model.*;
 import syconn.swe.client.renders.ber.PipeBER;
 import syconn.swe.client.renders.ber.TankBER;
 import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
+import syconn.swe.client.screen.PipeScreen;
 import syconn.swe.client.screen.RenderUtil;
 import syconn.swe.client.screen.TankScreen;
 import syconn.swe.common.be.PipeBlockEntity;
@@ -51,6 +52,7 @@ public class ClientHandler {
     public ClientHandler() {
         registerProperties();
         MenuScreens.register(ModContainers.TANK_MENU.get(), TankScreen::new);
+        MenuScreens.register(ModContainers.PIPE_MENU.get(), PipeScreen::new);
     }
 
     public static void registerProperties(){

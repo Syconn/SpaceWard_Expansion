@@ -3,8 +3,10 @@ package syconn.swe.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,16 +20,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.be.PipeBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModItems;
-import syconn.swe.util.PipeModule;
+import syconn.swe.util.data.PipeModule;
 
 public class FluidPipe extends FluidTransportBlock {
 
@@ -70,34 +72,46 @@ public class FluidPipe extends FluidTransportBlock {
     @Override
     public InteractionResult use(BlockState state, Level l, BlockPos pos, Player p, InteractionHand hand, BlockHitResult result) {
         ItemStack stack = p.getItemInHand(hand);
-        if (!l.isClientSide && p.getItemInHand(hand).getItem() == ModItems.WRENCH.get()) {
-            PipeBlockEntity be = l.getBlockEntity(pos, ModBlockEntity.PIPE.get()).get();
-            double x = result.getLocation().x - pos.getX();
-            double y = result.getLocation().y - pos.getY();
-            double z = result.getLocation().z - pos.getZ();
-
-            if (y > 0.7) {
-                if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.UP)));
-                else be.setExporter(new BlockPos(pos.relative(Direction.UP)));
-            } else if (y < 0.3) {
-                if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.DOWN)));
-                else be.setExporter(new BlockPos(pos.relative(Direction.DOWN)));
-            } else if (z < 0.69 && z > 0.3){
-                if (x > 0.65) {
-                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.EAST)));
-                    else be.setExporter(new BlockPos(pos.relative(Direction.EAST)));
-                } else if (x < 0.31){
-                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.WEST)));
-                    else be.setExporter(new BlockPos(pos.relative(Direction.WEST)));
+        if (l.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            BlockEntity blockentity = l.getBlockEntity(pos);
+            if (p.getItemInHand(hand).getItem() == ModItems.WRENCH.get() && blockentity instanceof PipeBlockEntity be) {
+                double x = result.getLocation().x - pos.getX();
+                double y = result.getLocation().y - pos.getY();
+                double z = result.getLocation().z - pos.getZ();
+                if (y > 0.7) {
+                    if (stack.getOrCreateTag().getBoolean("importer"))
+                        be.setImporter(new BlockPos(pos.relative(Direction.UP)));
+                    else be.setExporter(new BlockPos(pos.relative(Direction.UP)));
+                } else if (y < 0.3) {
+                    if (stack.getOrCreateTag().getBoolean("importer"))
+                        be.setImporter(new BlockPos(pos.relative(Direction.DOWN)));
+                    else be.setExporter(new BlockPos(pos.relative(Direction.DOWN)));
+                } else if (z < 0.69 && z > 0.3) {
+                    if (x > 0.65) {
+                        if (stack.getOrCreateTag().getBoolean("importer"))
+                            be.setImporter(new BlockPos(pos.relative(Direction.EAST)));
+                        else be.setExporter(new BlockPos(pos.relative(Direction.EAST)));
+                    } else if (x < 0.31) {
+                        if (stack.getOrCreateTag().getBoolean("importer"))
+                            be.setImporter(new BlockPos(pos.relative(Direction.WEST)));
+                        else be.setExporter(new BlockPos(pos.relative(Direction.WEST)));
+                    }
+                } else if (x < 0.69 && x > 0.3) {
+                    if (z > 0.65) {
+                        if (stack.getOrCreateTag().getBoolean("importer"))
+                            be.setImporter(new BlockPos(pos.relative(Direction.SOUTH)));
+                        else be.setExporter(new BlockPos(pos.relative(Direction.SOUTH)));
+                    } else if (z < 0.31) {
+                        if (stack.getOrCreateTag().getBoolean("importer"))
+                            be.setImporter(new BlockPos(pos.relative(Direction.NORTH)));
+                        else be.setExporter(new BlockPos(pos.relative(Direction.NORTH)));
+                    }
                 }
-            } else if (x < 0.69 && x > 0.3) {
-                if (z > 0.65) {
-                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.SOUTH)));
-                    else be.setExporter(new BlockPos(pos.relative(Direction.SOUTH)));
-                } else if (z < 0.31){
-                    if (stack.getOrCreateTag().getBoolean("importer")) be.setImporter(new BlockPos(pos.relative(Direction.NORTH)));
-                    else be.setExporter(new BlockPos(pos.relative(Direction.NORTH)));
-                }
+            }
+            else if (blockentity instanceof PipeBlockEntity be && !be.getSystem().getPoints().isEmpty()) {
+                NetworkHooks.openScreen((ServerPlayer) p, be, pos);
             }
         }
         return InteractionResult.PASS;

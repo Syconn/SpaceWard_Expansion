@@ -89,7 +89,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     public ResourceLocation getFluidTexture() {
         return Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
     }
-
+    
     public ResourceLocation getGuiTexture() {
         return Minecraft.getInstance().getTextureManager().register("bfluid", gfluid.getImageFromPixels());
     }
@@ -138,7 +138,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Fluid Tank");
+        return Component.literal("Fluid Tank Screen");
     }
 
     @Nullable
@@ -180,7 +180,9 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
             }
             if (!e.tank.isEmpty()) {
                 for (Direction d : Direction.values()){
-                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe && pe.getImporter().equals(pos)){
+                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe
+                            //&& pe.getImporter().equals(pos)
+                    ) {
                         pe.setSource(pos, level);
                     }
                 }

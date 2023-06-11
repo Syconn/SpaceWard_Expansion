@@ -11,8 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import syconn.swe.Main;
-import syconn.swe.common.be.PipeBlockEntity;
-import syconn.swe.util.PipeModule;
+import syconn.swe.util.data.PipeModule;
 
 public class FluidPipeModel extends Model {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Main.MODID, "fluidpipemodel"), "main");

@@ -1,32 +1,27 @@
 package syconn.swe.common.container;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.CauldronBlock;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
-import syconn.swe.common.be.TankBlockEntity;
-import syconn.swe.common.container.slot.ItemFluidHandlerSlot;
+import syconn.swe.common.be.PipeBlockEntity;
+import syconn.swe.common.container.slot.ToggledHandlerSlot;
 import syconn.swe.init.ModContainers;
 
-public class TankMenu extends AbstractContainerMenu {
+public class PipeMenu extends AbstractContainerMenu {
 
-    private final TankBlockEntity be;
+    private final PipeBlockEntity be;
 
-    public TankMenu(int id, Inventory inventory, TankBlockEntity be) {
-        super(ModContainers.TANK_MENU.get(), id);
+    public PipeMenu(int id, Inventory inventory, PipeBlockEntity be) {
+        super(ModContainers.PIPE_MENU.get(), id);
         this.be = be;
 
         be.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 14, 9));
-            this.addSlot(new SlotItemHandler(handler, 1, 14, 61));
-            this.addSlot(new ItemFluidHandlerSlot(handler, 2, 72, 9));
+            addSlot(new ToggledHandlerSlot(handler, 0, 152, 13, be));
+            addSlot(new ToggledHandlerSlot(handler, 1, 152, 35, be));
+            addSlot(new ToggledHandlerSlot(handler, 2, 152, 57, be));
         });
 
         for(int l = 0; l < 3; ++l) {
@@ -40,10 +35,9 @@ public class TankMenu extends AbstractContainerMenu {
         }
     }
 
-    public TankBlockEntity getBE() {
+    public PipeBlockEntity getBE() {
         return be;
     }
-
 
     @Override
     public ItemStack quickMoveStack(Player player, int quickMovedSlotIndex) {
