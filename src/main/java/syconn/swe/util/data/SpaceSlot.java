@@ -1,4 +1,4 @@
-package syconn.swe.util;
+package syconn.swe.util.data;
 
 public enum SpaceSlot {
 

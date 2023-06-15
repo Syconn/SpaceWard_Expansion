@@ -7,8 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModArmorTypes;
-import syconn.swe.util.Helper;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 public class SpaceArmor extends ArmorItem {
     public SpaceArmor(Type p_266831_, Properties p_40388_) {

@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import syconn.swe.common.container.slot.EquipmentItemSlot;
 import syconn.swe.init.ModCapabilities;
 import syconn.swe.item.extras.EquipmentItem;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 public class ExtendedPlayerContainer extends InventoryMenu {
 

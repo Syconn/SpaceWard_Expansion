@@ -1,7 +1,6 @@
 package syconn.swe.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +17,7 @@ import syconn.swe.init.ModItems;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.item.extras.ItemFluidHandler;
 import syconn.swe.util.ResourceUtil;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +34,7 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
 
     public Canister() {
         super(new Properties().stacksTo(1));
+                //.craftRemainder(ModItems.CANISTER.get()));
     }
 
     @Override

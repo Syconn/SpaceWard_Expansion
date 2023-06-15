@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "n": {
+      "tag": "forge:glass_panes"
+    },
+    "r": {
+      "item": "minecraft:bucket"
+    }
+  },
+  "pattern": [
+    "nnn",
+    "nrn",
+    "nnn"
+  ],
+  "result": {
+    "count": 16,
+    "item": "swe:fluid_pipe"
+  },
+  "show_notification": true
+}

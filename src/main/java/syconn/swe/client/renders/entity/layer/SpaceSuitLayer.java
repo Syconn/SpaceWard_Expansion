@@ -27,7 +27,7 @@ import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
 import syconn.swe.util.Dyeable;
 import syconn.swe.util.Helper;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 public class SpaceSuitLayer<P extends Player, M extends PlayerModel<P>> extends RenderLayer<P, M> {
 

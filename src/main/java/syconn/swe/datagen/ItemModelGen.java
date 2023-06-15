@@ -3,7 +3,6 @@ package syconn.swe.datagen;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -24,6 +23,11 @@ public class ItemModelGen extends ItemModelProvider {
         singleTexture(ModItems.SPACE_LEGGINGS.get());
         singleTexture(ModItems.SPACE_BOOTS.get());
         singleTexture(ModItems.WRENCH.get());
+        singleTexture(ModItems.DIAMOND_UPGRADE.get());
+        singleTexture(ModItems.GOLD_UPGRADE.get());
+        singleTexture(ModItems.IRON_UPGRADE.get());
+        singleTexture(ModItems.EMERALD_UPGRADE.get());
+        singleTexture(ModItems.NETHERITE_UPGRADE.get());
 
         ItemModelBuilder model = getBuilder(ModItems.CANISTER.get().toString()).parent(generate()).texture("layer0", modLoc("item/canister"));
 

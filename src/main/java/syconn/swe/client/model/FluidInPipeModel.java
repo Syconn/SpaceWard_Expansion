@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import syconn.swe.Main;
-import syconn.swe.util.PipeModule;
+import syconn.swe.util.data.PipeModule;
 
 public class FluidInPipeModel extends Model {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(Main.MODID, "fluidinpipemodel"), "main");

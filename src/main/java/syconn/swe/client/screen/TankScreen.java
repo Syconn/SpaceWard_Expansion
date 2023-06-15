@@ -46,7 +46,7 @@ public class TankScreen extends AbstractContainerScreen<TankMenu> {
 
         FluidState state = menu.getBE().getFluidTank().getFluidInTank(0).getFluid().defaultFluidState();
         if (IClientFluidTypeExtensions.of(state).getStillTexture() != null) {
-            RenderSystem.setShaderTexture(0, ResourceUtil.createFluidGuiTexture(state));
+            RenderSystem.setShaderTexture(0, menu.getBE().getGuiTexture());
             int i = IClientFluidTypeExtensions.of(state).getTintColor();
             int y = (int) ((double) (menu.getBE().getFluidTank().getFluidAmount()) / menu.getBE().getFluidTank().getCapacity() * 70);
             RenderSystem.setShaderColor((float)(i >> 16 & 255) / 255.0F, (float)(i >> 8 & 255) / 255.0F, (float)(i & 255) / 255.0F, 255.0F);
@@ -54,7 +54,6 @@ public class TankScreen extends AbstractContainerScreen<TankMenu> {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
-        // Fluid Bars
         RenderSystem.setShaderTexture(0, BG);
         blit(pose, leftPos + 34, topPos + 8, 176, 0, 6, 70);
     }

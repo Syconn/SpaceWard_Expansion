@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import org.jetbrains.annotations.NotNull;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.util.Dyeable;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 import java.util.Optional;
 

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "item": "minecraft:string"
+    },
+    "w": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "www",
+    "s s",
+    " s "
+  ],
+  "result": {
+    "count": 16,
+    "item": "swe:parachute"
+  },
+  "show_notification": true
+}

@@ -57,7 +57,7 @@ public class ResourceUtil {
         return ColorUtil.getClosetColor(getColor(fluid)).getMaterialColor().col;
     }
 
-    public static ResourceLocation createFluidBlockTexture(Fluid fluid){
+    public static NativeImage createFluidBlockTexture(Fluid fluid){
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(IClientFluidTypeExtensions.of(fluid).getStillTexture());
         NativeImage input = sprite.contents().getOriginalImage();
         NativeImage result = new NativeImage(64, 64, false);
@@ -75,10 +75,10 @@ public class ResourceUtil {
                 }
             }
         }
-        return mc.getTextureManager().register("fluid_texture", new DynamicTexture(result));
+        return result;
     }
 
-    public static ResourceLocation createFluidGuiTexture(FluidState fluid){
+    public static NativeImage createFluidGuiTexture(Fluid fluid){
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(IClientFluidTypeExtensions.of(fluid).getStillTexture());
         NativeImage input = sprite.contents().getOriginalImage();
         NativeImage result = new NativeImage(80, 80, false);
@@ -91,6 +91,6 @@ public class ResourceUtil {
                 }
             }
         }
-        return mc.getTextureManager().register("fluid_texture", new DynamicTexture(result));
+        return result;
     }
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "n": {
+      "item": "minecraft:gold_ingot"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " n ",
+    "nrn",
+    " n "
+  ],
+  "result": {
+    "item": "swe:gold_upgrade"
+  },
+  "show_notification": true
+}

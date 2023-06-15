@@ -10,7 +10,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import syconn.swe.Main;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.item.SpaceArmor;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 import javax.annotation.Nullable;
 

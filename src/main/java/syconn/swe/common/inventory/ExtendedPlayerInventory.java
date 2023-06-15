@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import syconn.swe.capabilities.ISpaceSuit;
 import syconn.swe.init.ModCapabilities;
 import syconn.swe.item.extras.EquipmentItem;
-import syconn.swe.util.SpaceSlot;
+import syconn.swe.util.data.SpaceSlot;
 
 import java.util.Iterator;
 import java.util.List;

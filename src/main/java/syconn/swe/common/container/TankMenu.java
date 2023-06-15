@@ -1,16 +1,11 @@
 package syconn.swe.common.container;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.CauldronBlock;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.common.container.slot.ItemFluidHandlerSlot;
 import syconn.swe.init.ModContainers;
@@ -24,10 +19,9 @@ public class TankMenu extends AbstractContainerMenu {
         this.be = be;
 
         be.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(handler -> {
-            this.addSlot(new SlotItemHandler(handler, 0, 14, 9)); //INPUT FILLED BUCKET
-            this.addSlot(new SlotItemHandler(handler, 1, 14, 61)); //OUTPUT EMPTY BUCKET
-            this.addSlot(new ItemFluidHandlerSlot(handler, 2, 72, 9)); //FILL ITEMFLUIDHANDLERS
-//            this.addSlot(new SlotItemHandler(handler, 3, 72, 61)); //OUTPUT FILLED BUCKET
+            this.addSlot(new SlotItemHandler(handler, 0, 14, 9));
+            this.addSlot(new SlotItemHandler(handler, 1, 14, 61));
+            this.addSlot(new ItemFluidHandlerSlot(handler, 2, 72, 9));
         });
 
         for(int l = 0; l < 3; ++l) {

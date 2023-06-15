@@ -1,5 +1,6 @@
 package syconn.swe.common.be;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -7,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -29,22 +31,26 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import syconn.swe.block.FluidBaseBlock;
 import syconn.swe.common.container.TankMenu;
+import syconn.swe.common.data.PixelImage;
 import syconn.swe.init.ModBlockEntity;
-import syconn.swe.item.Canister;
 import syconn.swe.item.extras.ItemFluidHandler;
 import syconn.swe.util.FluidHelper;
+import syconn.swe.util.ResourceUtil;
+import syconn.swe.util.data.FluidPointSystem;
 
 public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProvider {
 
     private int fillSpeed = 500;
+    private PixelImage bfluid;
+    private PixelImage gfluid;
+    private ResourceLocation bfluidLoc;
+    private ResourceLocation gfluidLoc;
 
     private final ItemStackHandler items = new ItemStackHandler(getContainerSize()) {
         @Override
-        protected void onContentsChanged(int slot) {
-            setChanged();
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
-        }
+        protected void onContentsChanged(int slot) { update(); }
     };
     private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> items);
 
@@ -52,11 +58,22 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         super(ModBlockEntity.TANK.get(), pos, state);
         this.tank = new FluidTank(16000){
             @Override
-            protected void onContentsChanged() {
-                setChanged();
-                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+            protected void onContentsChanged() { update(); }
+
+            @Override
+            public int fill(FluidStack resource, FluidAction action) {
+                if (fluid.isEmpty()) updateTextures(resource);
+                return super.fill(resource, action);
             }
         };
+    }
+
+    private void updateTextures(FluidStack resource) {
+        bfluid = new PixelImage(ResourceUtil.createFluidBlockTexture(resource.getFluid()));
+        gfluid = new PixelImage(ResourceUtil.createFluidGuiTexture(resource.getFluid()));
+        bfluidLoc = Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
+        gfluidLoc = Minecraft.getInstance().getTextureManager().register("gfluid", gfluid.getImageFromPixels());
+        update();
     }
 
     public FluidTank getFluidTank()
@@ -68,12 +85,22 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         return items;
     }
 
+    public ResourceLocation getFluidTexture() {
+        return bfluidLoc;
+    }
+    
+    public ResourceLocation getGuiTexture() {
+        return gfluidLoc;
+    }
+
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        if (tag.contains("Inventory")) {
-            items.deserializeNBT(tag.getCompound("Inventory"));
-        }
+        if (tag.contains("Inventory")) items.deserializeNBT(tag.getCompound("Inventory"));
+        if (tag.contains("bfluid")) bfluid = PixelImage.read(tag.getCompound("bfluid"));
+        if (tag.contains("gfluid")) gfluid = PixelImage.read(tag.getCompound("gfluid"));
+        if (bfluid != null) bfluidLoc = Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
+        if (gfluid != null) gfluidLoc = Minecraft.getInstance().getTextureManager().register("gfluid", gfluid.getImageFromPixels());
     }
 
     @Override
@@ -81,6 +108,8 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         super.saveAdditional(tag);
         tank.writeToNBT(tag);
         tag.put("Inventory", items.serializeNBT());
+        if (bfluid != null) tag.put("bfluid", bfluid.write());
+        if (gfluid != null) tag.put("gfluid", gfluid.write());
     }
 
     @Override
@@ -88,6 +117,8 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         CompoundTag tag = new CompoundTag();
         tank.writeToNBT(tag);
         tag.put("items", items.serializeNBT());
+        if (bfluid != null) tag.put("bfluid", bfluid.write());
+        if (gfluid != null) tag.put("gfluid", gfluid.write());
         return tag;
     }
 
@@ -108,7 +139,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Fluid Tank");
+        return Component.literal("Fluid Tank Screen");
     }
 
     @Nullable
@@ -148,13 +179,22 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
             if (item.getItem() instanceof ItemFluidHandler) {
                 FluidHelper.fillHandlerUpdateStack(item, e.tank, e.fillSpeed);
             }
-            if (!e.tank.isEmpty()) {
+            if (!e.tank.isEmpty() && state.getValue(FluidBaseBlock.ENABLED)) {
                 for (Direction d : Direction.values()){
-                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe && pe.getImporter().equals(pos)){
-                        pe.setSource(pos, level);
+                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe) {
+                        FluidPointSystem.FluidPoint point = pe.getSystem().getPoint(d.getOpposite());
+                        if (point.handlesExport() && (point.priority() > pe.getSource().priority() || pe.getSource().isEmpty() || point.equals(pe.getSource()))) {
+                            pe.setSource(pe.getSystem().getPoint(d.getOpposite()));
+                            pe.clear();
+                        }
                     }
                 }
             }
         }
+    }
+
+    private void update(){
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
     }
 }

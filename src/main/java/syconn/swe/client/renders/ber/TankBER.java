@@ -27,7 +27,7 @@ public class TankBER implements BlockEntityRenderer<TankBlockEntity> {
             ps.translate(1, 0, 0);
             ps.scale(1, i, 1);
             ps.translate(0, -0.5f, 0);
-            VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(ResourceUtil.createFluidBlockTexture(be.getFluidTank().getFluid().getFluid())));
+            VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(be.getFluidTexture()));
             model.renderFluid(be.getFluidTank().getFluid().getFluid(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
             ps.popPose();
         }

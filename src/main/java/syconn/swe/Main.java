@@ -1,13 +1,7 @@
 package syconn.swe;
 
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.block.model.ItemOverride;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterDimensionSpecialEffectsEvent;
@@ -21,17 +15,15 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import syconn.swe.client.ClientHandler;
 import syconn.swe.common.CommonHandler;
 import syconn.swe.common.data.DimSettingsManager;
-import syconn.swe.datagen.BlockModelGen;
-import syconn.swe.datagen.ItemModelGen;
-import syconn.swe.datagen.LangGen;
+import syconn.swe.datagen.*;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModContainers;
 import syconn.swe.init.ModItems;
+import syconn.swe.network.Network;
 import syconn.swe.worldgen.dimension.MoonSpecialEffects;
 
 @Mod(Main.MODID)
@@ -64,6 +56,7 @@ public class Main {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
+        Network.init();
         MinecraftForge.EVENT_BUS.register(new CommonHandler());
     }
 
@@ -72,9 +65,11 @@ public class Main {
     }
 
     public void dataGenerator(GatherDataEvent e){
-        e.getGenerator().addProvider(true, new ItemModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(true, new BlockModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
-        e.getGenerator().addProvider(true, new LangGen(e.getGenerator().getPackOutput()));
+        e.getGenerator().addProvider(e.includeClient(), new ItemModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new BlockModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeClient(), new LangGen(e.getGenerator().getPackOutput()));
+        e.getGenerator().addProvider(e.includeServer(), new RecipeGen(e.getGenerator().getPackOutput()));
+        e.getGenerator().addProvider(e.includeServer(), new TagsGen(e.getGenerator().getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
     }
 
     public void dimensionEffects(RegisterDimensionSpecialEffectsEvent e){

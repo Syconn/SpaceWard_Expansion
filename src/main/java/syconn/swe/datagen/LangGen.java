@@ -20,6 +20,11 @@ public class LangGen extends LanguageProvider {
         add(ModItems.SPACE_LEGGINGS.get(), "Space Leggings");
         add(ModItems.CANISTER.get(), "Canister");
         add(ModItems.WRENCH.get(), "Wrench");
+        add(ModItems.DIAMOND_UPGRADE.get(), "Diamond Upgrade");
+        add(ModItems.GOLD_UPGRADE.get(), "Gold Upgrade");
+        add(ModItems.IRON_UPGRADE.get(), "Iron Upgrade");
+        add(ModItems.EMERALD_UPGRADE.get(), "Emerald Upgrade");
+        add(ModItems.NETHERITE_UPGRADE.get(), "Netherite Upgrade");
 
         add(ModItems.FLUID_PIPE.get(), "Fluid Pipe");
         add(ModItems.FLUID_TANK.get(), "Fluid Tank");
