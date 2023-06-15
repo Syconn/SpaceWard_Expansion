@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -41,9 +40,9 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.translate(1, -0.5f, 0);
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
             this.pm.renderCase(be.getBlockState(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
-            ps.scale(1, 1.01f, 1);
-            if (Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).isPresent()) {
-                TankBlockEntity te = Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).get();
+            ps.scale(1, 1.08f, 1);
+            if (Minecraft.getInstance().level.getBlockEntity(be.getSource().pos(), ModBlockEntity.TANK.get()).isPresent()) {
+                TankBlockEntity te = Minecraft.getInstance().level.getBlockEntity(be.getSource().pos(), ModBlockEntity.TANK.get()).get();
                 int i = IClientFluidTypeExtensions.of(te.getFluidTank().getFluid().getFluid()).getTintColor();
                 float f = (float)(i >> 16 & 255) / 255.0F;
                 float f1 = (float)(i >> 8 & 255) / 255.0F;
@@ -54,8 +53,8 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.popPose();
         }
 
-        if (mod.hasFluid() && Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).isPresent()){
-            TankBlockEntity te = Minecraft.getInstance().level.getBlockEntity(be.getSource(), ModBlockEntity.TANK.get()).get();
+        if (mod.hasFluid() && Minecraft.getInstance().level.getBlockEntity(be.getSource().pos(), ModBlockEntity.TANK.get()).isPresent()){
+            TankBlockEntity te = Minecraft.getInstance().level.getBlockEntity(be.getSource().pos(), ModBlockEntity.TANK.get()).get();
             int i = IClientFluidTypeExtensions.of(te.getFluidTank().getFluid().getFluid()).getTintColor();
             float f = (float)(i >> 16 & 255) / 255.0F;
             float f1 = (float)(i >> 8 & 255) / 255.0F;

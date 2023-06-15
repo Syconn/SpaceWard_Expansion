@@ -21,13 +21,14 @@ public class PipeModule {
     private final boolean n, e, s, w;
     private final boolean u, d;
     private final boolean has_fluid;
+    private final boolean enabled;
 
-    PipeModule(boolean n, boolean e, boolean s, boolean w, boolean u, boolean d, boolean has_fluid) {
-        this.n = n; this.e = e; this.s = s; this.w = w; this.u = u; this.d = d; this.has_fluid = has_fluid;
+    PipeModule(boolean n, boolean e, boolean s, boolean w, boolean u, boolean d, boolean has_fluid, boolean enabled) {
+        this.n = n; this.e = e; this.s = s; this.w = w; this.u = u; this.d = d; this.has_fluid = has_fluid; this.enabled = enabled;
     }
 
     public PipeModule(BlockState state){
-        this(state.getValue(PipeBlock.NORTH), state.getValue(PipeBlock.EAST), state.getValue(PipeBlock.SOUTH), state.getValue(PipeBlock.WEST), state.getValue(PipeBlock.UP), state.getValue(PipeBlock.DOWN), state.getValue(FluidBaseBlock.FLUID_TYPE));
+        this(state.getValue(PipeBlock.NORTH), state.getValue(PipeBlock.EAST), state.getValue(PipeBlock.SOUTH), state.getValue(PipeBlock.WEST), state.getValue(PipeBlock.UP), state.getValue(PipeBlock.DOWN), state.getValue(FluidBaseBlock.FLUID_TYPE), state.getValue(FluidBaseBlock.ENABLED));
     }
 
     private boolean isQuad(){
@@ -142,7 +143,7 @@ public class PipeModule {
     }
 
     public static BlockState getStateForPlacement(BlockState state, BlockPos pos, LevelAccessor l){
-        return state.setValue(FluidBaseBlock.FLUID_TYPE, state.getValue(FluidBaseBlock.FLUID_TYPE)).setValue(PipeBlock.NORTH, isBlock(pos, l, Direction.NORTH)).setValue(PipeBlock.WEST, isBlock(pos, l, Direction.WEST)).setValue(PipeBlock.SOUTH, isBlock(pos, l, Direction.SOUTH)).setValue(PipeBlock.EAST, isBlock(pos, l, Direction.EAST)).setValue(PipeBlock.UP, isBlock(pos, l, Direction.UP)).setValue(PipeBlock.DOWN, isBlock(pos, l, Direction.DOWN));
+        return state.setValue(FluidBaseBlock.ENABLED, state.getValue(FluidBaseBlock.ENABLED)).setValue(FluidBaseBlock.FLUID_TYPE, state.getValue(FluidBaseBlock.FLUID_TYPE)).setValue(PipeBlock.NORTH, isBlock(pos, l, Direction.NORTH)).setValue(PipeBlock.WEST, isBlock(pos, l, Direction.WEST)).setValue(PipeBlock.SOUTH, isBlock(pos, l, Direction.SOUTH)).setValue(PipeBlock.EAST, isBlock(pos, l, Direction.EAST)).setValue(PipeBlock.UP, isBlock(pos, l, Direction.UP)).setValue(PipeBlock.DOWN, isBlock(pos, l, Direction.DOWN));
     }
 
     private static boolean isBlock(BlockPos pos, LevelAccessor l, Direction d){
@@ -164,7 +165,6 @@ public class PipeModule {
     }
 
     public static void updateBE(LevelAccessor l, PipeBlockEntity be) {
-        be.updateStates();
         be.getSystem().handleBlockUpdate(l);
         be.update();
     }

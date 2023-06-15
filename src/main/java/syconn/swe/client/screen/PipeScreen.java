@@ -2,17 +2,28 @@ package syconn.swe.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.DyeColor;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 import syconn.swe.Main;
+import syconn.swe.client.screen.widget.ArrowButton;
 import syconn.swe.client.screen.widget.TabButton;
 import syconn.swe.common.be.PipeBlockEntity;
 import syconn.swe.common.container.PipeMenu;
+import syconn.swe.network.Network;
+import syconn.swe.network.messages.MessageChange;
+import syconn.swe.network.messages.MessageClickArrow;
+import syconn.swe.network.messages.MessageClickTab;
+import syconn.swe.util.Helper;
 import syconn.swe.util.data.FluidPointSystem;
 
 public class PipeScreen extends AbstractContainerScreen<PipeMenu> {
@@ -20,12 +31,17 @@ public class PipeScreen extends AbstractContainerScreen<PipeMenu> {
     private final ResourceLocation BACKGROUND = new ResourceLocation(Main.MODID, "textures/gui/fluid_pipe.png");
 
     private TabButton[] tabs;
+    private ExtendedButton flipper;
+    private Inventory inv;
+    private Component component;
     private final FluidPointSystem system = menu.getBE().getSystem();
-    private final FluidPointSystem.FluidPoint fluidPoint;
+    private FluidPointSystem.FluidPoint fluidPoint;
 
     public PipeScreen(PipeMenu menu, Inventory p_97742_, Component p_97743_) {
         super(menu, p_97742_, p_97743_);
         fluidPoint = menu.getBE().selectedTab();
+        this.inv = p_97742_;
+        this.component = p_97743_;
     }
 
     @Override
@@ -33,16 +49,20 @@ public class PipeScreen extends AbstractContainerScreen<PipeMenu> {
         super.init();
         int sz = system.getPoints().size();
         tabs = new TabButton[sz];
-        System.out.println(fluidPoint);
         for (int i = 0; i < sz; i++) {
             TabButton.State state = i == 0 ? TabButton.State.LEFT : i == 5 ? TabButton.State.RIGHT : TabButton.State.MIDDLE;
             String name = system.getPoints().get(i).d().getName();
-            tabs[i] = addRenderableWidget(new TabButton(leftPos + (28 + 5) * i, topPos, state, i, name, null, system.getPoints().get(i).equals(fluidPoint), this::tabClicked));
+            tabs[i] = addRenderableWidget(new TabButton(leftPos + (28 + 5) * i, topPos, state, name, null, system.getPoints().get(i).equals(fluidPoint), this::tabClicked));
         }
+        addRenderableWidget(new ArrowButton(this.leftPos + 29, this.topPos + 20, ArrowButton.Type.UP, this::arrowClick));
+        addRenderableWidget(new ArrowButton(this.leftPos + 29, this.topPos + 60, ArrowButton.Type.DOWN, this::arrowClick));
+        flipper = addRenderableWidget(new ExtendedButton(this.leftPos + 56, this.topPos + 33, 60, 20, Component.literal(fluidPoint.toString()), (b) -> Network.getPlayChannel().sendToServer(new MessageChange(menu.getBE().getBlockPos()))));
     }
 
     @Override
     public void render(PoseStack p_97795_, int p_97796_, int p_97797_, float p_97798_) {
+        fluidPoint = menu.getBE().selectedTab();
+        flipper.setMessage(Component.literal(fluidPoint.toString()));
         this.renderBackground(p_97795_);
         super.render(p_97795_, p_97796_, p_97797_, p_97798_);
         renderTooltip(p_97795_, p_97796_, p_97797_);
@@ -56,12 +76,22 @@ public class PipeScreen extends AbstractContainerScreen<PipeMenu> {
             blit(pose, this.leftPos + 151, this.topPos + 12, 176, 8, 18, 18);
             blit(pose, this.leftPos + 151, this.topPos + 34, 176, 8, 18, 18);
             blit(pose, this.leftPos + 151, this.topPos + 56, 176, 8, 18, 18);
+
+            blit(pose, this.leftPos + 23, this.topPos + 31, 194, 8, 23, 24);
+
+            drawCenteredString(pose, font, String.valueOf(fluidPoint.priority()), this.leftPos + 34, this.topPos + 39, DyeColor.WHITE.getTextColor());
         }
     }
 
     private void tabClicked(Button b){
         if (b instanceof TabButton tab) {
+            Network.getPlayChannel().sendToServer(new MessageClickTab(menu.getBE().getBlockPos(), Helper.dirFromName(tab.getName())));
+        }
+    }
 
+    private void arrowClick(Button b){
+        if (b instanceof ArrowButton tab) {
+            Network.getPlayChannel().sendToServer(new MessageClickArrow(menu.getBE().getBlockPos(), tab.getType() == ArrowButton.Type.UP ? 1 : -1));
         }
     }
 }

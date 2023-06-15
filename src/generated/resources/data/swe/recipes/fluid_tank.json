@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "minecraft:iron_block"
+    },
+    "n": {
+      "tag": "swe:glass"
+    },
+    "r": {
+      "item": "minecraft:bucket"
+    }
+  },
+  "pattern": [
+    "bbb",
+    "nrn",
+    "bbb"
+  ],
+  "result": {
+    "item": "swe:fluid_tank"
+  },
+  "show_notification": true
+}

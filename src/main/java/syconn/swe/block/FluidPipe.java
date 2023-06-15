@@ -4,9 +4,7 @@ package syconn.swe.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -35,7 +33,7 @@ public class FluidPipe extends FluidTransportBlock {
 
     public FluidPipe() {
         super(BlockBehaviour.Properties.of(Material.METAL).noOcclusion().dynamicShape());
-        this.registerDefaultState(this.stateDefinition.any().setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(FLUID_TYPE, Boolean.FALSE));
+        this.registerDefaultState(this.stateDefinition.any().setValue(ENABLED, true).setValue(NORTH, Boolean.FALSE).setValue(EAST, Boolean.FALSE).setValue(SOUTH, Boolean.FALSE).setValue(WEST, Boolean.FALSE).setValue(UP, Boolean.FALSE).setValue(DOWN, Boolean.FALSE).setValue(FLUID_TYPE, Boolean.FALSE));
     }
 
     public RenderShape getRenderShape(BlockState p_51307_) {
@@ -62,11 +60,21 @@ public class FluidPipe extends FluidTransportBlock {
     @Override
     public void onRemove(BlockState p_60515_, Level l, BlockPos pos, BlockState p_60518_, boolean p_60519_) {
         if (p_60515_.hasBlockEntity() && (!p_60515_.is(p_60518_.getBlock()) || !p_60518_.hasBlockEntity()) && l.getBlockEntity(pos) instanceof PipeBlockEntity pe) pe.updateStates();
-        super.onRemove(p_60515_, l, pos, p_60518_, p_60519_);
+        if (!p_60515_.is(p_60518_.getBlock())) {
+            BlockEntity blockentity = l.getBlockEntity(pos);
+            if (blockentity instanceof PipeBlockEntity pe) {
+                for (int i = 0; i < pe.getItems().getSlots(); i++) {
+                    Containers.dropItemStack(l, pos.getX(), pos.getY(), pos.getZ(), pe.getItems().getStackInSlot(i));
+                }
+                l.updateNeighbourForOutputSignal(pos, this);
+            }
+
+            super.onRemove(p_60515_, l, pos, p_60518_, p_60519_);
+        }
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_53334_) {
-        p_53334_.add(NORTH, EAST, WEST, SOUTH, UP, DOWN, FLUID_TYPE);
+        p_53334_.add(NORTH, EAST, WEST, SOUTH, UP, DOWN, FLUID_TYPE, ENABLED);
     }
 
     @Override
@@ -81,30 +89,30 @@ public class FluidPipe extends FluidTransportBlock {
                 double y = result.getLocation().y - pos.getY();
                 double z = result.getLocation().z - pos.getZ();
                 if (y > 0.7) {
-                    if (stack.getOrCreateTag().getBoolean("importer"))
+                    if (stack.getOrCreateTag().getBoolean("exporter"))
                         be.setImporter(new BlockPos(pos.relative(Direction.UP)));
                     else be.setExporter(new BlockPos(pos.relative(Direction.UP)));
                 } else if (y < 0.3) {
-                    if (stack.getOrCreateTag().getBoolean("importer"))
+                    if (stack.getOrCreateTag().getBoolean("exporter"))
                         be.setImporter(new BlockPos(pos.relative(Direction.DOWN)));
                     else be.setExporter(new BlockPos(pos.relative(Direction.DOWN)));
                 } else if (z < 0.69 && z > 0.3) {
                     if (x > 0.65) {
-                        if (stack.getOrCreateTag().getBoolean("importer"))
+                        if (stack.getOrCreateTag().getBoolean("exporter"))
                             be.setImporter(new BlockPos(pos.relative(Direction.EAST)));
                         else be.setExporter(new BlockPos(pos.relative(Direction.EAST)));
                     } else if (x < 0.31) {
-                        if (stack.getOrCreateTag().getBoolean("importer"))
+                        if (stack.getOrCreateTag().getBoolean("exporter"))
                             be.setImporter(new BlockPos(pos.relative(Direction.WEST)));
                         else be.setExporter(new BlockPos(pos.relative(Direction.WEST)));
                     }
                 } else if (x < 0.69 && x > 0.3) {
                     if (z > 0.65) {
-                        if (stack.getOrCreateTag().getBoolean("importer"))
+                        if (stack.getOrCreateTag().getBoolean("exporter"))
                             be.setImporter(new BlockPos(pos.relative(Direction.SOUTH)));
                         else be.setExporter(new BlockPos(pos.relative(Direction.SOUTH)));
                     } else if (z < 0.31) {
-                        if (stack.getOrCreateTag().getBoolean("importer"))
+                        if (stack.getOrCreateTag().getBoolean("exporter"))
                             be.setImporter(new BlockPos(pos.relative(Direction.NORTH)));
                         else be.setExporter(new BlockPos(pos.relative(Direction.NORTH)));
                     }

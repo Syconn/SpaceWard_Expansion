@@ -19,15 +19,13 @@ public class TabButton extends ExtendedButton {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(Main.MODID, "textures/gui/tabs.png");
     private final State state;
-    private final int id;
     private final String name;
     private final Item item;
     private boolean selected;
 
-    public TabButton(int x, int y, State state, int id, String name, Item stack, boolean selected, OnPress onPress) {
+    public TabButton(int x, int y, State state, String name, Item stack, boolean selected, OnPress onPress) {
         super(x, y - 26, 28, 28, Component.literal(name.toUpperCase().substring(0, 1)).withStyle(ChatFormatting.WHITE), onPress);
         this.state = state;
-        this.id = id;
         this.name = name;
         this.item = stack;
         this.selected = selected;
@@ -61,12 +59,12 @@ public class TabButton extends ExtendedButton {
             drawString(mStack, mc.font, StringUtils.capitalize(name), x - 10, y - 10, 14737632);
     }
 
-    public int getId() {
-        return id;
-    }
-
     public boolean isSelected() {
         return selected;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setSelected(boolean selected) {

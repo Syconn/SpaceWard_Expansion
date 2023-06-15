@@ -1,8 +1,6 @@
 package syconn.swe.common.be;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -33,25 +31,26 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import syconn.swe.block.FluidBaseBlock;
 import syconn.swe.common.container.TankMenu;
 import syconn.swe.common.data.PixelImage;
 import syconn.swe.init.ModBlockEntity;
-import syconn.swe.item.Canister;
 import syconn.swe.item.extras.ItemFluidHandler;
 import syconn.swe.util.FluidHelper;
 import syconn.swe.util.ResourceUtil;
+import syconn.swe.util.data.FluidPointSystem;
 
 public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProvider {
 
     private int fillSpeed = 500;
     private PixelImage bfluid;
     private PixelImage gfluid;
+    private ResourceLocation bfluidLoc;
+    private ResourceLocation gfluidLoc;
 
     private final ItemStackHandler items = new ItemStackHandler(getContainerSize()) {
         @Override
-        protected void onContentsChanged(int slot) {
-            update();
-        }
+        protected void onContentsChanged(int slot) { update(); }
     };
     private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> items);
 
@@ -59,9 +58,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         super(ModBlockEntity.TANK.get(), pos, state);
         this.tank = new FluidTank(16000){
             @Override
-            protected void onContentsChanged() {
-                update();
-            }
+            protected void onContentsChanged() { update(); }
 
             @Override
             public int fill(FluidStack resource, FluidAction action) {
@@ -74,6 +71,8 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     private void updateTextures(FluidStack resource) {
         bfluid = new PixelImage(ResourceUtil.createFluidBlockTexture(resource.getFluid()));
         gfluid = new PixelImage(ResourceUtil.createFluidGuiTexture(resource.getFluid()));
+        bfluidLoc = Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
+        gfluidLoc = Minecraft.getInstance().getTextureManager().register("gfluid", gfluid.getImageFromPixels());
         update();
     }
 
@@ -87,11 +86,11 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     }
 
     public ResourceLocation getFluidTexture() {
-        return Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
+        return bfluidLoc;
     }
     
     public ResourceLocation getGuiTexture() {
-        return Minecraft.getInstance().getTextureManager().register("bfluid", gfluid.getImageFromPixels());
+        return gfluidLoc;
     }
 
     @Override
@@ -100,6 +99,8 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         if (tag.contains("Inventory")) items.deserializeNBT(tag.getCompound("Inventory"));
         if (tag.contains("bfluid")) bfluid = PixelImage.read(tag.getCompound("bfluid"));
         if (tag.contains("gfluid")) gfluid = PixelImage.read(tag.getCompound("gfluid"));
+        if (bfluid != null) bfluidLoc = Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
+        if (gfluid != null) gfluidLoc = Minecraft.getInstance().getTextureManager().register("gfluid", gfluid.getImageFromPixels());
     }
 
     @Override
@@ -178,12 +179,14 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
             if (item.getItem() instanceof ItemFluidHandler) {
                 FluidHelper.fillHandlerUpdateStack(item, e.tank, e.fillSpeed);
             }
-            if (!e.tank.isEmpty()) {
+            if (!e.tank.isEmpty() && state.getValue(FluidBaseBlock.ENABLED)) {
                 for (Direction d : Direction.values()){
-                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe
-                            //&& pe.getImporter().equals(pos)
-                    ) {
-                        pe.setSource(pos, level);
+                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe) {
+                        FluidPointSystem.FluidPoint point = pe.getSystem().getPoint(d.getOpposite());
+                        if (point.handlesExport() && (point.priority() > pe.getSource().priority() || pe.getSource().isEmpty() || point.equals(pe.getSource()))) {
+                            pe.setSource(pe.getSystem().getPoint(d.getOpposite()));
+                            pe.clear();
+                        }
                     }
                 }
             }

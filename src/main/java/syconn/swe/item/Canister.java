@@ -34,6 +34,7 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
 
     public Canister() {
         super(new Properties().stacksTo(1));
+                //.craftRemainder(ModItems.CANISTER.get()));
     }
 
     @Override

@@ -3,7 +3,6 @@ package syconn.swe.common.be;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -27,14 +26,18 @@ import org.jetbrains.annotations.Nullable;
 import syconn.swe.block.FluidBaseBlock;
 import syconn.swe.common.container.PipeMenu;
 import syconn.swe.init.ModBlockEntity;
+import syconn.swe.item.UpgradeItem;
 import syconn.swe.util.Helper;
 import syconn.swe.util.data.FluidPointSystem;
+
+import static syconn.swe.util.data.FluidPointSystem.FluidPoint;
 
 public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProvider {
 
     private FluidPointSystem system = new FluidPointSystem();
     private Direction target = null;
-    private BlockPos source = BlockPos.ZERO;
+    private boolean updated = false;
+    private FluidPoint source = FluidPoint.Empty();
     private static final int transferSpeed = 80;
 
     private final ItemStackHandler items = new ItemStackHandler(3) {
@@ -48,7 +51,7 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         super(ModBlockEntity.PIPE.get(), pos, state);
     }
 
-    public BlockPos getSource() {
+    public FluidPoint getSource() {
         return source;
     }
 
@@ -56,12 +59,25 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         return items;
     }
 
-    public void setSource(BlockPos source, Level level) {
-        this.source = source;
+    public void setSource(FluidPoint source) {
+        if (getBlockState().getValue(FluidBaseBlock.ENABLED)) {
+            this.source = source;
+            this.updated = true;
+            update();
+            for (Direction d : Direction.values()) {
+                if (level.getBlockEntity(worldPosition.relative(d)) instanceof PipeBlockEntity pe && !pe.updated) { // Needs to be where check importance
+                    pe.setSource(source);
+                }
+            }
+        }
+    }
+
+    public void clear() {
+        this.updated = false;
         update();
-        for (Direction d : Direction.values()){
-            if (level.getBlockEntity(worldPosition.relative(d)) instanceof PipeBlockEntity pe && !pe.source.equals(this.source)){
-                pe.setSource(source, level);
+        for (Direction d : Direction.values()) {
+            if (level.getBlockEntity(worldPosition.relative(d)) instanceof PipeBlockEntity pe && pe.updated) {
+                pe.clear();
             }
         }
     }
@@ -84,12 +100,11 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         }
     }
 
-    public void updateStates(){
-        this.source = BlockPos.ZERO;
-        update();
-        for (Direction d : Direction.values()){
-            if (level.getBlockEntity(worldPosition.relative(d)) instanceof PipeBlockEntity pe && pe.source.equals(this.source)){
-                pe.setSource(BlockPos.ZERO, level);
+    public void updateStates() {
+        source = FluidPoint.Empty();
+        for (Direction ds : Direction.values()) {
+            if (level.getBlockEntity(worldPosition.relative(ds)) instanceof PipeBlockEntity pe && pe.getSource() != source) {
+                pe.setSource(source);
             }
         }
     }
@@ -98,42 +113,70 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         return system.getPoint(target);
     }
 
-    // TODO FIXES
-    //  - Update Sources to highest Priority
-    //  - EXPORTS not working rn
-    //  - BETTER MULTI IMPORT/EXPORT SYSTEM
-    //  - PIPE UPGRADE - EXTRACTOR PRIORITIES - SPEED - SETTINGS MENU?
-    public static void serverTick(Level l, BlockPos pos, BlockState state, PipeBlockEntity be){
-        // TODO Might need to check every Tick
+    public void setTarget(Direction target) {
+        this.target = target;
+        update();
+    }
+
+    // TODO FIXES - Clicking Only Works on Double
+    public static void serverTick(Level l, BlockPos pos, BlockState state, PipeBlockEntity be) {
+        if (!be.source.isEmpty() && l.getBlockState(be.source.pos().relative(be.source.d().getOpposite())).getValue(FluidBaseBlock.ENABLED)) {
+            be.source = l.getBlockEntity(be.source.pos().relative(be.source.d().getOpposite()), ModBlockEntity.PIPE.get()).get().getSystem().getPoint(be.source.d());
+        } else {
+            be.source = FluidPoint.Empty();
+        }
         if (!isValidSource(l, be)) {
-            if (!be.tank.isEmpty()) be.tank.drain(be.tank.getFluidAmount(), IFluidHandler.FluidAction.EXECUTE);
-            be.source = BlockPos.ZERO;
+            be.source = FluidPoint.Empty();
             state = state.setValue(FluidBaseBlock.FLUID_TYPE, false);
             l.setBlock(pos, state, 3);
-        } else {
+        } else if (!state.getValue(FluidBaseBlock.FLUID_TYPE)) {
             state = state.setValue(FluidBaseBlock.FLUID_TYPE, true);
             l.setBlock(pos, state, 3);
         }
+        if (!be.source.isEmpty() && l.getBlockState(be.source.pos().relative(be.source.d().getOpposite())).getValue(FluidBaseBlock.ENABLED) && state.getValue(FluidBaseBlock.ENABLED)) {
+            for (Direction d : Direction.values()) {
+                int speed = transferSpeed + speedIncrease(be);
+                FluidPoint exporter = be.system.getPoint(d);
+                if (!be.source.isEmpty() && !exporter.isEmpty() && l.getBlockEntity(exporter.pos()) != null && l.getBlockEntity(be.source.pos()) != null && !exporter.exporter()) {
+                    IFluidHandler export = l.getBlockEntity(exporter.pos()).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
+                    IFluidHandler source = l.getBlockEntity(be.source.pos()).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
 
-//        if (!be.source.equals(BlockPos.ZERO) && !be.exporter.equals(BlockPos.ZERO) && l.getBlockEntity(be.exporter) != null && l.getBlockEntity(be.source) != null) {
-//            IFluidHandler export = l.getBlockEntity(be.exporter).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
-//            IFluidHandler source = l.getBlockEntity(be.source).getCapability(ForgeCapabilities.FLUID_HANDLER).orElse(null);
-//
-//            if (export.isFluidValid(0, source.getFluidInTank(0)) && export.getFluidInTank(0).getAmount() / export.getTankCapacity(0) != 1){
-//                FluidStack stack = source.drain(transferSpeed, IFluidHandler.FluidAction.EXECUTE);
-//                int filled = export.fill(stack, IFluidHandler.FluidAction.EXECUTE);
-//                if (filled != stack.getAmount()) source.fill(new FluidStack(stack, stack.getAmount() - filled), IFluidHandler.FluidAction.EXECUTE);
-//            }
-//        }
+                    if (export.isFluidValid(0, source.getFluidInTank(0)) && export.getFluidInTank(0).getAmount() / export.getTankCapacity(0) != 1) {
+                        FluidStack stack = source.drain(speed, IFluidHandler.FluidAction.EXECUTE);
+                        int filled = export.fill(stack, IFluidHandler.FluidAction.EXECUTE);
+                        if (filled != stack.getAmount())
+                            source.fill(new FluidStack(stack, stack.getAmount() - filled), IFluidHandler.FluidAction.EXECUTE);
+                    }
+                }
+            }
+        }
         update(l, pos, state);
     }
 
     private static boolean isValidSource(Level l, PipeBlockEntity be){
-        return !be.source.equals(BlockPos.ZERO) && l.getBlockEntity(be.source) != null && l.getBlockEntity(be.source).getCapability(ForgeCapabilities.FLUID_HANDLER).map(f -> f.getFluidInTank(0).getAmount()).orElse(0) > 0;
+        return !be.source.equals(BlockPos.ZERO) && l.getBlockEntity(be.source.pos()) != null && l.getBlockEntity(be.source.pos()).getCapability(ForgeCapabilities.FLUID_HANDLER).map(f -> f.getFluidInTank(0).getAmount()).orElse(0) > 0;
     }
 
     public FluidPointSystem getSystem() {
         return system;
+    }
+
+    public void increment(int inc) {
+        system.increment(target, inc);
+        update();
+    }
+
+    public void changeType() {
+        system.flip(target);
+        update();
+    }
+
+    private static int speedIncrease(PipeBlockEntity pe){
+        int speed = 0;
+        for (int i = 0; i < pe.getItems().getSlots(); i++) {
+            if (pe.getItems().getStackInSlot(i).getItem() instanceof UpgradeItem u) speed += u.getUpgradeSpeed();
+        }
+        return speed;
     }
 
     @Override
@@ -142,7 +185,8 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         if (tag.contains("Inventory")) items.deserializeNBT(tag.getCompound("Inventory"));
         if (tag.contains("target")) target = Direction.from3DDataValue(tag.getInt("target"));
         system = new FluidPointSystem(tag.getCompound("system"));
-        source = NbtUtils.readBlockPos(tag.getCompound("source"));
+        source = FluidPoint.read(tag.getCompound("source"));
+        updated = tag.getBoolean("updated");
     }
 
     @Override
@@ -151,7 +195,8 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         if (target != null) tag.putInt("target", target.get3DDataValue());
         tag.put("Inventory", items.serializeNBT());
         tag.put("system", system.write());
-        tag.put("source", NbtUtils.writeBlockPos(source));
+        tag.put("source", source.write());
+        tag.putBoolean("updated", updated);
     }
 
     @Override
@@ -160,7 +205,8 @@ public class PipeBlockEntity extends FluidHandlerBlockEntity implements MenuProv
         if (target != null) tag.putInt("target", target.get3DDataValue());
         tag.put("Inventory", items.serializeNBT());
         tag.put("system", system.write());
-        tag.put("source", NbtUtils.writeBlockPos(source));
+        tag.put("source", source.write());
+        tag.putBoolean("updated", updated);
         return tag;
     }
 

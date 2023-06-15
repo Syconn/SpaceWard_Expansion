@@ -39,4 +39,13 @@ public class Helper {
         }
         return Direction.NORTH;
     }
+
+    public static Direction dirFromName(String name) {
+        for (Direction d : Direction.values()){
+            if (d.getName().equalsIgnoreCase(name)){
+                return d;
+            }
+        }
+        return null;
+    }
 }

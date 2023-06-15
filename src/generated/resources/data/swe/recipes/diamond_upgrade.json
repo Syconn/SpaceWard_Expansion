@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "n": {
+      "item": "minecraft:diamond"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " n ",
+    "nrn",
+    " n "
+  ],
+  "result": {
+    "item": "swe:diamond_upgrade"
+  },
+  "show_notification": true
+}

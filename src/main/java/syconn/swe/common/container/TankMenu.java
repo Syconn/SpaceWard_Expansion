@@ -1,16 +1,11 @@
 package syconn.swe.common.container;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.CauldronBlock;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.common.container.slot.ItemFluidHandlerSlot;
 import syconn.swe.init.ModContainers;

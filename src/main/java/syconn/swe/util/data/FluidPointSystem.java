@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import syconn.swe.common.be.PipeBlockEntity;
@@ -30,11 +31,19 @@ public class FluidPointSystem {
     }
 
     public boolean update(Direction d, FluidPoint point) {
-        if (system.get(d).importer != point.importer){
+        if (system.get(d).equals(FluidPoint.Empty()) || system.get(d).exporter != point.exporter){
             system.put(d, point);
             return true;
         } else setEmpty(d);
         return false;
+    }
+
+    public void increment(Direction d, int inc) {
+        system.put(d, system.get(d).increment(inc));
+    }
+
+    public void flip(Direction d) {
+        system.put(d, system.get(d).flip());
     }
 
     public FluidPoint getPoint(Direction d){
@@ -53,7 +62,7 @@ public class FluidPointSystem {
     public List<FluidPoint> getImports(){
         List<FluidPoint> fluidPoints = new ArrayList<>();
         for (Direction d : Direction.values()) {
-            if (!system.get(d).isEmpty() && system.get(d).importer) fluidPoints.add(system.get(d));
+            if (!system.get(d).isEmpty() && system.get(d).exporter) fluidPoints.add(system.get(d));
         }
         return fluidPoints;
     }
@@ -61,7 +70,7 @@ public class FluidPointSystem {
     public List<FluidPoint> getExports(){
         List<FluidPoint> fluidPoints = new ArrayList<>();
         for (Direction d : Direction.values()) {
-            if (!system.get(d).isEmpty() && !system.get(d).importer) {
+            if (!system.get(d).isEmpty() && !system.get(d).exporter) {
                 fluidPoints.add(system.get(d));
             }
         }
@@ -101,20 +110,31 @@ public class FluidPointSystem {
         return system.toString();
     }
 
-    public record FluidPoint(BlockPos pos, Direction d, boolean importer, int priority){
-        public static FluidPoint Empty() { return new FluidPoint(BlockPos.ZERO, Direction.NORTH, true, 1); }
+    public record FluidPoint(BlockPos pos, Direction d, boolean exporter, int priority){
+        public static FluidPoint Empty() { return new FluidPoint(BlockPos.ZERO, Direction.NORTH, true, -10); }
+        public boolean handlesExport() {
+            return exporter && !this.equals(Empty());
+        }
+
+        public FluidPoint increment(int inc) { return new FluidPoint(pos, d, exporter, Mth.clamp(priority + inc, -10, 10)); }
+        public FluidPoint flip() { return new FluidPoint(pos, d, !exporter, priority); }
         public boolean isEmpty() { return pos.equals(BlockPos.ZERO); }
-        public boolean equals(Object obj) { return obj instanceof FluidPoint fp && pos.equals(fp.pos) && d.equals(fp.d) && importer == fp.importer && priority == fp.priority; }
+        public boolean equals(Object obj) { return obj instanceof FluidPoint fp && pos.equals(fp.pos) && d.equals(fp.d) && exporter == fp.exporter && priority == fp.priority; }
         public CompoundTag write() {
             CompoundTag tag = new CompoundTag();
             tag.put("pos", NbtUtils.writeBlockPos(pos));
             tag.putInt("dir", d.get3DDataValue());
-            tag.putBoolean("importer", importer);
+            tag.putBoolean("exporter", exporter);
             tag.putInt("priority", priority);
             return tag;
         }
+
+        public String toString() {
+            return exporter ? "Importer" : "Exporter";
+        }
+
         public static FluidPoint read(CompoundTag tag) {
-            return new FluidPoint(NbtUtils.readBlockPos(tag.getCompound("pos")), Direction.from3DDataValue(tag.getInt("dir")), tag.getBoolean("importer"), tag.getInt("priority"));
+            return new FluidPoint(NbtUtils.readBlockPos(tag.getCompound("pos")), Direction.from3DDataValue(tag.getInt("dir")), tag.getBoolean("exporter"), tag.getInt("priority"));
         }
     }
 }
