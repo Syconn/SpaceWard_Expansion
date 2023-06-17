@@ -3,52 +3,42 @@ package syconn.swe.util;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.client.model.DynamicFluidContainerModel;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
+import syconn.swe.init.ModFluids;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ResourceUtil {
 
     private static Minecraft mc = Minecraft.getInstance();
 
-    public static ResourceLocation getFluidTexture(FluidState fluid){
-        ResourceLocation loc = IClientFluidTypeExtensions.of(fluid).getFlowingTexture();
-        return new ResourceLocation(loc.getNamespace(), "textures/" + loc.getPath() + ".png");
-    }
-
-    public static ResourceLocation getFluidTexture(Fluid fluid){
-        ResourceLocation loc = IClientFluidTypeExtensions.of(fluid).getFlowingTexture();
-        return new ResourceLocation(loc.getNamespace(), "textures/" + loc.getPath() + ".png");
-    }
-
-    public static int getColor(BlockPos pos){
-        Level l = Minecraft.getInstance().level;
-        if (l.getBlockEntity(pos) != null){
-//            System.out.println(l.getBlockEntity(pos).getCapability(ForgeCapabilities.FLUID_HANDLER).map(handler -> handler.getFluidInTank(0).getFluid()));
-        }
-        return DyeColor.LIGHT_BLUE.getFireworkColor();
-    }
-
     public static int getColor(Fluid fluid){
+        if (fluid == Fluids.WATER) return DyeColor.BLUE.getTextColor();
+        if (fluid == ModFluids.SOURCE_O2_FLUID.get()) return 0xFF3F76E4;
         if (fluid != null && fluid != Fluids.EMPTY) {
             int i = IClientFluidTypeExtensions.of(fluid).getTintColor();
             if (i != -1) return i;
             TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(IClientFluidTypeExtensions.of(fluid).getStillTexture());
-            NativeImage input = sprite.contents().getOriginalImage();
-            return -input.getPixelRGBA(0, 3);
+            return -sprite.getPixelRGBA(0, 0, 4);
         }
         return -1;
     }

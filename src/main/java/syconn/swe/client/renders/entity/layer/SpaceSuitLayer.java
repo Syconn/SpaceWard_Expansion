@@ -82,7 +82,7 @@ public class SpaceSuitLayer<P extends Player, M extends PlayerModel<P>> extends 
             ps.translate(0F, -0.80F, 0.3F);
             ps.mulPose(Axis.YP.rotationDegrees(180F));
             VertexConsumer v2 = ItemRenderer.getArmorFoilBuffer(bs, RenderType.armorCutoutNoCull(new ResourceLocation(Main.MODID, "textures/entity/layers/tank.png")), false, false);
-            tm.renderToBuffer(ps, v2, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, Canister.getType(itemstack) == Fluids.EMPTY ? 255F : 230.0F);
+            tm.renderToBuffer(ps, v2, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, Canister.getType(itemstack) == Fluids.EMPTY ? 255.0F : 1.0F);
             ps.popPose();
         }
     }

@@ -38,7 +38,7 @@ public class FluidHelper {
     }
 
     public static void fillHandlerUpdateStack(ItemStack stack, FluidTank tank, int max){
-        if (stack.getItem() instanceof ItemFluidHandler handler){
+        if (stack.getItem() instanceof ItemFluidHandler handler && (handler.getFluid(stack).isEmpty() || handler.getFluid(stack).getFluid() == tank.getFluidInTank(0).getFluid())){
             if (max > handler.getSpace(stack)) max = handler.getSpace(stack);
             handler.setAmount(stack, tank.drain(max, IFluidHandler.FluidAction.EXECUTE).getAmount() + handler.getFluid(stack).getAmount(), tank.getFluidInTank(0).getFluid());
         }

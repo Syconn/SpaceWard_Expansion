@@ -2,6 +2,7 @@ package syconn.swe.client.renders.ber;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -26,9 +27,9 @@ public class TankBER implements BlockEntityRenderer<TankBlockEntity> {
             float i = (float) (be.getFluidTank().getFluidAmount()) / be.getFluidTank().getCapacity();
             ps.translate(1, 0, 0);
             ps.scale(1, i, 1);
-            ps.translate(0, -0.5f, 0);
+            ps.translate(0, -0.5, 0);
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(be.getFluidTexture()));
-            model.renderFluid(be.getFluidTank().getFluid().getFluid(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            model.renderFluid(be.getFluidTank().getFluid().getFluid(), ps, vertexconsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
             ps.popPose();
         }
     }

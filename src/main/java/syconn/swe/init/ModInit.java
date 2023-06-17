@@ -2,6 +2,10 @@ package syconn.swe.init;
 
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -12,12 +16,14 @@ import syconn.swe.item.*;
 import syconn.swe.util.Dyeable;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static syconn.swe.Main.MODID;
 
-public class ModItems {
+public class ModInit {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
@@ -34,9 +40,12 @@ public class ModItems {
     public static final RegistryObject<UpgradeItem> GOLD_UPGRADE = ITEMS.register("gold_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1), 5));
     public static final RegistryObject<UpgradeItem> EMERALD_UPGRADE = ITEMS.register("emerald_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1), 15));
     public static final RegistryObject<UpgradeItem> NETHERITE_UPGRADE = ITEMS.register("netherite_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1).fireResistant(), 25));
+    public static final RegistryObject<BucketItem> O2_BUCKET = ITEMS.register("o2_fluid_bucket", () -> new BucketItem(ModFluids.SOURCE_O2_FLUID, new Item.Properties().stacksTo(1)));
+
 
     public static final RegistryObject<FluidPipe> FLUID_PIPE = register("fluid_pipe", FluidPipe::new);
     public static final RegistryObject<Block> FLUID_TANK = register("fluid_tank", FluidTank::new);
+    public static final RegistryObject<LiquidBlock> O2_FLUID_BLOCK = BLOCKS.register("o2_fluid_block", () -> new LiquidBlock(ModFluids.SOURCE_O2_FLUID, BlockBehaviour.Properties.copy(Blocks.WATER)));
 
     private static <T extends Block> RegistryObject<T> register(String id, Supplier<T> blockSupplier)
     {
@@ -55,16 +64,19 @@ public class ModItems {
 
     public static void addItems(CreativeModeTab.Output e){
         for (DyeColor c : DyeColor.values()){
-            ItemStack s = new ItemStack(ModItems.PARACHUTE.get());
+            ItemStack s = new ItemStack(ModInit.PARACHUTE.get());
             Dyeable.setColor(s, c.getFireworkColor());
             e.accept(s);
         }
-        for (RegistryObject<Item> i : ModItems.ITEMS.getEntries()){
+        List<ItemStack> delayed = new ArrayList<>();
+        delayed.add(Canister.create(8000, 8000, Fluids.LAVA));
+        delayed.add(Canister.create(8000, 8000, Fluids.WATER));
+        for (RegistryObject<Item> i : ModInit.ITEMS.getEntries()){
             if (i.get() instanceof Parachute || i.get() instanceof Canister) continue;
+            if (i.get() instanceof BucketItem b) delayed.add(Canister.create(8000, 8000, b.getFluid()));
             e.accept(i.get());
         }
-        e.accept(Canister.create(8000, 8000, Fluids.LAVA));
-        e.accept(Canister.create(8000, 8000, Fluids.WATER));
-        e.accept(Canister.create(0, 8000, Fluids.EMPTY));
+        delayed.add(Canister.create(0, 8000, Fluids.EMPTY));
+        delayed.forEach(e::accept);
     }
 }

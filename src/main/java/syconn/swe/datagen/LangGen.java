@@ -3,7 +3,7 @@ package syconn.swe.datagen;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;
 import syconn.swe.Main;
-import syconn.swe.init.ModItems;
+import syconn.swe.init.ModInit;
 
 public class LangGen extends LanguageProvider {
 
@@ -13,22 +13,24 @@ public class LangGen extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        add(ModItems.PARACHUTE.get(), "Parachute");
-        add(ModItems.SPACE_HELMET.get(), "Space Helmet");
-        add(ModItems.SPACE_BOOTS.get(), "Space Boots");
-        add(ModItems.SPACE_CHESTPLATE.get(), "Space Chestplate");
-        add(ModItems.SPACE_LEGGINGS.get(), "Space Leggings");
-        add(ModItems.CANISTER.get(), "Canister");
-        add(ModItems.WRENCH.get(), "Wrench");
-        add(ModItems.DIAMOND_UPGRADE.get(), "Diamond Upgrade");
-        add(ModItems.GOLD_UPGRADE.get(), "Gold Upgrade");
-        add(ModItems.IRON_UPGRADE.get(), "Iron Upgrade");
-        add(ModItems.EMERALD_UPGRADE.get(), "Emerald Upgrade");
-        add(ModItems.NETHERITE_UPGRADE.get(), "Netherite Upgrade");
+        add(ModInit.PARACHUTE.get(), "Parachute");
+        add(ModInit.SPACE_HELMET.get(), "Space Helmet");
+        add(ModInit.SPACE_BOOTS.get(), "Space Boots");
+        add(ModInit.SPACE_CHESTPLATE.get(), "Space Chestplate");
+        add(ModInit.SPACE_LEGGINGS.get(), "Space Leggings");
+        add(ModInit.CANISTER.get(), "Canister");
+        add(ModInit.WRENCH.get(), "Wrench");
+        add(ModInit.DIAMOND_UPGRADE.get(), "Diamond Upgrade");
+        add(ModInit.GOLD_UPGRADE.get(), "Gold Upgrade");
+        add(ModInit.IRON_UPGRADE.get(), "Iron Upgrade");
+        add(ModInit.EMERALD_UPGRADE.get(), "Emerald Upgrade");
+        add(ModInit.NETHERITE_UPGRADE.get(), "Netherite Upgrade");
+        add(ModInit.O2_BUCKET.get(), "O2 Bucket");
 
-        add(ModItems.FLUID_PIPE.get(), "Fluid Pipe");
-        add(ModItems.FLUID_TANK.get(), "Fluid Tank");
+        add(ModInit.FLUID_PIPE.get(), "Fluid Pipe");
+        add(ModInit.FLUID_TANK.get(), "Fluid Tank");
 
         add("itemGroup.space", "Spaceward Expansion");
+        add("swe.fluid.o2", "Oxygen");
     }
 }

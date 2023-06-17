@@ -6,7 +6,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
-import syconn.swe.init.ModItems;
+import syconn.swe.init.ModInit;
 import syconn.swe.init.ModTags;
 
 import java.util.function.Consumer;
@@ -19,7 +19,7 @@ public class RecipeGen extends RecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.NETHERITE_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModInit.NETHERITE_UPGRADE.get())
                 .pattern(" n ")
                 .pattern("nrn")
                 .pattern(" n ")
@@ -27,7 +27,7 @@ public class RecipeGen extends RecipeProvider {
                 .define('r', Items.REDSTONE)
                 .unlockedBy("has_ingot", inventoryTrigger(ItemPredicate.Builder.item().of(Items.NETHERITE_INGOT).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DIAMOND_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModInit.DIAMOND_UPGRADE.get())
                 .pattern(" n ")
                 .pattern("nrn")
                 .pattern(" n ")
@@ -35,7 +35,7 @@ public class RecipeGen extends RecipeProvider {
                 .define('r', Items.REDSTONE)
                 .unlockedBy("has_ingot", inventoryTrigger(ItemPredicate.Builder.item().of(Items.DIAMOND).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.EMERALD_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModInit.EMERALD_UPGRADE.get())
                 .pattern(" n ")
                 .pattern("nrn")
                 .pattern(" n ")
@@ -43,7 +43,7 @@ public class RecipeGen extends RecipeProvider {
                 .define('r', Items.REDSTONE)
                 .unlockedBy("has_ingot", inventoryTrigger(ItemPredicate.Builder.item().of(Items.EMERALD).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLD_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModInit.GOLD_UPGRADE.get())
                 .pattern(" n ")
                 .pattern("nrn")
                 .pattern(" n ")
@@ -51,7 +51,7 @@ public class RecipeGen extends RecipeProvider {
                 .define('r', Items.REDSTONE)
                 .unlockedBy("has_ingot", inventoryTrigger(ItemPredicate.Builder.item().of(Items.GOLD_INGOT).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.IRON_UPGRADE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModInit.IRON_UPGRADE.get())
                 .pattern(" n ")
                 .pattern("nrn")
                 .pattern(" n ")
@@ -59,7 +59,7 @@ public class RecipeGen extends RecipeProvider {
                 .define('r', Items.REDSTONE)
                 .unlockedBy("has_ingot", inventoryTrigger(ItemPredicate.Builder.item().of(Items.IRON_INGOT).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, ModItems.FLUID_PIPE.get(), 16)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, ModInit.FLUID_PIPE.get(), 16)
                 .pattern("nnn")
                 .pattern("nrn")
                 .pattern("nnn")
@@ -67,7 +67,7 @@ public class RecipeGen extends RecipeProvider {
                 .define('r', Items.BUCKET)
                 .unlockedBy("has_bucket", inventoryTrigger(ItemPredicate.Builder.item().of(Items.BUCKET).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, ModItems.FLUID_TANK.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, ModInit.FLUID_TANK.get())
                 .pattern("bbb")
                 .pattern("nrn")
                 .pattern("bbb")
@@ -76,12 +76,12 @@ public class RecipeGen extends RecipeProvider {
                 .define('b', Items.IRON_BLOCK)
                 .unlockedBy("has_bucket", inventoryTrigger(ItemPredicate.Builder.item().of(Items.BUCKET).build()))
                 .save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.WRENCH.get())
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModInit.WRENCH.get())
                 .requires(Items.IRON_INGOT, 2)
                 .requires(Items.GOLD_INGOT)
                 .unlockedBy("has_ingot", inventoryTrigger(ItemPredicate.Builder.item().of(Items.IRON_INGOT).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CANISTER.get(), 16)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModInit.CANISTER.get(), 16)
                 .pattern("nnn")
                 .pattern("nrn")
                 .pattern("nnn")
@@ -89,7 +89,7 @@ public class RecipeGen extends RecipeProvider {
                 .define('r', Items.BUCKET)
                 .unlockedBy("has_bucket", inventoryTrigger(ItemPredicate.Builder.item().of(Items.BUCKET).build()))
                 .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.PARACHUTE.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModInit.PARACHUTE.get(), 1)
                 .pattern("www")
                 .pattern("s s")
                 .pattern(" s ")
