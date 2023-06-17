@@ -60,10 +60,11 @@ public class CommonHandler {
         if (!DimSettingsManager.getSettings(p).breathable()){
             if (!p.isCreative()) {
                 p.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(ss -> {
-                    ss.setO2(ss.maxO2());
-                    if (ss.O2() == -20) {
+                    ss.decreaseO2(p);
+                    System.out.println(ss.O2());
+                    if (ss.O2() <= -30) {
                         ss.setO2(0);
-                        p.hurt(p.level.damageSources().source(ModDamageTypes.ANOXIA), 2.0F);
+//                        p.hurt(p.level.damageSources().source(ModDamageTypes.ANOXIA), 2.0F);
                     }
                 });
             }

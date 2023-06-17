@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import org.joml.Quaternionf;
 import syconn.swe.Main;
@@ -40,7 +41,7 @@ public class TankScreen extends AbstractContainerScreen<TankMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack pose, float p_97788_, int p_97789_, int p_97790_) {
+    protected void renderBg(PoseStack pose, float p_97790_, int x, int y) {
         RenderSystem.setShaderTexture(0, BG);
         blit(pose, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
@@ -48,13 +49,17 @@ public class TankScreen extends AbstractContainerScreen<TankMenu> {
         if (IClientFluidTypeExtensions.of(state).getStillTexture() != null) {
             RenderSystem.setShaderTexture(0, menu.getBE().getGuiTexture());
             int i = IClientFluidTypeExtensions.of(state).getTintColor();
-            int y = (int) ((double) (menu.getBE().getFluidTank().getFluidAmount()) / menu.getBE().getFluidTank().getCapacity() * 70);
+            int u = (int) ((double) (menu.getBE().getFluidTank().getFluidAmount()) / menu.getBE().getFluidTank().getCapacity() * 70);
             RenderSystem.setShaderColor((float)(i >> 16 & 255) / 255.0F, (float)(i >> 8 & 255) / 255.0F, (float)(i & 255) / 255.0F, 255.0F);
-            blit(pose, leftPos + 34, topPos + 8 + (70 - y), 0, 70, 34, y);
+            blit(pose, leftPos + 34, topPos + 8 + (70 - u), 0, 70, 34, u);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
         RenderSystem.setShaderTexture(0, BG);
         blit(pose, leftPos + 34, topPos + 8, 176, 0, 6, 70);
+
+        if (leftPos + 34 <= x && x <= leftPos + 67 && topPos + 8 <= y && y <= topPos + 77 && !state.is(Fluids.EMPTY)) {
+            this.renderTooltip(pose, menu.getBE().getFluidTank().getFluidInTank(0).getDisplayName(), x, y);
+        }
     }
 }

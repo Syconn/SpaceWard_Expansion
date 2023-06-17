@@ -3,6 +3,8 @@ package syconn.swe.client;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -28,9 +30,7 @@ import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
 import syconn.swe.client.screen.PipeScreen;
 import syconn.swe.client.screen.RenderUtil;
 import syconn.swe.client.screen.TankScreen;
-import syconn.swe.init.ModBlockEntity;
-import syconn.swe.init.ModContainers;
-import syconn.swe.init.ModItems;
+import syconn.swe.init.*;
 import syconn.swe.item.Canister;
 import syconn.swe.util.ColorUtil;
 import syconn.swe.util.Dyeable;
@@ -42,17 +42,19 @@ public class ClientHandler {
         registerProperties();
         MenuScreens.register(ModContainers.TANK_MENU.get(), TankScreen::new);
         MenuScreens.register(ModContainers.PIPE_MENU.get(), PipeScreen::new);
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_O2_FLUID.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_O2_FLUID.get(), RenderType.translucent());
     }
 
     public static void registerProperties(){
-        ItemProperties.register(ModItems.CANISTER.get(), new ResourceLocation(Main.MODID, "stage"), new ItemPropertyFunction() {
+        ItemProperties.register(ModInit.CANISTER.get(), new ResourceLocation(Main.MODID, "stage"), new ItemPropertyFunction() {
             public float call(ItemStack stack, @Nullable ClientLevel p_174677_, @Nullable LivingEntity p_174678_, int p_174679_) { return Canister.getDisplayValue(stack); }
         });
     }
 
     public static void coloredItems(RegisterColorHandlersEvent.Item e) {
-        e.register((s, layer) -> layer == 0 ? Dyeable.getColor(s) : -1, ModItems.PARACHUTE.get());
-        e.register((s, layer) -> layer == 1 ? ColorUtil.getClosetColor(s.getBarColor()).getMaterialColor().col : -1, ModItems.CANISTER.get());
+        e.register((s, layer) -> layer == 0 ? Dyeable.getColor(s) : -1, ModInit.PARACHUTE.get());
+        e.register((s, layer) -> layer == 1 ? ColorUtil.getClosetColor(s.getBarColor()).getMaterialColor().col : -1, ModInit.CANISTER.get());
     }
 
     public static void coloredBlocks(RegisterColorHandlersEvent.Block e) {}

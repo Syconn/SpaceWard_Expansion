@@ -26,7 +26,7 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.be.PipeBlockEntity;
 import syconn.swe.init.ModBlockEntity;
-import syconn.swe.init.ModItems;
+import syconn.swe.init.ModInit;
 import syconn.swe.util.data.PipeModule;
 
 public class FluidPipe extends FluidTransportBlock {
@@ -84,7 +84,7 @@ public class FluidPipe extends FluidTransportBlock {
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockentity = l.getBlockEntity(pos);
-            if (p.getItemInHand(hand).getItem() == ModItems.WRENCH.get() && blockentity instanceof PipeBlockEntity be) {
+            if (p.getItemInHand(hand).getItem() == ModInit.WRENCH.get() && blockentity instanceof PipeBlockEntity be) {
                 double x = result.getLocation().x - pos.getX();
                 double y = result.getLocation().y - pos.getY();
                 double z = result.getLocation().z - pos.getZ();

@@ -48,6 +48,10 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     private ResourceLocation bfluidLoc;
     private ResourceLocation gfluidLoc;
 
+
+    // TODO FIXES
+    //  - Low O2 Warning
+
     private final ItemStackHandler items = new ItemStackHandler(getContainerSize()) {
         @Override
         protected void onContentsChanged(int slot) { update(); }

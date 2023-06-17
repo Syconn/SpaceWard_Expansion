@@ -16,8 +16,8 @@ public class ModBlockEntity {
 
     public static final DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Main.MODID);
 
-    public static final RegistryObject<BlockEntityType<PipeBlockEntity>> PIPE = register("pipe_be", PipeBlockEntity::new, () -> new Block[]{ModItems.FLUID_PIPE.get()});
-    public static final RegistryObject<BlockEntityType<TankBlockEntity>> TANK = register("tank_be", TankBlockEntity::new, () -> new Block[]{ModItems.FLUID_TANK.get()});
+    public static final RegistryObject<BlockEntityType<PipeBlockEntity>> PIPE = register("pipe_be", PipeBlockEntity::new, () -> new Block[]{ModInit.FLUID_PIPE.get()});
+    public static final RegistryObject<BlockEntityType<TankBlockEntity>> TANK = register("tank_be", TankBlockEntity::new, () -> new Block[]{ModInit.FLUID_TANK.get()});
 
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> supplier, Supplier<Block[]> validBlocksSupplier)
     {

@@ -20,9 +20,7 @@ import syconn.swe.client.ClientHandler;
 import syconn.swe.common.CommonHandler;
 import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.datagen.*;
-import syconn.swe.init.ModBlockEntity;
-import syconn.swe.init.ModContainers;
-import syconn.swe.init.ModItems;
+import syconn.swe.init.*;
 import syconn.swe.network.Network;
 import syconn.swe.worldgen.dimension.MoonSpecialEffects;
 
@@ -49,8 +47,10 @@ public class Main {
 
         ModContainers.REGISTER.register(modEventBus);
         ModBlockEntity.REGISTER.register(modEventBus);
-        ModItems.BLOCKS.register(modEventBus);
-        ModItems.ITEMS.register(modEventBus);
+        ModInit.BLOCKS.register(modEventBus);
+        ModInit.ITEMS.register(modEventBus);
+        ModFluids.FLUID_TYPES.register(modEventBus);
+        ModFluids.FLUIDS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -76,7 +76,7 @@ public class Main {
         e.register(new ResourceLocation(MODID, "moon"), new MoonSpecialEffects());
     }
     public void createTab(CreativeModeTabEvent.Register e){
-        e.registerCreativeModeTab(new ResourceLocation(MODID, "space"), builder -> builder.noScrollBar().title(Component.translatable("itemGroup.space")).icon(() -> new ItemStack(ModItems.SPACE_HELMET.get())).displayItems((a, p) -> ModItems.addItems(p)).build());
+        e.registerCreativeModeTab(new ResourceLocation(MODID, "space"), builder -> builder.noScrollBar().title(Component.translatable("itemGroup.space")).icon(() -> new ItemStack(ModInit.SPACE_HELMET.get())).displayItems((a, p) -> ModInit.addItems(p)).build());
     }
 
     @SubscribeEvent

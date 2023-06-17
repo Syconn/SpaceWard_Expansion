@@ -40,6 +40,6 @@ public class FluidModel extends Model {
 
 	public void renderFluid(Fluid state, PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay){
 		int i = IClientFluidTypeExtensions.of(state).getTintColor();
-		renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, (float)(i >> 16 & 255) / 255.0F, (float)(i >> 8 & 255) / 255.0F, (float)(i & 255) / 255.0F, 255.0F);
+		renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay, (float)(i >> 16 & 255) / 255.0F, (float)(i >> 8 & 255) / 255.0F, (float)(i & 255) / 255.0F, 1.0F);
 	}
 }

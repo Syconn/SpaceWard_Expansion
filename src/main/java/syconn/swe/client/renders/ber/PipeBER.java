@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -39,7 +40,7 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.pushPose();
             ps.translate(1, -0.5f, 0);
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
-            this.pm.renderCase(be.getBlockState(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            this.pm.renderCase(be.getBlockState(), ps, vertexconsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
             ps.scale(1, 1.08f, 1);
             if (Minecraft.getInstance().level.getBlockEntity(be.getSource().pos(), ModBlockEntity.TANK.get()).isPresent()) {
                 TankBlockEntity te = Minecraft.getInstance().level.getBlockEntity(be.getSource().pos(), ModBlockEntity.TANK.get()).get();
@@ -48,7 +49,7 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
                 float f1 = (float)(i >> 8 & 255) / 255.0F;
                 float f2 = (float)(i & 255) / 255.0F;
                 vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(te.getGuiTexture()));
-                this.pm.renderFluid(be.getBlockState(), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
+                this.pm.renderFluid(be.getBlockState(), ps, vertexconsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
             }
             ps.popPose();
         }
@@ -62,7 +63,7 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.pushPose();
             ps.translate(1, -0.5f, 0);
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(te.getGuiTexture()));
-            this.fm.renderFromModule(new PipeModule(be.getBlockState()), ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
+            this.fm.renderFromModule(new PipeModule(be.getBlockState()), ps, vertexconsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY, f, f1, f2, 1.0F);
             ps.popPose();
         }
 
@@ -80,7 +81,7 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(point.d())));
             ps.mulPose(Axis.ZP.rotationDegrees(rot));
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
-            this.pm.renderImport(ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            this.pm.renderImport(ps, vertexconsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
             ps.popPose();
         }
 
@@ -98,7 +99,7 @@ public class PipeBER implements BlockEntityRenderer<PipeBlockEntity> {
             ps.mulPose(Axis.YP.rotationDegrees(Helper.exportFromDirection(point.d())));
             ps.mulPose(Axis.ZP.rotationDegrees(rot));
             VertexConsumer vertexconsumer = bs.getBuffer(RenderType.entityCutoutNoCull(new ResourceLocation(Main.MODID, "textures/models/ber/fluid_pipe.png")));
-            this.pm.renderExport(ps, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+            this.pm.renderExport(ps, vertexconsumer, LightTexture.FULL_BLOCK, OverlayTexture.NO_OVERLAY);
             ps.popPose();
         }
     }

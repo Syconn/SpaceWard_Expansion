@@ -5,10 +5,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
+import syconn.swe.item.Canister;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.util.Animator;
 
@@ -54,7 +56,10 @@ public class SpaceSuit implements ISpaceSuit {
     @Override
     public void decreaseO2(Player p) {
         int i = EnchantmentHelper.getRespiration(p);
-        setO2(i > 0 && new Random().nextInt(i + 1) > 0 ? O2() : O2() - 1);
+        ItemStack stack = getStackInSlot(0);
+        if (stack.getItem() instanceof Canister c && c.getCapacity(stack) > 0) {
+            if (oxygen < maxO2()) oxygen++;
+        } else setO2(i > 0 && new Random().nextInt(i + 1) > 0 ? O2() : O2() - 1);
     }
 
     @Override

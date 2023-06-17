@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
+  "category": "equipment",
   "key": {
     "s": {
       "item": "minecraft:string"
@@ -15,7 +15,6 @@
     " s "
   ],
   "result": {
-    "count": 16,
     "item": "swe:parachute"
   },
   "show_notification": true
