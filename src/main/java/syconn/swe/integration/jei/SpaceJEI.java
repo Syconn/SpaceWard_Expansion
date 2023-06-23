@@ -1,4 +1,4 @@
-package syconn.swe.jei;
+package syconn.swe.integration.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

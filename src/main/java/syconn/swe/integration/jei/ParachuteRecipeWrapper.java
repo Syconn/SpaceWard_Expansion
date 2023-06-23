@@ -1,4 +1,4 @@
-package syconn.swe.jei;
+package syconn.swe.integration.jei;
 
 import com.google.common.collect.ImmutableList;
 import mezz.jei.api.constants.VanillaTypes;
