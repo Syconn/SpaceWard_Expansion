@@ -17,12 +17,11 @@ import syconn.swe.Main;
 import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModCapabilities;
-import syconn.swe.init.ModDamageTypes;
 import syconn.swe.init.ModDim;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
-import syconn.swe.worldgen.dimension.DimChanger;
+import syconn.swe.util.worldgen.dimension.DimChanger;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommonHandler {

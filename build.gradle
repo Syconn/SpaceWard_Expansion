@@ -22,7 +22,6 @@ version = '1.0'
 
 mixin {
     add sourceSets.main, "swe.refmap.json"
-
     config "swe.mixins.json"
 }
 
@@ -99,23 +98,38 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    mavenLocal()
     maven {
         url = 'https://repo.spongepowered.org/repository/maven-public/'
         content { includeGroup "org.spongepowered" }
+    }
+    maven {
+        url "https://www.cursemaven.com"
+    }
+    maven {
+        name "Progwml6 maven"
+        url "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        name "ModMaven"
+        url "https://modmaven.k-4u.nl"
     }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.4-45.0.40'
+    implementation fg.deobf('curse.maven:configured-457570:4462894')
+    compileOnly fg.deobf("mezz.jei:jei-1.19.4-common-api:13.1.0.11")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.4-forge:13.1.0.11")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "spacewardexpansion",
+                "Specification-Title"     : "Spaceward Expansion",
                 "Specification-Vendor"    : "Syconn",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Syconn",

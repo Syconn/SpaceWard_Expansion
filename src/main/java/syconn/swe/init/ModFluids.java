@@ -5,7 +5,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraftforge.client.extensions.IForgeModelBaker;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -14,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.joml.Vector3f;
 import syconn.swe.Main;
-import syconn.swe.fluid.BaseFluidType;
+import syconn.swe.block.fluid.BaseFluidType;
 
 public class ModFluids {
 

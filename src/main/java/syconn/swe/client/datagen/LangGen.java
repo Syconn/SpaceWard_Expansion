@@ -1,4 +1,4 @@
-package syconn.swe.datagen;
+package syconn.swe.client.datagen;
 
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.LanguageProvider;

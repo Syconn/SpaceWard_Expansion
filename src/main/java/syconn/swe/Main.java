@@ -12,17 +12,22 @@ import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.FileUtils;
 import syconn.swe.client.ClientHandler;
+import syconn.swe.client.datagen.*;
 import syconn.swe.common.CommonHandler;
 import syconn.swe.common.data.DimSettingsManager;
-import syconn.swe.datagen.*;
+import syconn.swe.util.config.Config;
 import syconn.swe.init.*;
 import syconn.swe.network.Network;
-import syconn.swe.worldgen.dimension.MoonSpecialEffects;
+import syconn.swe.util.worldgen.dimension.MoonSpecialEffects;
 
 @Mod(Main.MODID)
 public class Main {
@@ -49,8 +54,12 @@ public class Main {
         ModBlockEntity.REGISTER.register(modEventBus);
         ModInit.BLOCKS.register(modEventBus);
         ModInit.ITEMS.register(modEventBus);
+        ModRecipeSerializer.REGISTER.register(modEventBus);
         ModFluids.FLUID_TYPES.register(modEventBus);
         ModFluids.FLUIDS.register(modEventBus);
+
+        FileUtils.getOrCreateDirectory(FMLPaths.CONFIGDIR.get().resolve(MODID), MODID);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_CONFIG, "swe/sweclient.toml");
 
         MinecraftForge.EVENT_BUS.register(this);
     }

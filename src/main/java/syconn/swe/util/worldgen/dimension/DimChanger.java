@@ -1,4 +1,4 @@
-package syconn.swe.worldgen.dimension;
+package syconn.swe.util.worldgen.dimension;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;

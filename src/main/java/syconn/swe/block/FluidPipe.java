@@ -131,7 +131,7 @@ public class FluidPipe extends FluidTransportBlock {
         return new PipeBlockEntity(pos, state);
     }
 
-    @javax.annotation.Nullable
+    @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153182_, BlockState p_153183_, BlockEntityType<T> p_153184_) {
         return !p_153182_.isClientSide ? createTickerHelper(p_153184_, ModBlockEntity.PIPE.get(), PipeBlockEntity::serverTick) : null;
     }

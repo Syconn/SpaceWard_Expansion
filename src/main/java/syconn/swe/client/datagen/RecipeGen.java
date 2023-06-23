@@ -1,11 +1,11 @@
-package syconn.swe.datagen;
+package syconn.swe.client.datagen;
 
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
+import syconn.swe.common.crafting.DyedParachuteRecipe;
 import syconn.swe.init.ModInit;
 import syconn.swe.init.ModTags;
 
@@ -19,6 +19,7 @@ public class RecipeGen extends RecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+        consumer.accept(new DyedParachuteRecipe.Result());
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModInit.NETHERITE_UPGRADE.get())
                 .pattern(" n ")
                 .pattern("nrn")
@@ -88,14 +89,6 @@ public class RecipeGen extends RecipeProvider {
                 .define('n', Items.IRON_INGOT)
                 .define('r', Items.BUCKET)
                 .unlockedBy("has_bucket", inventoryTrigger(ItemPredicate.Builder.item().of(Items.BUCKET).build()))
-                .save(consumer);
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModInit.PARACHUTE.get(), 1)
-                .pattern("www")
-                .pattern("s s")
-                .pattern(" s ")
-                .define('w', ItemTags.WOOL)
-                .define('s', Items.STRING)
-                .unlockedBy("has_wool", inventoryTrigger(ItemPredicate.Builder.item().of(ItemTags.WOOL).build()))
                 .save(consumer);
     }
 }

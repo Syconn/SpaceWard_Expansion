@@ -41,7 +41,6 @@ public class SpaceSuitOverlay {
 
     public static boolean displayOxygen(Player p){
         ItemStack stack = SpaceArmor.getGear(SpaceSlot.TANK, p);
-        // TODO FIX THIS LATER
         if (stack.getItem() instanceof Canister && Canister.getType(stack).getFluidType() == ModFluids.O2_FLUID_TYPE.get() && Canister.getValue(stack) > 0) return false;
         return !DimSettingsManager.getSettings(p).breathable();
     }

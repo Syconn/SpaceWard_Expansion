@@ -1,5 +1,5 @@
-// 1.19.4	2023-06-15T19:06:54.9454731	Recipes
-1205f2c9086bb7b7c1952c1f5643fc0c50f59e28 data/swe/advancements/recipes/combat/parachute.json
+// 1.19.4	2023-06-22T23:04:55.6941971	Recipes
+61662bf18cafe645d668887e6f836736bba72474 data/swe/advancements/recipes/combat/parachute.json
 4400b7cf06aea637b6c6b790d829530a23c84803 data/swe/advancements/recipes/misc/diamond_upgrade.json
 0b9b5dc40cdc38040f43522db1f5d2d7b7e4b2cd data/swe/advancements/recipes/misc/emerald_upgrade.json
 260ed375ef9cd4aa45707b1e0fb897e42fe4ba20 data/swe/advancements/recipes/misc/gold_upgrade.json
@@ -17,5 +17,5 @@ a902118102cbc5d668a4fc3ab34f5f290dfb0bbc data/swe/recipes/fluid_tank.json
 990707df9483e61a9deb201a33fcc2719cc1bb01 data/swe/recipes/gold_upgrade.json
 dc11fc9e23f67d416195a94793c3a9d1859afdad data/swe/recipes/iron_upgrade.json
 411d09d07fa41c88e56c7b69581a98f7b71ba667 data/swe/recipes/netherite_upgrade.json
-7da7457307d2250ebe3cce18b19c02b528f970d5 data/swe/recipes/parachute.json
+54b11c93581fe7275634aaacaafcd84a14f86f27 data/swe/recipes/parachute.json
 2f8341354c278f478724936d675f88a1fbf56d49 data/swe/recipes/wrench.json
