@@ -1,6 +1,7 @@
 package syconn.swe.util;
 
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.material.MaterialColor;
 
 import java.awt.*;
 
@@ -28,6 +29,13 @@ public class ColorUtil {
             }
         }
         return closetColor;
+    }
+
+    public static DyeColor byMaterialColor(MaterialColor color) {
+        for (DyeColor c : DyeColor.values()){
+            if (c.getMaterialColor() == color) return c;
+        }
+        return DyeColor.WHITE;
     }
 
 }

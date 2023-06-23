@@ -1,4 +1,4 @@
-package syconn.swe.fluid;
+package syconn.swe.block.fluid;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;

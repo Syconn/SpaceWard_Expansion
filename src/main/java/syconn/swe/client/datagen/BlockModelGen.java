@@ -1,9 +1,11 @@
-package syconn.swe.datagen;
+package syconn.swe.client.datagen;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import syconn.swe.Main;
 import syconn.swe.init.ModInit;
 import syconn.swe.util.data.PipeModule;
@@ -25,7 +27,8 @@ public class BlockModelGen extends BlockStateProvider {
                     .build();
         });
         simpleBlock(ModInit.FLUID_TANK.get(), generated("fluid_tank"));
-
+        simpleBlock(ModInit.OXYGEN.get(), "minecraft:translucent");
+//        itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModInit.OXYGEN_DISPERSER.get()).getPath(), modLoc("block/oxygen_disperser"));
         itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModInit.FLUID_PIPE.get()).getPath(), modLoc("block/fluid_pipe"));
         itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModInit.FLUID_TANK.get()).getPath(), modLoc("block/fluid_tank"));
     }
@@ -33,4 +36,13 @@ public class BlockModelGen extends BlockStateProvider {
     private ModelFile generated(String loc) {
         return new ModelFile.UncheckedModelFile(modLoc("block/" + loc));
     }
+
+    private void simpleBlock(Block block, String renderType) {
+        simpleBlock(block, cubeAll(block, renderType));
+    }
+
+    private ModelFile cubeAll(Block block, String renderType) {
+        return models().cubeAll(ForgeRegistries.BLOCKS.getKey(block).getPath(), blockTexture(block)).renderType(renderType);
+    }
+
 }

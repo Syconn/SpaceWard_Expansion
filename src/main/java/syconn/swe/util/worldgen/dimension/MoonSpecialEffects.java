@@ -1,4 +1,4 @@
-package syconn.swe.worldgen.dimension;
+package syconn.swe.util.worldgen.dimension;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;

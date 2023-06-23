@@ -51,6 +51,7 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
 
     // TODO FIXES
     //  - Low O2 Warning
+    //  - Parachute Set Color
 
     private final ItemStackHandler items = new ItemStackHandler(getContainerSize()) {
         @Override

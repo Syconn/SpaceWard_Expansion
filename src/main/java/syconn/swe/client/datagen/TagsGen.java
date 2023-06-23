@@ -1,4 +1,4 @@
-package syconn.swe.datagen;
+package syconn.swe.client.datagen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;

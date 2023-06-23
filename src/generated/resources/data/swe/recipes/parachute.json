@@ -1,21 +1,3 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "s": {
-      "item": "minecraft:string"
-    },
-    "w": {
-      "tag": "minecraft:wool"
-    }
-  },
-  "pattern": [
-    "www",
-    "s s",
-    " s "
-  ],
-  "result": {
-    "item": "swe:parachute"
-  },
-  "show_notification": true
+  "type": "swe:parachute_recipe"
 }
