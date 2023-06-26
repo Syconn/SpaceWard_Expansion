@@ -11,7 +11,7 @@ import syconn.swe.Main;
 
 public class ModDim {
 
-    public static final ResourceLocation MOON = new ResourceLocation(Main.MODID, "test");
+    public static final ResourceLocation MOON = new ResourceLocation(Main.MODID, "moon");
     public static final ResourceKey<Level> MOON_KEY = ResourceKey.create(Registries.DIMENSION, MOON);
 
     public static boolean onMoon(Entity e){
