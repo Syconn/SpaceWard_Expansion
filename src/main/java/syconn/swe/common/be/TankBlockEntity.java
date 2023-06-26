@@ -37,21 +37,15 @@ import syconn.swe.common.data.PixelImage;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.item.extras.ItemFluidHandler;
 import syconn.swe.util.FluidHelper;
+import syconn.swe.util.GUIFluidHandlerBlockEntity;
 import syconn.swe.util.ResourceUtil;
 import syconn.swe.util.data.FluidPointSystem;
 
-public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProvider {
+public class TankBlockEntity extends GUIFluidHandlerBlockEntity implements MenuProvider {
 
     private int fillSpeed = 500;
     private PixelImage bfluid;
-    private PixelImage gfluid;
     private ResourceLocation bfluidLoc;
-    private ResourceLocation gfluidLoc;
-
-
-    // TODO FIXES
-    //  - Low O2 Warning
-    //  - Parachute Set Color
 
     private final ItemStackHandler items = new ItemStackHandler(getContainerSize()) {
         @Override
@@ -60,30 +54,14 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> items);
 
     public TankBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntity.TANK.get(), pos, state);
-        this.tank = new FluidTank(16000){
-            @Override
-            protected void onContentsChanged() { update(); }
-
-            @Override
-            public int fill(FluidStack resource, FluidAction action) {
-                if (fluid.isEmpty()) updateTextures(resource);
-                return super.fill(resource, action);
-            }
-        };
+        super(ModBlockEntity.TANK.get(), pos, state, 16000);
     }
 
-    private void updateTextures(FluidStack resource) {
+    protected void updateTextures(FluidStack resource) {
+        super.updateTextures(resource);
         bfluid = new PixelImage(ResourceUtil.createFluidBlockTexture(resource.getFluid()));
-        gfluid = new PixelImage(ResourceUtil.createFluidGuiTexture(resource.getFluid()));
         bfluidLoc = Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
-        gfluidLoc = Minecraft.getInstance().getTextureManager().register("gfluid", gfluid.getImageFromPixels());
         update();
-    }
-
-    public FluidTank getFluidTank()
-    {
-        return this.tank;
     }
 
     public ItemStackHandler getItems() {
@@ -93,43 +71,28 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
     public ResourceLocation getFluidTexture() {
         return bfluidLoc;
     }
-    
-    public ResourceLocation getGuiTexture() {
-        return gfluidLoc;
-    }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         if (tag.contains("Inventory")) items.deserializeNBT(tag.getCompound("Inventory"));
         if (tag.contains("bfluid")) bfluid = PixelImage.read(tag.getCompound("bfluid"));
-        if (tag.contains("gfluid")) gfluid = PixelImage.read(tag.getCompound("gfluid"));
         if (bfluid != null) bfluidLoc = Minecraft.getInstance().getTextureManager().register("bfluid", bfluid.getImageFromPixels());
-        if (gfluid != null) gfluidLoc = Minecraft.getInstance().getTextureManager().register("gfluid", gfluid.getImageFromPixels());
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tank.writeToNBT(tag);
         tag.put("Inventory", items.serializeNBT());
         if (bfluid != null) tag.put("bfluid", bfluid.write());
-        if (gfluid != null) tag.put("gfluid", gfluid.write());
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        CompoundTag tag = new CompoundTag();
-        tank.writeToNBT(tag);
+        CompoundTag tag = super.getUpdateTag();
         tag.put("items", items.serializeNBT());
         if (bfluid != null) tag.put("bfluid", bfluid.write());
-        if (gfluid != null) tag.put("gfluid", gfluid.write());
         return tag;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
@@ -168,15 +131,13 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
                 if (fill > 0) {
                     e.getItems().extractItem(0, 1, false);
                     e.getItems().insertItem(1, new ItemStack(Items.BUCKET), false);
-                }
-                else if (b.getFluid() instanceof EmptyFluid && !e.getFluidTank().isEmpty() && !(e.getItems().getStackInSlot(1).getItem() instanceof BucketItem)) {
+                } else if (b.getFluid() instanceof EmptyFluid && !e.getFluidTank().isEmpty() && !(e.getItems().getStackInSlot(1).getItem() instanceof BucketItem)) {
                     FluidStack fluidStack = FluidUtil.getFluidHandler(heldItem).map(handler -> e.tank.drain(handler.getTankCapacity(0), IFluidHandler.FluidAction.EXECUTE)).orElse(FluidStack.EMPTY);
                     e.getItems().extractItem(0, 1, false);
                     if (fluidStack == FluidStack.EMPTY) e.getItems().insertItem(1, new ItemStack(Items.BUCKET), false);
                     else e.getItems().insertItem(1, FluidUtil.getFilledBucket(fluidStack), false);
                 }
-            }
-            else if (heldItem.getItem() instanceof ItemFluidHandler && e.getItems().getStackInSlot(1) == ItemStack.EMPTY) {
+            } else if (heldItem.getItem() instanceof ItemFluidHandler && e.getItems().getStackInSlot(1) == ItemStack.EMPTY) {
                 e.getItems().extractItem(0, 1, false);
                 e.getItems().insertItem(1, FluidHelper.fillTankReturnStack(heldItem, e.tank), false);
             }
@@ -185,21 +146,20 @@ public class TankBlockEntity extends FluidHandlerBlockEntity implements MenuProv
                 FluidHelper.fillHandlerUpdateStack(item, e.tank, e.fillSpeed);
             }
             if (!e.tank.isEmpty() && state.getValue(FluidBaseBlock.ENABLED)) {
-                for (Direction d : Direction.values()){
-                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe) {
+                for (Direction d : Direction.values()) {
+                    if (level.getBlockEntity(pos.relative(d)) instanceof PipeBlockEntity pe) { // TODO Doesn't work with other fluids handlers
                         FluidPointSystem.FluidPoint point = pe.getSystem().getPoint(d.getOpposite());
                         if (point.handlesExport() && (point.priority() > pe.getSource().priority() || pe.getSource().isEmpty() || point.equals(pe.getSource()))) {
                             pe.setSource(pe.getSystem().getPoint(d.getOpposite()));
                             pe.clear();
                         }
+                    } else {
+                        if (level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).isPresent()) {
+                            FluidUtil.tryFluidTransfer(level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).resolve().get(), e.tank, e.fillSpeed, true);
+                        }
                     }
                 }
             }
         }
-    }
-
-    private void update(){
-        setChanged();
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
     }
 }

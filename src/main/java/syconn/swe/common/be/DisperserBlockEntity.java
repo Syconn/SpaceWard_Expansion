@@ -7,8 +7,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.TickPriority;
+import net.minecraftforge.fluids.capability.FluidHandlerBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModInit;
+import syconn.swe.util.GUIFluidHandlerBlockEntity;
 import syconn.swe.util.NbtHelper;
 
 import java.util.ArrayList;
@@ -16,14 +18,14 @@ import java.util.List;
 
 import static syconn.swe.block.OxygenDisperser.addBlock;
 
-public class DisperserBlockEntity extends BlockEntity {
+public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity {
 
     public List<BlockPos> list = new ArrayList<>();
     public int maxFill = 20;
     private int testRate = 100;
 
     public DisperserBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(ModBlockEntity.DISPERSER.get(), p_155229_, p_155230_);
+        super(ModBlockEntity.DISPERSER.get(), p_155229_, p_155230_, 8000);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, DisperserBlockEntity e) {
