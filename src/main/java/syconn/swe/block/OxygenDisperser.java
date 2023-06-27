@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.RepeaterBlock;
@@ -17,6 +19,9 @@ import org.jetbrains.annotations.Nullable;
 import syconn.swe.common.be.DisperserBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModInit;
+import syconn.swe.util.data.AirBubblesSavedData;
+
+import java.util.UUID;
 
 public class OxygenDisperser extends FluidBaseBlock {
 
@@ -24,17 +29,17 @@ public class OxygenDisperser extends FluidBaseBlock {
         super(Properties.of(Material.METAL));
     }
 
-    // TODO do it similar to fluid expansion with distance from source cap
-    //  - will require a new block that can be easily removed
     @Override
     public void onPlace(BlockState state, Level l, BlockPos pos, BlockState p_54113_, boolean p_54114_) {
+        l.getBlockEntity(pos, ModBlockEntity.DISPERSER.get()).get().setUUID(UUID.randomUUID());
         addBlock(l, pos.relative(Direction.UP), pos, 1);
-        l.scheduleTick(pos, this, 25, TickPriority.HIGH);
+        l.scheduleTick(pos, this, 25, TickPriority.NORMAL);
     }
 
     @Override
     public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_, boolean p_60519_) {
         if (p_60515_.hasBlockEntity() && (!p_60515_.is(p_60518_.getBlock()) || !p_60518_.hasBlockEntity()) && p_60516_.getBlockEntity(p_60517_) instanceof DisperserBlockEntity de) {
+            AirBubblesSavedData.get().remove(p_60516_.dimension(), de.getUUID());
             for (BlockPos pos : de.list) {
                 p_60516_.removeBlock(pos, false);
             }
@@ -44,13 +49,7 @@ public class OxygenDisperser extends FluidBaseBlock {
 
     @Override
     public void tick(BlockState p_222945_, ServerLevel p_222946_, BlockPos p_222947_, RandomSource p_222948_) {
-        if (p_222946_.getBlockEntity(p_222947_) instanceof DisperserBlockEntity de) {
-            if (de.list.isEmpty()) System.out.println("fail");
-            else {
-                System.out.println("success");
-                p_222946_.getBlockEntity(p_222947_, ModBlockEntity.DISPERSER.get()).get().failed(false);
-            }
-        }
+        if (p_222946_.getBlockEntity(p_222947_) instanceof DisperserBlockEntity de) de.failed(false);
     }
 
     @Nullable

@@ -17,10 +17,12 @@ import syconn.swe.Main;
 import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.common.inventory.ExtendedPlayerInventory;
 import syconn.swe.init.ModCapabilities;
+import syconn.swe.init.ModDamageTypes;
 import syconn.swe.init.ModDim;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.item.Parachute;
 import syconn.swe.item.SpaceArmor;
+import syconn.swe.util.data.AirBubblesSavedData;
 import syconn.swe.util.worldgen.dimension.DimChanger;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -56,14 +58,14 @@ public class CommonHandler {
                 else if (p.fallDistance == 0) ss.parachute(false);
             } else ss.parachute(false);
         });
-        if (!DimSettingsManager.getSettings(p).breathable()){
+        if (!DimSettingsManager.getSettings(p).breathable() && !AirBubblesSavedData.get().breathable(p.level.dimension(), p.getOnPos().above(2))){
             if (!p.isCreative()) {
                 p.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(ss -> {
                     ss.decreaseO2(p);
                     System.out.println(ss.O2());
                     if (ss.O2() <= -30) {
                         ss.setO2(0);
-//                        p.hurt(p.level.damageSources().source(ModDamageTypes.ANOXIA), 2.0F);
+                        p.hurt(p.level.damageSources().source(ModDamageTypes.ANOXIA), 2.0F);
                     }
                 });
             }

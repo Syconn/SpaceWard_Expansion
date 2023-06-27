@@ -4,33 +4,55 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import syconn.swe.util.Helper;
 import syconn.swe.util.NbtHelper;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class AirBubblesSavedData extends SavedData {
 
-    private final Map<ResourceKey<Level>, List<BlockPos>> levelBlockPositions = new HashMap<>();
+    private final Map<ResourceKey<Level>, Map<UUID, List<BlockPos>>> levelBlockPositions = new HashMap<>();
 
-    public void add(ResourceKey<Level> level, List<BlockPos> pos) {
-        levelBlockPositions.put(level, Helper.combineLists(levelBlockPositions.get(level), pos));
+    public List<BlockPos> set(ResourceKey<Level> level, UUID uuid, List<BlockPos> positions) {
+        Map<UUID, List<BlockPos>> oxygenMap = levelBlockPositions.computeIfAbsent(level, id -> new HashMap<>());
+        setDirty();
+        return oxygenMap.put(uuid, positions);
+    }
+
+    public List<BlockPos> remove(ResourceKey<Level> level, UUID uuid) {
+        Map<UUID, List<BlockPos>> oxygenMap = levelBlockPositions.computeIfAbsent(level, id -> new HashMap<>());
+        setDirty();
+        return oxygenMap.remove(uuid);
+    }
+
+    public boolean breathable(ResourceKey<Level> level, BlockPos pos) {
+        if (!levelBlockPositions.containsKey(level)) return false;
+        for (List<BlockPos> positions : levelBlockPositions.get(level).values()) if (positions.contains(pos)) return true;
+        return false;
     }
 
     public CompoundTag save(CompoundTag tag) {
         ListTag levelPoses = new ListTag();
         levelBlockPositions.forEach((level, positions) -> {
             CompoundTag cp = new CompoundTag();
+            ListTag cpList = new ListTag();
             cp.putString("loc", level.location().toString());
-            cp.put("positions", NbtHelper.writePosses(positions));
+            positions.forEach(((uuid, blockPos) -> {
+                CompoundTag ct = new CompoundTag();
+                ct.putUUID("uuid", uuid);
+                ct.put("positions", NbtHelper.writePosses(blockPos));
+                cpList.add(ct);
+            }));
+            cp.put("cdata", cpList);
             levelPoses.add(cp);
         });
         tag.put("air_bubbles", levelPoses);
@@ -39,11 +61,15 @@ public class AirBubblesSavedData extends SavedData {
 
     public void read(CompoundTag tag) {
         levelBlockPositions.clear();
-        if(tag.contains("", Tag.TAG_LIST))
-        {
+        if(tag.contains("air_bubbles", Tag.TAG_LIST)) {
             tag.getList("air_bubbles", Tag.TAG_COMPOUND).forEach(nbt -> {
-                CompoundTag data = (CompoundTag) nbt;
-                levelBlockPositions.put(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(data.getString("loc"))), NbtHelper.readPosses(data.getCompound("positions")));
+                CompoundTag outerData = (CompoundTag) nbt;
+                Map<UUID, List<BlockPos>> oxygenMap = new HashMap<>();
+                tag.getList("air_bubbles", Tag.TAG_COMPOUND).forEach(nNBT -> {
+                    CompoundTag ct = (CompoundTag) nNBT;
+                    oxygenMap.put(ct.getUUID("uuid"), NbtHelper.readPosses(ct.getCompound("positions")));
+                });
+                levelBlockPositions.put(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(outerData.getString("loc"))), oxygenMap);
             });
         }
     }

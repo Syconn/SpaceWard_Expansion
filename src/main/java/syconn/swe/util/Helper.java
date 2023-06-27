@@ -60,4 +60,13 @@ public class Helper {
         }
         return list;
     }
+
+    @SafeVarargs
+    @SuppressWarnings("Unchecked")
+    public static <E> List<E> removeFromList(List<E> list, List<E>... lists) {
+        for (int i = 1; i < lists.length; i++) {
+            list.removeAll(lists[i]);
+        }
+        return list;
+    }
 }

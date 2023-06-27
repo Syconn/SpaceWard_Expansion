@@ -12,9 +12,11 @@ import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModInit;
 import syconn.swe.util.GUIFluidHandlerBlockEntity;
 import syconn.swe.util.NbtHelper;
+import syconn.swe.util.data.AirBubblesSavedData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static syconn.swe.block.OxygenDisperser.addBlock;
 
@@ -23,6 +25,7 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity {
     public List<BlockPos> list = new ArrayList<>();
     public int maxFill = 20;
     private int testRate = 100;
+    private UUID uuid;
 
     public DisperserBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(ModBlockEntity.DISPERSER.get(), p_155229_, p_155230_, 8000);
@@ -33,7 +36,7 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity {
         if (e.testRate <= 0) {
             e.testRate = 100;
             addBlock(level, pos.relative(Direction.UP), pos, 1);
-            level.scheduleTick(pos, ModInit.OXYGEN_DISPERSER.get(), 25, TickPriority.HIGH);
+            level.scheduleTick(pos, ModInit.OXYGEN_DISPERSER.get(), 25, TickPriority.NORMAL);
         }
     }
 
@@ -41,18 +44,31 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity {
         for (BlockPos pos : list) {
             level.removeBlock(pos, false);
         }
-        if (t) list.clear();
+        if (t) {
+            list.clear();
+            AirBubblesSavedData.get().remove(level.dimension(), uuid);
+        } else AirBubblesSavedData.get().set(level.dimension(), uuid, list);
+    }
+
+    public UUID getUUID() {
+        return uuid;
+    }
+
+    public void setUUID(UUID uuid) {
+        if (this.uuid == null) this.uuid = uuid;
     }
 
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("list", NbtHelper.writePosses(list));
         tag.putInt("fill", maxFill);
+        if (this.uuid != null) tag.putUUID("DisperserUUID", this.uuid);
     }
 
     public void load(CompoundTag tag) {
         super.load(tag);
         list = NbtHelper.readPosses(tag.getCompound("list"));
-//        maxFill = tag.getInt("fill");
+        maxFill = tag.getInt("fill");
+        if(tag.hasUUID("DisperserUUID")) this.uuid = tag.getUUID("DisperserUUID");
     }
 }
