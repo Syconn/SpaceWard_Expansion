@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DiodeBlock;
+import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -24,6 +25,8 @@ import syconn.swe.util.data.AirBubblesSavedData;
 import java.util.UUID;
 
 public class OxygenDisperser extends FluidBaseBlock {
+
+    // TODO leave air blocks in the room and check for air block updates
 
     public OxygenDisperser() {
         super(Properties.of(Material.METAL));

@@ -1,7 +1,7 @@
-// 1.19.4	2023-06-21T22:05:38.9899034	Block States: swe
+// 1.19.4	2023-06-27T17:28:38.6856733	Block States: swe
 96484598c4d30a9e8fe515d0829fc3473f75d7f1 assets/swe/blockstates/fluid_pipe.json
 a4332eacf646dbba1ee90b1cc8346c806940f448 assets/swe/blockstates/fluid_tank.json
 138b01a2fc57cb99f38214335f0b00394381ba95 assets/swe/blockstates/oxygen.json
-36c23a51a5fdc8a5bc0b5c602b4496392fd33973 assets/swe/models/block/oxygen.json
+96114d18b2064ee2bbfa2ddd6e5bd87f30df945f assets/swe/models/block/oxygen.json
 0862301b6a761085586ff20d8f062ce22092f853 assets/swe/models/item/fluid_pipe.json
 707f332e8b0ff7fc1db93cf4d248c7e2b121d294 assets/swe/models/item/fluid_tank.json
