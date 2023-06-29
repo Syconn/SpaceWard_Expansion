@@ -10,6 +10,6 @@ public class DimChanger implements ITeleporter {
 
     public Entity placeEntity(Entity entity, ServerLevel currentWorld, ServerLevel destWorld, float yaw, Function<Boolean, Entity> repositionEntity)
     {
-        return repositionEntity.apply(true);
+        return repositionEntity.apply(false); // TODO MAY NEED TO FIX TO GET TO PROPER PLACEMENT IN THE AIR
     }
 }
