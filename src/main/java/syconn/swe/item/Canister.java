@@ -84,8 +84,8 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
         return SpaceSlot.TANK;
     }
 
-    public static ItemStack create(int c, int m, Fluid type){
-        ItemStack stack = new ItemStack(ModInit.CANISTER.get());
+    public static ItemStack create(int c, int m, Fluid type, Item item){
+        ItemStack stack = new ItemStack(item);
         if (c == 0) type = EMPTY;
         stack.getOrCreateTag().putString(FLUID, ForgeRegistries.FLUIDS.getKey(type).toString());
         if (type != EMPTY) stack.getOrCreateTag().putInt(COLOR, ResourceUtil.getColor(getType(stack)));
@@ -138,11 +138,11 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
     }
 
     public ItemStack create(FluidStack stack) {
-        return create(stack.getAmount(), 8000, stack.getFluid());
+        return create(stack.getAmount(), 8000, stack.getFluid(), ModInit.CANISTER.get());
     }
 
     public ItemStack createEmpty() {
-        return create(0, 8000, EMPTY);
+        return create(0, 8000, EMPTY, ModInit.CANISTER.get());
     }
 
     public int getColor(ItemStack stack) {

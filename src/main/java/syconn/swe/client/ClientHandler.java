@@ -50,22 +50,24 @@ public class ClientHandler {
         ItemProperties.register(ModInit.CANISTER.get(), new ResourceLocation(Main.MODID, "stage"), new ItemPropertyFunction() {
             public float call(ItemStack stack, @Nullable ClientLevel p_174677_, @Nullable LivingEntity p_174678_, int p_174679_) { return Canister.getDisplayValue(stack); }
         });
+        ItemProperties.register(ModInit.AUTO_REFILL_CANISTER.get(), new ResourceLocation(Main.MODID, "stage"), new ItemPropertyFunction() {
+            public float call(ItemStack stack, @Nullable ClientLevel p_174677_, @Nullable LivingEntity p_174678_, int p_174679_) { return Canister.getDisplayValue(stack); }
+        });
     }
 
     public static void coloredItems(RegisterColorHandlersEvent.Item e) {
         e.register((s, layer) -> layer == 0 ? Dyeable.getColor(s) : -1, ModInit.PARACHUTE.get());
-        e.register((s, layer) -> layer == 1 ? ColorUtil.getClosetColor(s.getBarColor()).getMaterialColor().col : -1, ModInit.CANISTER.get());
+        e.register((s, layer) -> layer == 1 ? ColorUtil.getClosetColor(s.getBarColor()).getMaterialColor().col : -1, ModInit.CANISTER.get(), ModInit.AUTO_REFILL_CANISTER.get());
     }
 
     public static void coloredBlocks(RegisterColorHandlersEvent.Block e) {}
 
-    public static void addLayers(EntityRenderersEvent.AddLayers e){
+    public static void addLayers(EntityRenderersEvent.AddLayers e) {
         addBackpackLayer(e.getSkin("default"), e.getEntityModels());
         addBackpackLayer(e.getSkin("slim"), e.getEntityModels());
     }
 
-    private static void addBackpackLayer(LivingEntityRenderer<?, ?> renderer, EntityModelSet s)
-    {
+    private static void addBackpackLayer(LivingEntityRenderer<?, ?> renderer, EntityModelSet s) {
         if(renderer instanceof PlayerRenderer playerRenderer)
         {
             playerRenderer.addLayer(new SpaceSuitLayer<>(playerRenderer, s));
@@ -86,8 +88,7 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerRenderScreen(ContainerScreenEvent.Render.Background event)
-    {
+    public void onPlayerRenderScreen(ContainerScreenEvent.Render.Background event) {
         RenderUtil.overridePlayerScreen(event.getPoseStack(), event.getContainerScreen());
     }
 

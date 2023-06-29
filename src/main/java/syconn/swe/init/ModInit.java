@@ -76,14 +76,21 @@ public class ModInit {
             e.accept(s);
         }
         List<ItemStack> delayed = new ArrayList<>();
-        delayed.add(Canister.create(8000, 8000, Fluids.LAVA));
-        delayed.add(Canister.create(8000, 8000, Fluids.WATER));
+        delayed.add(Canister.create(8000, 8000, Fluids.LAVA, ModInit.CANISTER.get()));
+        delayed.add(Canister.create(8000, 8000, Fluids.LAVA, ModInit.AUTO_REFILL_CANISTER.get()));
+        delayed.add(Canister.create(8000, 8000, Fluids.WATER, ModInit.CANISTER.get()));
+        delayed.add(Canister.create(8000, 8000, Fluids.WATER, ModInit.AUTO_REFILL_CANISTER.get()));
         for (RegistryObject<Item> i : ModInit.ITEMS.getEntries()){
             if (i.get() instanceof Parachute || i.get() instanceof Canister) continue;
-            if (i.get() instanceof BucketItem b) delayed.add(Canister.create(8000, 8000, b.getFluid()));
+            if (i.get() instanceof BlockItem bi && bi.getBlock() instanceof DispersibleAirBlock) continue;
+            if (i.get() instanceof BucketItem b) {
+                delayed.add(Canister.create(8000, 8000, b.getFluid(), ModInit.CANISTER.get()));
+                delayed.add(Canister.create(8000, 8000, b.getFluid(), ModInit.AUTO_REFILL_CANISTER.get()));
+            }
             e.accept(i.get());
         }
-        delayed.add(Canister.create(0, 8000, Fluids.EMPTY));
+        delayed.add(Canister.create(0, 8000, Fluids.EMPTY, ModInit.CANISTER.get()));
+        delayed.add(Canister.create(0, 8000, Fluids.EMPTY, ModInit.AUTO_REFILL_CANISTER.get()));
         delayed.forEach(e::accept);
     }
 

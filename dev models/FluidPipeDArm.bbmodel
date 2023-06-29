@@ -1,0 +1,171 @@
+{
+	"meta": {
+		"format_version": "4.5",
+		"model_format": "java_block",
+		"box_uv": false
+	},
+	"name": "FluidPipeDArm",
+	"parent": "",
+	"ambientocclusion": true,
+	"front_gui_light": false,
+	"visible_box": [1, 1, 0],
+	"variable_placeholders": "",
+	"variable_placeholder_buttons": [],
+	"unhandled_root_fields": {},
+	"resolution": {
+		"width": 16,
+		"height": 16
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [5, 5, 0],
+			"to": [11, 11, 16],
+			"autouv": 0,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 3, 3, 6],
+					"texture": 1
+				},
+				"east": {
+					"uv": [0, 0, 16, 6],
+					"texture": 0
+				},
+				"south": {
+					"uv": [0, 3, 3, 6],
+					"texture": 1
+				},
+				"west": {
+					"uv": [0, 0, 16, 6],
+					"rotation": 180,
+					"texture": 0
+				},
+				"up": {
+					"uv": [0, 0, 16, 6],
+					"rotation": 270,
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 0, 16, 6],
+					"rotation": 90,
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "ccb69f54-f1cc-f317-3e65-d19ccdd363d6"
+		},
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [5.2, 5.1, 0.1],
+			"to": [10.9, 10.9, 15.9],
+			"autouv": 0,
+			"color": 5,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [2.25, 0.25, 2.75, 0.75],
+					"tint": 0,
+					"texture": 2
+				},
+				"east": {
+					"uv": [2.25, 0.25, 2.75, 0.75],
+					"tint": 0,
+					"texture": 2
+				},
+				"south": {
+					"uv": [2.25, 0.25, 2.75, 0.75],
+					"tint": 0,
+					"texture": 2
+				},
+				"west": {
+					"uv": [2.25, 0.25, 2.75, 0.75],
+					"tint": 0,
+					"texture": 2
+				},
+				"up": {
+					"uv": [2.25, 0.25, 2.75, 0.75],
+					"tint": 0,
+					"texture": 2
+				},
+				"down": {
+					"uv": [2.25, 0.25, 2.75, 0.75],
+					"tint": 0,
+					"texture": 2
+				}
+			},
+			"type": "cube",
+			"uuid": "4c30325f-1602-79e4-0e81-377b69876079"
+		}
+	],
+	"outliner": ["ccb69f54-f1cc-f317-3e65-d19ccdd363d6", "4c30325f-1602-79e4-0e81-377b69876079"],
+	"textures": [
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\fluid_pipe_darm.png",
+			"name": "fluid_pipe_darm.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "0",
+			"particle": true,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "10a443f2-9978-628c-1e07-0cab742f50f0",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/fluid_pipe_darm.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAEpJREFUOE9j/Pv3738GCgAjBXrBWlEMuPDq5X8DMXGSxOCKV1y4+T/CQB1FMzFilHthcAUiOTFCeRiQYyuynlEXoOUFcgKU4kAEAGvEH/1MjI/UAAAAAElFTkSuQmCC"
+		},
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\center_fluid_pipe.png",
+			"name": "center_fluid_pipe.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "1",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "dec51f87-b832-43a0-ddca-c3a29eed2680",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/center_fluid_pipe.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAIJJREFUWEdj/Pv3738GLICZmZkRmzi1xRhBDqCXZdgcj+KAC69e/jcQE6eLz2GOgTtgxYWb/yMM1OlqOcgRgyMKBjwRDrgD0HMBPXMG1lwwIA5AzgUD4gDkdEB3BwxoIqR22U6qeXQv+dAdOOqA0RAYDYHREBgNgdEQGA2B0RAYDQEAuS5QIWbhnZ8AAAAASUVORK5CYII="
+		},
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\pipe_liquid.png",
+			"name": "pipe_liquid.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "2",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "889e70e5-49f9-67d2-07a5-0d15b12854fc",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/pipe_liquid.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAACxJREFUOE9j/P///38GLICRkZERmzi6GFGK8Bk0agADw2gYjIYBKI8MfDoAAF0oBBGR0qABAAAAAElFTkSuQmCC"
+		}
+	]
+}
