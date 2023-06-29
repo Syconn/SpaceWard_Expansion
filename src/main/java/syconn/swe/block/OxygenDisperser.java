@@ -26,8 +26,6 @@ import java.util.UUID;
 
 public class OxygenDisperser extends FluidBaseBlock {
 
-    // TODO leave air blocks in the room and check for air block updates
-
     public OxygenDisperser() {
         super(Properties.of(Material.METAL));
     }

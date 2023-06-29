@@ -65,7 +65,7 @@ public class AirBubblesSavedData extends SavedData {
             tag.getList("air_bubbles", Tag.TAG_COMPOUND).forEach(nbt -> {
                 CompoundTag outerData = (CompoundTag) nbt;
                 Map<UUID, List<BlockPos>> oxygenMap = new HashMap<>();
-                tag.getList("air_bubbles", Tag.TAG_COMPOUND).forEach(nNBT -> {
+                outerData.getList("cdata", Tag.TAG_COMPOUND).forEach(nNBT -> {
                     CompoundTag ct = (CompoundTag) nNBT;
                     oxygenMap.put(ct.getUUID("uuid"), NbtHelper.readPosses(ct.getCompound("positions")));
                 });
