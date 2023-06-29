@@ -1,0 +1,4 @@
+// 1.19.4	2023-06-29T00:04:19.8933619	Loot Tables
+62b6de800e0df162e0c1dbf59e7d17fa19abaee1 data/swe/loot_tables/blocks/fluid_pipe.json
+5a2979cc7db891e43797b241755585ad2c84fe64 data/swe/loot_tables/blocks/fluid_tank.json
+62b86d2b4885798e46517b60b1fc3a2edd57aeec data/swe/loot_tables/blocks/oxygen_disperser.json

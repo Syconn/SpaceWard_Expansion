@@ -13,9 +13,9 @@ import syconn.swe.init.ModTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class TagsGen extends TagsProvider<Item> {
+public class ItemTagsGen extends TagsProvider<Item> {
 
-    public TagsGen(PackOutput p_256596_, CompletableFuture<HolderLookup.Provider> p_256513_, @Nullable ExistingFileHelper existingFileHelper) {
+    public ItemTagsGen(PackOutput p_256596_, CompletableFuture<HolderLookup.Provider> p_256513_, @Nullable ExistingFileHelper existingFileHelper) {
         super(p_256596_, Registries.ITEM, p_256513_, Main.MODID, existingFileHelper);
     }
 

@@ -5,6 +5,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import syconn.swe.common.inventory.ExtendedPlayerInventory;
 
+import java.util.List;
+
 public class Helper {
 
     public static ExtendedPlayerInventory inventory(Player p){
@@ -47,5 +49,24 @@ public class Helper {
             }
         }
         return null;
+    }
+
+    @SafeVarargs
+    @SuppressWarnings("Unchecked")
+    public static <E> List<E> combineLists(List<E>... lists) {
+        List<E> list = lists[0];
+        for (int i = 1; i < lists.length; i++) {
+            list.addAll(lists[i]);
+        }
+        return list;
+    }
+
+    @SafeVarargs
+    @SuppressWarnings("Unchecked")
+    public static <E> List<E> removeFromList(List<E> list, List<E>... lists) {
+        for (int i = 1; i < lists.length; i++) {
+            list.removeAll(lists[i]);
+        }
+        return list;
     }
 }

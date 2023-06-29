@@ -1,10 +1,13 @@
 package syconn.swe.init;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,6 +39,7 @@ public class ModInit {
     public static final RegistryObject<SpaceArmor> SPACE_LEGGINGS = ITEMS.register("space_leggings", () -> new SpaceArmor(ArmorItem.Type.LEGGINGS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<SpaceArmor> SPACE_BOOTS = ITEMS.register("space_boots", () -> new SpaceArmor(ArmorItem.Type.BOOTS, new Item.Properties().defaultDurability(200)));
     public static final RegistryObject<Canister> CANISTER = ITEMS.register("canister", Canister::new);
+    public static final RegistryObject<Canister> AUTO_REFILL_CANISTER = ITEMS.register("auto_fill_canister", AutoRefillCanister::new);
     public static final RegistryObject<Wrench> WRENCH = ITEMS.register("wrench", Wrench::new);
     public static final RegistryObject<UpgradeItem> DIAMOND_UPGRADE = ITEMS.register("diamond_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1), 10));
     public static final RegistryObject<UpgradeItem> IRON_UPGRADE = ITEMS.register("iron_upgrade", () -> new UpgradeItem(new Item.Properties().stacksTo(1), 2));
@@ -81,5 +85,13 @@ public class ModInit {
         }
         delayed.add(Canister.create(0, 8000, Fluids.EMPTY));
         delayed.forEach(e::accept);
+    }
+
+    public static boolean always(BlockState p_50775_, BlockGetter p_50776_, BlockPos p_50777_) {
+        return true;
+    }
+
+    public static boolean never(BlockState p_50806_, BlockGetter p_50807_, BlockPos p_50808_) {
+        return false;
     }
 }
