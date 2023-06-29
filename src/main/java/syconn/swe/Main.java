@@ -78,7 +78,9 @@ public class Main {
         e.getGenerator().addProvider(e.includeClient(), new BlockModelGen(e.getGenerator().getPackOutput(), e.getExistingFileHelper()));
         e.getGenerator().addProvider(e.includeClient(), new LangGen(e.getGenerator().getPackOutput()));
         e.getGenerator().addProvider(e.includeServer(), new RecipeGen(e.getGenerator().getPackOutput()));
-        e.getGenerator().addProvider(e.includeServer(), new TagsGen(e.getGenerator().getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeServer(), new ItemTagsGen(e.getGenerator().getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeServer(), new BlockTagsGen(e.getGenerator().getPackOutput(), e.getLookupProvider(), e.getExistingFileHelper()));
+        e.getGenerator().addProvider(e.includeServer(), new LootTableGen(e.getGenerator().getPackOutput()));
     }
 
     public void dimensionEffects(RegisterDimensionSpecialEffectsEvent e){
