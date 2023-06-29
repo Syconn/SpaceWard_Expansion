@@ -51,18 +51,17 @@ public class CommonHandler {
                 p.changeDimension(serverlevel, new DimChanger());
             }
         }
-        Player p = e.player; //BOTH CLIENT AND SERVER
+        Player p = e.player;
         p.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(ss -> {
             if (p.getInventory().armor.get(2).getItem() instanceof Parachute || SpaceArmor.hasParachute(p)){
                 if (p.fallDistance > 2 && !ss.parachute()) ss.parachute(true);
                 else if (p.fallDistance == 0) ss.parachute(false);
             } else ss.parachute(false);
         });
-        if (!DimSettingsManager.getSettings(p).breathable() && !AirBubblesSavedData.get().breathable(p.level.dimension(), p.getOnPos().above(2))){
+        if (!DimSettingsManager.getSettings(p).breathable()){
             if (!p.isCreative()) {
                 p.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(ss -> {
                     ss.decreaseO2(p);
-                    System.out.println(ss.O2());
                     if (ss.O2() <= -30) {
                         ss.setO2(0);
                         p.hurt(p.level.damageSources().source(ModDamageTypes.ANOXIA), 2.0F);

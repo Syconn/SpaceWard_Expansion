@@ -31,14 +31,13 @@ import static net.minecraft.world.level.material.Fluids.EMPTY;
 /** USED FOR LIQUIDS ONLY */
 public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
 
-    private static final String FLUID = "fluid";
-    private static final String MAX = "max";
-    private static final String CURRENT = "current";
-    private static final String COLOR = "color";
+    protected static final String FLUID = "fluid";
+    protected static final String MAX = "max";
+    protected static final String CURRENT = "current";
+    protected static final String COLOR = "color";
 
     public Canister() {
         super(new Properties().stacksTo(1));
-                //.craftRemainder(ModItems.CANISTER.get()));
     }
 
     public boolean isBarVisible(ItemStack stack) {
@@ -56,7 +55,6 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
     }
 
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag flag) {
-
         if (getType(stack) != EMPTY) {
             list.add(Component.empty());
             list.add(Component.literal(getValue(stack) + "mb / " + getMaxValue(stack) + "mb").withStyle(ChatFormatting.YELLOW));

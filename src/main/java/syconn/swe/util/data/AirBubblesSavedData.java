@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import syconn.swe.common.data.DimSettingsManager;
+import syconn.swe.init.ModDim;
 import syconn.swe.util.NbtHelper;
 
 import java.util.HashMap;
@@ -35,6 +37,7 @@ public class AirBubblesSavedData extends SavedData {
     }
 
     public boolean breathable(ResourceKey<Level> level, BlockPos pos) {
+        if (DimSettingsManager.getSettings(level).breathable()) return true;
         if (!levelBlockPositions.containsKey(level)) return false;
         for (List<BlockPos> positions : levelBlockPositions.get(level).values()) if (positions.contains(pos)) return true;
         return false;

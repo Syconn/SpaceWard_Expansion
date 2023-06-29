@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import syconn.swe.item.Canister;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.util.Animator;
+import syconn.swe.util.data.AirBubblesSavedData;
 
 import java.util.Random;
 
@@ -57,7 +58,7 @@ public class SpaceSuit implements ISpaceSuit {
     public void decreaseO2(Player p) {
         int i = EnchantmentHelper.getRespiration(p);
         ItemStack stack = getStackInSlot(0);
-        if (stack.getItem() instanceof Canister c && c.getCapacity(stack) > 0) {
+        if ((stack.getItem() instanceof Canister c && c.getCapacity(stack) > 0) || AirBubblesSavedData.get().breathable(p.level.dimension(), p.getOnPos().above(1))) {
             if (oxygen < maxO2()) oxygen++;
         } else setO2(i > 0 && new Random().nextInt(i + 1) > 0 ? O2() : O2() - 1);
     }
