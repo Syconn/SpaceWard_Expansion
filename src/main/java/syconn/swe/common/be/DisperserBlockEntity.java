@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.fluids.capability.FluidHandlerBlockEntity;
+import syconn.swe.block.DispersibleAirBlock;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModInit;
 import syconn.swe.util.GUIFluidHandlerBlockEntity;
@@ -42,9 +43,7 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity {
     }
 
     public void failed(boolean t) {
-        for (BlockPos pos : list) {
-            level.removeBlock(pos, false);
-        }
+        for (BlockPos pos : list) if (level.getBlockState(pos).getBlock() instanceof DispersibleAirBlock) level.removeBlock(pos, false);
         if (t) {
             list.clear();
             AirBubblesSavedData.get().remove(level.dimension(), uuid);
