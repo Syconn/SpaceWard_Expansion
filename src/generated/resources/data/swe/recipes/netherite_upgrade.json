@@ -6,7 +6,7 @@
       "item": "minecraft:netherite_ingot"
     },
     "r": {
-      "item": "minecraft:redstone"
+      "item": "swe:emerald_upgrade"
     }
   },
   "pattern": [

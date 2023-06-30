@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import syconn.swe.capabilities.ISpaceSuit;
 import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.init.ModCapabilities;
 import syconn.swe.init.ModFluids;
@@ -30,19 +31,15 @@ public class SpaceSuitOverlay {
                 int air = iSpaceSuit.O2();
                 int full = Mth.ceil((double) (air - 2) * 10.0D / (double) iSpaceSuit.maxO2());
                 int partial = Mth.ceil((double) air * 10.0D / (double) iSpaceSuit.maxO2()) - full;
-                for (int i = 0; i < full + partial; ++i)
-                {
-                    blit(poseStack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
-                }
+                for (int i = 0; i < full + partial; ++i) blit(poseStack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
                 RenderSystem.disableBlend();
             });
         }
     };
 
     public static boolean displayOxygen(Player p){
-        if (AirBubblesSavedData.get().breathable(p.level.dimension(), p.getOnPos().above(1))) return false;
-        ItemStack stack = SpaceArmor.getGear(SpaceSlot.TANK, p);
-        if (stack.getItem() instanceof Canister && Canister.getType(stack).getFluidType() == ModFluids.O2_FLUID_TYPE.get() && Canister.getValue(stack) > 0) return false;
+        ISpaceSuit suit = p.getCapability(ModCapabilities.SPACE_SUIT).resolve().get();
+        if (suit.O2() >= suit.maxO2()) return false;
         return !DimSettingsManager.getSettings(p).breathable();
     }
 }

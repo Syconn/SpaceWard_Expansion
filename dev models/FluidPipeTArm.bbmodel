@@ -1,0 +1,285 @@
+{
+	"meta": {
+		"format_version": "4.5",
+		"model_format": "java_block",
+		"box_uv": false
+	},
+	"name": "FluidPipeTArm",
+	"parent": "",
+	"ambientocclusion": true,
+	"front_gui_light": false,
+	"visible_box": [1, 1, 0],
+	"variable_placeholders": "",
+	"variable_placeholder_buttons": [],
+	"unhandled_root_fields": {},
+	"resolution": {
+		"width": 16,
+		"height": 16
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [5, 5, 0],
+			"to": [11, 11, 16],
+			"autouv": 0,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 10, 3, 13],
+					"texture": 1
+				},
+				"east": {
+					"uv": [0, 0, 16, 6],
+					"texture": 0
+				},
+				"south": {
+					"uv": [0, 10, 3, 13],
+					"texture": 1
+				},
+				"west": {
+					"uv": [0, 0, 16, 6],
+					"rotation": 180,
+					"texture": 0
+				},
+				"up": {
+					"uv": [0, 6, 16, 12],
+					"rotation": 270,
+					"texture": 0
+				},
+				"down": {
+					"uv": [0, 6, 16, 12],
+					"rotation": 270,
+					"texture": 0
+				}
+			},
+			"type": "cube",
+			"uuid": "b58ea8a7-0bd3-cab5-9432-88510033da46"
+		},
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [5.2, 5.1, 0.1],
+			"to": [10.9, 10.9, 15.9],
+			"autouv": 0,
+			"color": 5,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0.25, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"east": {
+					"uv": [0, 0.25, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"south": {
+					"uv": [0, 0.25, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"west": {
+					"uv": [0, 0.25, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"up": {
+					"uv": [0, 0.25, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"down": {
+					"uv": [0, 0.25, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "58943f6a-459b-7162-2735-f090b5195a28"
+		},
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [11, 5, 5],
+			"to": [16, 11, 11],
+			"autouv": 0,
+			"color": 2,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 6, 6, 11],
+					"rotation": 90,
+					"texture": 2
+				},
+				"east": {
+					"uv": [0, 10, 3, 13],
+					"texture": 1
+				},
+				"south": {
+					"uv": [0, 6, 6, 11],
+					"rotation": 270,
+					"texture": 2
+				},
+				"west": {
+					"uv": [8, 12.5, 11, 13.5],
+					"rotation": 180,
+					"texture": 2
+				},
+				"up": {
+					"uv": [0, 6, 6, 11],
+					"rotation": 270,
+					"texture": 2
+				},
+				"down": {
+					"uv": [0, 6, 6, 11],
+					"rotation": 270,
+					"texture": 2
+				}
+			},
+			"type": "cube",
+			"uuid": "d28dce5d-20da-ab6f-3d81-119a96b61e09"
+		},
+		{
+			"name": "cube",
+			"box_uv": false,
+			"rescale": false,
+			"locked": false,
+			"from": [10.2, 5.1, 5.2],
+			"to": [15.9, 10.9, 10.9],
+			"autouv": 0,
+			"color": 5,
+			"origin": [0, 0, 0],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"east": {
+					"uv": [0, 0, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"south": {
+					"uv": [0, 0, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"west": {
+					"uv": [0, 0, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"up": {
+					"uv": [0, 0, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				},
+				"down": {
+					"uv": [0, 0, 5.75, 0.75],
+					"tint": 0,
+					"texture": 3
+				}
+			},
+			"type": "cube",
+			"uuid": "ed42e530-ab1e-cb12-683b-227d33dbc306"
+		}
+	],
+	"outliner": [
+		"b58ea8a7-0bd3-cab5-9432-88510033da46",
+		"ed42e530-ab1e-cb12-683b-227d33dbc306",
+		"d28dce5d-20da-ab6f-3d81-119a96b61e09",
+		"58943f6a-459b-7162-2735-f090b5195a28"
+	],
+	"textures": [
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\fluid_pipe_darm.png",
+			"name": "fluid_pipe_darm.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "0",
+			"particle": true,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "ee55a1e0-6375-b8f7-4ab9-19718ea3f235",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/fluid_pipe_darm.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAFFJREFUOE9j/Pv3738GCgAjBXrBWlEMuPDq5X8DMXGSxOCKV1y4+T/CQB1FMzFilHuB4kCk2IDRWGBgxBWIzMzMKFGMSx3l6YCqsUCOYRR7AQB3dEPpRxy6pQAAAABJRU5ErkJggg=="
+		},
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\center_fluid_pipe.png",
+			"name": "center_fluid_pipe.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "1",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "92ee2f4b-1b0b-edfa-76e6-0e8bdb6707ed",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/center_fluid_pipe.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAIJJREFUWEdj/Pv3738GLICZmZkRmzi1xRhBDqCXZdgcj+KAC69e/jcQE6eLz2GOgTtgxYWb/yMM1OlqOcgRgyMKBjwRDrgD0HMBPXMG1lwwIA5AzgUD4gDkdEB3BwxoIqR22U6qeXQv+dAdOOqA0RAYDYHREBgNgdEQGA2B0RAYDQEAuS5QIWbhnZ8AAAAASUVORK5CYII="
+		},
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\larm_fluid_pipe.png",
+			"name": "larm_fluid_pipe.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "2",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "dfc9f042-83b3-c836-01e3-7e12b073ddd9",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/larm_fluid_pipe.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAGdJREFUOE9j/Pv3738GIgEzMzMjulJGkAHYJIg0kwHFgAuvXv43EBNHsQWbGLLhcANWXLj5P8JAHUUzNjHaegFmOq6AJToQSQlYrIFIlgHIAUaWAcihS18DiE1xuNRhpG1SDRwGBgAAmR5cESVf2ksAAAAASUVORK5CYII="
+		},
+		{
+			"path": "C:\\Users\\Aidan\\IdeaProjects\\Spaceward Expansion\\src\\main\\resources\\assets\\swe\\textures\\block\\pipe_liquid.png",
+			"name": "pipe_liquid.png",
+			"folder": "block",
+			"namespace": "swe",
+			"id": "3",
+			"particle": false,
+			"render_mode": "default",
+			"render_sides": "auto",
+			"frame_time": 1,
+			"frame_order_type": "loop",
+			"frame_order": "",
+			"frame_interpolate": false,
+			"visible": true,
+			"mode": "bitmap",
+			"saved": true,
+			"uuid": "2ad202fe-b006-bfbe-ab40-07a5b3dc24f7",
+			"relative_path": "../../src/main/resources/assets/swe/textures/block/pipe_liquid.png",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAACxJREFUOE9j/P///38GLICRkZERmzi6GFGK8Bk0agADw2gYjIYBKI8MfDoAAF0oBBGR0qABAAAAAElFTkSuQmCC"
+		}
+	]
+}

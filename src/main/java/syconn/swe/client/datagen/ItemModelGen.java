@@ -1,5 +1,6 @@
 package syconn.swe.client.datagen;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -16,7 +17,6 @@ public class ItemModelGen extends ItemModelProvider {
         super(output, Main.MODID, existingFileHelper);
     }
 
-    @Override
     protected void registerModels() {
         singleTexture(ModInit.SPACE_HELMET.get());
         singleTexture(ModInit.SPACE_CHESTPLATE.get());
@@ -29,14 +29,8 @@ public class ItemModelGen extends ItemModelProvider {
         singleTexture(ModInit.EMERALD_UPGRADE.get());
         singleTexture(ModInit.NETHERITE_UPGRADE.get());
 
-        ItemModelBuilder model = getBuilder(ModInit.CANISTER.get().toString()).parent(generate()).texture("layer0", modLoc("item/canister"));
-
-        for (int i = 1; i <= 5; i++){
-            getBuilder(ModInit.CANISTER.get().toString() + i).parent(generate()).texture("layer1", modLoc("item/fluid_stage_" + (i + 1))).texture("layer0", modLoc("item/canister"));
-            model.override().predicate(new ResourceLocation(Main.MODID, "stage"), i).model(generated("item/" + ModInit.CANISTER.get() + i)).end();
-        }
-        getBuilder(ModInit.CANISTER.get() + "full").parent(generate()).texture("layer1", modLoc("item/fluid_full")).texture("layer0", modLoc("item/canister"));
-        model.override().predicate(new ResourceLocation(Main.MODID, "stage"), 6.0F).model(generated("item/" + ModInit.CANISTER.get() + "full"));
+        createCanisterType(ModInit.CANISTER.get());
+        createCanisterType(ModInit.AUTO_REFILL_CANISTER.get());
     }
 
     private ResourceLocation generated(){
@@ -49,6 +43,16 @@ public class ItemModelGen extends ItemModelProvider {
 
     private ModelFile.UncheckedModelFile generate(){
         return new ModelFile.UncheckedModelFile("item/generated");
+    }
+
+    private void createCanisterType(Item canister) {
+        ItemModelBuilder model = getBuilder(canister.toString()).parent(generate()).texture("layer0", modLoc("item/" + canister));
+        for (int i = 1; i <= 5; i++){
+            getBuilder(canister.toString() + i).parent(generate()).texture("layer1", modLoc("item/fluid_stage_" + (i + 1))).texture("layer0", modLoc("item/" + canister));
+            model.override().predicate(new ResourceLocation(Main.MODID, "stage"), i).model(generated("item/" + canister + i)).end();
+        }
+        getBuilder(canister + "full").parent(generate()).texture("layer1", modLoc("item/fluid_full")).texture("layer0", modLoc("item/" + canister));
+        model.override().predicate(new ResourceLocation(Main.MODID, "stage"), 6.0F).model(generated("item/" + canister + "full"));
     }
 
     public ItemModelBuilder singleTexture(Item item) {

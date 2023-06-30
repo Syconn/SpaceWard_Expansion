@@ -26,9 +26,11 @@ public class LangGen extends LanguageProvider {
         add(ModInit.EMERALD_UPGRADE.get(), "Emerald Upgrade");
         add(ModInit.NETHERITE_UPGRADE.get(), "Netherite Upgrade");
         add(ModInit.O2_BUCKET.get(), "O2 Bucket");
+        add(ModInit.AUTO_REFILL_CANISTER.get(), "Auto Refilling Canister");
 
         add(ModInit.FLUID_PIPE.get(), "Fluid Pipe");
         add(ModInit.FLUID_TANK.get(), "Fluid Tank");
+        add(ModInit.OXYGEN_DISPERSER.get(), "Oxygen Disperser");
 
         add("itemGroup.space", "Spaceward Expansion");
         add("swe.fluid.o2", "Oxygen");
