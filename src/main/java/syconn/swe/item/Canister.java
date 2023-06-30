@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -16,11 +17,13 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.client.gui.SpaceSuitOverlay;
+import syconn.swe.common.data.DimSettingsManager;
 import syconn.swe.init.ModFluids;
 import syconn.swe.init.ModInit;
 import syconn.swe.item.extras.EquipmentItem;
 import syconn.swe.item.extras.ItemFluidHandler;
 import syconn.swe.util.ResourceUtil;
+import syconn.swe.util.data.AirBubblesSavedData;
 import syconn.swe.util.data.SpaceSlot;
 
 import java.util.List;
@@ -36,8 +39,8 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
     protected static final String CURRENT = "current";
     protected static final String COLOR = "color";
 
-    public Canister() {
-        super(new Properties().stacksTo(1));
+    public Canister(Rarity rarity) {
+        super(new Properties().stacksTo(1).rarity(rarity));
     }
 
     public boolean isBarVisible(ItemStack stack) {
@@ -67,7 +70,7 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
             if (getType(stack) == Fluids.LAVA) {
                 player.setSecondsOnFire(2);
             }
-            else if (getType(stack).getFluidType() == ModFluids.O2_FLUID_TYPE.get() && SpaceSuitOverlay.displayOxygen(player) && !player.isCreative()) {
+            else if (getType(stack).getFluidType() == ModFluids.O2_FLUID_TYPE.get() && !AirBubblesSavedData.get().breathable(player.level.dimension(), player.getOnPos().above(1)) && !player.isCreative()) {
                 setAmount(stack, getValue(stack) - 1, getFluid(stack).getFluid());
             }
         }
@@ -135,6 +138,13 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
         item.getOrCreateTag().putString(FLUID, ForgeRegistries.FLUIDS.getKey(fluid.getFluid()).toString());
         item.getOrCreateTag().putInt(CURRENT, fluid.getAmount());
         item.getOrCreateTag().putInt(COLOR, ResourceUtil.getColor(fluid.getFluid()));
+    }
+
+    public static void copy(ItemStack stack, ItemStack item){
+        stack.getOrCreateTag().putString(FLUID, ForgeRegistries.FLUIDS.getKey(getType(item)).toString());
+        stack.getOrCreateTag().putInt(CURRENT, getValue(item));
+        stack.getOrCreateTag().putInt(MAX, getMaxValue(item));
+        stack.getOrCreateTag().putInt(COLOR, ResourceUtil.getColor(getType(item)));
     }
 
     public ItemStack create(FluidStack stack) {

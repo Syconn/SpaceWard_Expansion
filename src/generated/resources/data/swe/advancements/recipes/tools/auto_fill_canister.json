@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "swe:auto_fill_canister"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "needs_gold": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:gold_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "needs_gold"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "swe:auto_fill_canister"
+    ]
+  }
+}

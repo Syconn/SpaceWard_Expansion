@@ -6,7 +6,7 @@
       "item": "minecraft:diamond"
     },
     "r": {
-      "item": "minecraft:redstone"
+      "item": "swe:gold_upgrade"
     }
   },
   "pattern": [

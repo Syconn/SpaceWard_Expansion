@@ -6,7 +6,7 @@
       "item": "minecraft:gold_ingot"
     },
     "r": {
-      "item": "minecraft:redstone"
+      "item": "swe:iron_upgrade"
     }
   },
   "pattern": [
