@@ -1,6 +1,7 @@
 package syconn.swe.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -44,8 +45,8 @@ public class FluidHelper {
         }
     }
 
-    public static boolean interactWithFluidHandler(ItemStack stack, Level l, BlockPos pos) {
-        return l.getBlockEntity(pos).getCapability(ForgeCapabilities.FLUID_HANDLER).map(tank -> {
+    public static boolean interactWithFluidHandler(ItemStack stack, Level l, BlockPos pos, Direction side) {
+        return l.getBlockEntity(pos).getCapability(ForgeCapabilities.FLUID_HANDLER, side).map(tank -> {
             if (stack.getItem() instanceof ItemFluidHandler handler) {
                 if (handler.getFluid(stack).isEmpty() && !tank.getFluidInTank(0).isEmpty()) {
                     handler.setFluid(stack, tank.drain(handler.getSpace(stack), IFluidHandler.FluidAction.EXECUTE));

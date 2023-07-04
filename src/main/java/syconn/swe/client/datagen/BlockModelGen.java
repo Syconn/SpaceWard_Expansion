@@ -27,10 +27,12 @@ public class BlockModelGen extends BlockStateProvider {
                     .build();
         });
         simpleBlock(ModInit.FLUID_TANK.get(), generated("fluid_tank"));
+        simpleBlock(ModInit.OXYGEN_DISPERSER.get(), generated("oxygen_disperser"));
         simpleBlock(ModInit.OXYGEN.get(), "minecraft:translucent");
 //        itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModInit.OXYGEN_DISPERSER.get()).getPath(), modLoc("block/oxygen_disperser"));
         itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModInit.FLUID_PIPE.get()).getPath(), modLoc("block/fluid_pipe"));
         itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModInit.FLUID_TANK.get()).getPath(), modLoc("block/fluid_tank"));
+        itemModels().withExistingParent(BuiltInRegistries.BLOCK.getKey(ModInit.OXYGEN_DISPERSER.get()).getPath(), modLoc("block/oxygen_disperser"));
     }
 
     private ModelFile generated(String loc) {

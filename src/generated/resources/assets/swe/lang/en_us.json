@@ -1,6 +1,7 @@
 {
   "block.swe.fluid_pipe": "Fluid Pipe",
   "block.swe.fluid_tank": "Fluid Tank",
+  "block.swe.oxygen_disperser": "Oxygen Disperser",
   "item.swe.canister": "Canister",
   "item.swe.diamond_upgrade": "Diamond Upgrade",
   "item.swe.emerald_upgrade": "Emerald Upgrade",

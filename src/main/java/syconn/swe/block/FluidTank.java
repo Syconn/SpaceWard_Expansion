@@ -8,10 +8,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.HopperBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -41,7 +38,7 @@ public class FluidTank extends FluidBaseBlock {
             if(FluidUtil.interactWithFluidHandler(p, p_48710_, l, pos, p_48711_.getDirection())) {
                 return InteractionResult.SUCCESS;
             }
-            else if (FluidHelper.interactWithFluidHandler(p.getItemInHand(p_48710_), l, pos)) {
+            else if (FluidHelper.interactWithFluidHandler(p.getItemInHand(p_48710_), l, pos, null)) {
                 return InteractionResult.SUCCESS;
             }
             BlockEntity blockentity = l.getBlockEntity(pos);

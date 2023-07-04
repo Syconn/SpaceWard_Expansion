@@ -54,7 +54,7 @@ public class TankBlockEntity extends GUIFluidHandlerBlockEntity implements MenuP
     private final LazyOptional<IItemHandler> holder = LazyOptional.of(() -> items);
 
     public TankBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntity.TANK.get(), pos, state, 16000);
+        super(ModBlockEntity.TANK.get(), pos, state, 16000, null);
     }
 
     protected void updateTextures(FluidStack resource) {
@@ -154,7 +154,7 @@ public class TankBlockEntity extends GUIFluidHandlerBlockEntity implements MenuP
                             pe.clear();
                         }
                     } else {
-                        if (level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).isPresent()) {
+                        if (level.getBlockEntity(pos.relative(d)) != null && level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).isPresent()) {
                             FluidUtil.tryFluidTransfer(level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).resolve().get(), e.tank, e.fillSpeed, true);
                         }
                     }
