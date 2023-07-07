@@ -88,8 +88,7 @@ public class ClientHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerRenderScreen(ContainerScreenEvent.Render.Background event)
-    {
+    public void onPlayerRenderScreen(ContainerScreenEvent.Render.Background event) {
         RenderUtil.overridePlayerScreen(event.getPoseStack(), event.getContainerScreen());
     }
 

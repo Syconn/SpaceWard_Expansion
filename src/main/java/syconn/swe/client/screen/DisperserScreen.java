@@ -2,6 +2,7 @@ package syconn.swe.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -9,15 +10,29 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.client.gui.widget.ExtendedButton;
 import syconn.swe.Main;
 import syconn.swe.common.container.DisperserMenu;
+import syconn.swe.network.Network;
+import syconn.swe.network.messages.MessageToggleDisperser;
 
 public class DisperserScreen extends AbstractContainerScreen<DisperserMenu> {
 
-    private static final ResourceLocation BG = new ResourceLocation(Main.MODID, "textures/gui/tank.png");
+    private static final ResourceLocation BG = new ResourceLocation(Main.MODID, "textures/gui/disperser.png");
 
     public DisperserScreen(DisperserMenu p_97741_, Inventory p_97742_, Component p_97743_) {
         super(p_97741_, p_97742_, p_97743_);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        addRenderableWidget(new ExtendedButton(leftPos + 91, topPos + 25, 60, 20, Component.literal(menu.getBE().isEnabled() ? "Enabled" : "Disabled"), this::onclick));
+    }
+
+    private void onclick(Button button) {
+        button.setMessage(Component.literal(!menu.getBE().isEnabled() ? "Enabled" : "Disabled"));
+        Network.getPlayChannel().sendToServer(new MessageToggleDisperser(menu.getBE().getBlockPos()));
     }
 
     @Override
@@ -42,15 +57,15 @@ public class DisperserScreen extends AbstractContainerScreen<DisperserMenu> {
             int i = IClientFluidTypeExtensions.of(state).getTintColor();
             int u = (int) ((double) (menu.getBE().getFluidTank().getFluidAmount()) / menu.getBE().getFluidTank().getCapacity() * 70);
             RenderSystem.setShaderColor((float)(i >> 16 & 255) / 255.0F, (float)(i >> 8 & 255) / 255.0F, (float)(i & 255) / 255.0F, 255.0F);
-            blit(pose, leftPos + 34, topPos + 8 + (70 - u), 0, 70, 34, u);
+            blit(pose, leftPos + 10, topPos + 8 + (70 - u), 0, 70, 34, u);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
         RenderSystem.setShaderTexture(0, BG);
-        blit(pose, leftPos + 34, topPos + 8, 176, 0, 6, 70);
+        blit(pose, leftPos + 10, topPos + 8, 176, 0, 6, 70);
 
-        if (leftPos + 34 <= x && x <= leftPos + 67 && topPos + 8 <= y && y <= topPos + 77 && !state.is(Fluids.EMPTY)) {
-            this.renderTooltip(pose, menu.getBE().getFluidTank().getFluidInTank(0).getDisplayName(), x, y);
+        if (leftPos + 10 <= x && x <= leftPos + 57 && topPos + 8 <= y && y <= topPos + 77 && !state.is(Fluids.EMPTY)) {
+            this.renderTooltip(pose, Component.literal(menu.getBE().getFluidTank().getFluidInTank(0).getDisplayName().getString() + " " + menu.getBE().getFluidTank().getFluidAmount() + "mb"), x, y);
         }
     }
 }
