@@ -31,6 +31,7 @@ public class LangGen extends LanguageProvider {
         add(ModInit.FLUID_PIPE.get(), "Fluid Pipe");
         add(ModInit.FLUID_TANK.get(), "Fluid Tank");
         add(ModInit.OXYGEN_DISPERSER.get(), "Oxygen Disperser");
+        add(ModInit.CANISTER_FILLER.get(), "Canister Filler");
 
         add("itemGroup.space", "Spaceward Expansion");
         add("swe.fluid.o2", "Oxygen");

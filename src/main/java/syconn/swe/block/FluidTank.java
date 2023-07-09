@@ -24,11 +24,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+import syconn.swe.block.fluid.FluidStorageBlock;
 import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.util.FluidHelper;
 
-public class FluidTank extends FluidBaseBlock {
+public class FluidTank extends FluidBaseBlock implements FluidStorageBlock {
 
     public FluidTank() {
         super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));

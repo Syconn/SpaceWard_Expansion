@@ -154,7 +154,7 @@ public class TankBlockEntity extends GUIFluidHandlerBlockEntity implements MenuP
                             pe.clear();
                         }
                     } else {
-                        if (level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).isPresent()) {
+                        if (level.getBlockEntity(pos.relative(d)) != null && level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).isPresent()) {
                             FluidUtil.tryFluidTransfer(level.getBlockEntity(pos.relative(d)).getCapability(ForgeCapabilities.FLUID_HANDLER, d).resolve().get(), e.tank, e.fillSpeed, true);
                         }
                     }

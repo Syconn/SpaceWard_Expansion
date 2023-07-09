@@ -13,10 +13,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import syconn.swe.block.DispersibleAirBlock;
-import syconn.swe.block.FluidPipe;
-import syconn.swe.block.FluidTank;
-import syconn.swe.block.OxygenDisperser;
+import syconn.swe.block.*;
 import syconn.swe.item.*;
 import syconn.swe.util.Dyeable;
 
@@ -49,6 +46,7 @@ public class ModInit {
     public static final RegistryObject<BucketItem> O2_BUCKET = ITEMS.register("o2_fluid_bucket", () -> new BucketItem(ModFluids.SOURCE_O2_FLUID, new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<DispersibleAirBlock> OXYGEN = register("oxygen", DispersibleAirBlock::new);
+    public static final RegistryObject<CanisterFiller> CANISTER_FILLER = register("canister_filler", CanisterFiller::new);
     public static final RegistryObject<OxygenDisperser> OXYGEN_DISPERSER = register("oxygen_disperser", OxygenDisperser::new);
     public static final RegistryObject<FluidPipe> FLUID_PIPE = register("fluid_pipe", FluidPipe::new);
     public static final RegistryObject<Block> FLUID_TANK = register("fluid_tank", FluidTank::new);

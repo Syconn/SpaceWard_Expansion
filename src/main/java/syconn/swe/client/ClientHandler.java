@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import syconn.swe.Main;
 import syconn.swe.client.gui.SpaceSuitOverlay;
 import syconn.swe.client.model.*;
+import syconn.swe.client.renders.ber.CanisterBER;
 import syconn.swe.client.renders.ber.PipeBER;
 import syconn.swe.client.renders.ber.TankBER;
 import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
@@ -63,15 +64,12 @@ public class ClientHandler {
     public static void coloredBlocks(RegisterColorHandlersEvent.Block e) {}
 
     public static void addLayers(EntityRenderersEvent.AddLayers e) {
-        addBackpackLayer(e.getSkin("default"), e.getEntityModels());
-        addBackpackLayer(e.getSkin("slim"), e.getEntityModels());
+        addPlayerLayers(e.getSkin("default"), e.getEntityModels());
+        addPlayerLayers(e.getSkin("slim"), e.getEntityModels());
     }
 
-    private static void addBackpackLayer(LivingEntityRenderer<?, ?> renderer, EntityModelSet s) {
-        if(renderer instanceof PlayerRenderer playerRenderer)
-        {
-            playerRenderer.addLayer(new SpaceSuitLayer<>(playerRenderer, s));
-        }
+    private static void addPlayerLayers(LivingEntityRenderer<?, ?> renderer, EntityModelSet s) {
+        if(renderer instanceof PlayerRenderer playerRenderer) playerRenderer.addLayer(new SpaceSuitLayer<>(playerRenderer, s));
     }
 
     public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -95,5 +93,6 @@ public class ClientHandler {
     public static void entityRender(EntityRenderersEvent.RegisterRenderers e){
         e.registerBlockEntityRenderer(ModBlockEntity.PIPE.get(), PipeBER::new);
         e.registerBlockEntityRenderer(ModBlockEntity.TANK.get(), TankBER::new);
+        e.registerBlockEntityRenderer(ModBlockEntity.FILLER.get(), CanisterBER::new);
     }
 }

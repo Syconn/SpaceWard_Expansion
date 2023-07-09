@@ -20,10 +20,11 @@ public class BlockLootTables extends BlockLootSubProvider {
         dropSelf(ModInit.FLUID_TANK.get());
         dropSelf(ModInit.FLUID_PIPE.get());
         dropSelf(ModInit.OXYGEN_DISPERSER.get());
+        dropSelf(ModInit.CANISTER_FILLER.get());
     }
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return List.of(ModInit.FLUID_TANK.get(), ModInit.FLUID_PIPE.get(), ModInit.OXYGEN_DISPERSER.get());
+        return List.of(ModInit.FLUID_TANK.get(), ModInit.FLUID_PIPE.get(), ModInit.OXYGEN_DISPERSER.get(), ModInit.CANISTER_FILLER.get());
     }
 }
