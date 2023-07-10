@@ -3,6 +3,7 @@ package syconn.swe.client.datagen;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import syconn.swe.common.crafting.DyedParachuteRecipe;
@@ -22,6 +23,14 @@ public class RecipeGen extends RecipeProvider {
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         consumer.accept(new DyedParachuteRecipe.Result());
         consumer.accept(new RefillingCanisterRecipe.Result());
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModInit.CANISTER_FILLER.get())
+                .pattern("ggg")
+                .pattern("gig")
+                .pattern("g g")
+                .define('g', Items.GOLD_INGOT)
+                .define('i', Items.IRON_BLOCK)
+                .unlockedBy("has_mats", inventoryTrigger(ItemPredicate.Builder.item().of(Items.IRON_BLOCK, Items.GOLD_INGOT).build()))
+                .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModInit.NETHERITE_UPGRADE.get())
                 .pattern(" n ")
                 .pattern("nrn")

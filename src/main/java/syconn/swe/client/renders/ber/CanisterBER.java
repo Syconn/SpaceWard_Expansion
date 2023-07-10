@@ -1,6 +1,7 @@
 package syconn.swe.client.renders.ber;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -31,7 +32,8 @@ public class CanisterBER implements BlockEntityRenderer<CanisterFillerBlockEntit
                 else if (i == 2) row = .65;
                 else if (i == 3) row = .9;
                 p_112309_.pushPose();
-                p_112309_.translate(.5, 0.45, row);
+                p_112309_.translate(!north ? row : .5, 0.45, north ? row : .5);
+                if (!north) p_112309_.mulPose(Axis.YP.rotationDegrees(90));
                 int j = LevelRenderer.getLightColor(p_112307_.getLevel(), p_112307_.getBlockPos());
                 renderer.renderStatic(p_112307_.getCanister(i), ItemDisplayContext.GROUND, j, OverlayTexture.NO_OVERLAY, p_112309_, p_112310_, p_112307_.getLevel(), 0);
                 p_112309_.popPose();
