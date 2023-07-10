@@ -33,14 +33,16 @@ public class CanisterFillerBlockEntity extends BlockEntity {
         for (int i = 0; i < 4; i++) {
             if (!e.items.get(i).isEmpty()) {
                 ItemStack item = e.items.get(i);
-                if (item.getItem() instanceof Canister c && Canister.getDisplayValue(item) != 6F && Canister.getType(item) == Fluids.EMPTY || Canister.getType(item) == e.getFluidTank().getFluid().getFluid()) {
-                    FluidStack fill = e.getFluidTank().drain(e.fillSpeed, IFluidHandler.FluidAction.SIMULATE);
-                    if (fill.getAmount() > Canister.getMaxValue(item) - Canister.getValue(item)) {
-                        fill.setAmount(Canister.getMaxValue(item) - Canister.getValue(item));
+                if (Canister.getType(item) == Fluids.EMPTY || Canister.getType(item) == e.getFluidTank().getFluid().getFluid()) {
+                    if (Canister.getMaxValue(item) > Canister.getValue(item)) {
+                        FluidStack fill = e.getFluidTank().drain(e.fillSpeed, IFluidHandler.FluidAction.SIMULATE);
+                        if (fill.getAmount() > Canister.getMaxValue(item) - Canister.getValue(item)) {
+                            fill.setAmount(Canister.getMaxValue(item) - Canister.getValue(item));
+                        }
+                        e.getFluidTank().drain(fill, IFluidHandler.FluidAction.EXECUTE);
+                        Canister.increaseFluid(item, fill);
+                        e.update();
                     }
-                    e.getFluidTank().drain(fill, IFluidHandler.FluidAction.EXECUTE);
-                    Canister.increaseFluid(item, fill);
-                    e.update();
                 }
             }
         }
