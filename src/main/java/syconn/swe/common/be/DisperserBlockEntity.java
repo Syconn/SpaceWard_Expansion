@@ -107,6 +107,11 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity implements 
 
     public void toggleEnabled() {
         this.enabled = !this.enabled;
+        if (this.enabled) {
+            testRate = 100;
+            addBlock(level, worldPosition.relative(Direction.UP), worldPosition, 1);
+            level.scheduleTick(worldPosition, ModInit.OXYGEN_DISPERSER.get(), 25, TickPriority.NORMAL);
+        }
         update();
     }
 

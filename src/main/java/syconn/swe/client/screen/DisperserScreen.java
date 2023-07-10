@@ -64,7 +64,7 @@ public class DisperserScreen extends AbstractContainerScreen<DisperserMenu> {
         RenderSystem.setShaderTexture(0, BG);
         blit(pose, leftPos + 10, topPos + 8, 176, 0, 6, 70);
 
-        if (leftPos + 10 <= x && x <= leftPos + 57 && topPos + 8 <= y && y <= topPos + 77 && !state.is(Fluids.EMPTY)) {
+        if (leftPos + 10 <= x && x <= leftPos + 43 && topPos + 8 <= y && y <= topPos + 77 && !state.is(Fluids.EMPTY)) {
             this.renderTooltip(pose, Component.literal(menu.getBE().getFluidTank().getFluidInTank(0).getDisplayName().getString() + " " + menu.getBE().getFluidTank().getFluidAmount() + "mb"), x, y);
         }
     }
