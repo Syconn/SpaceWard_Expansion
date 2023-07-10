@@ -36,6 +36,7 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity implements 
     public List<BlockPos> list = new ArrayList<>();
     public int maxFill = 20;
     private int testRate = 0;
+    private int lowerRate = 0;
     private UUID uuid;
     private boolean active = false;
     private boolean enabled = true;
@@ -73,9 +74,15 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity implements 
                     e.list.clear();
                     AirBubblesSavedData.get().remove(level.dimension(), e.uuid);
                 } else {
-                    e.tank.drain(e.list.size() / 20, IFluidHandler.FluidAction.EXECUTE);
+                    if (e.lowerRate <= 0) {
+                        e.lowerRate = 10;
+                        e.tank.drain(e.list.size() / 20, IFluidHandler.FluidAction.EXECUTE);
+                    } else {
+                        e.lowerRate--;
+                    }
                 }
             }
+            e.update();
         }
     }
 
@@ -92,7 +99,7 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity implements 
                 AirBubblesSavedData.get().remove(level.dimension(), uuid);
             } else {
                 active = true;
-                tank.drain(list.size(), IFluidHandler.FluidAction.EXECUTE);
+                tank.drain(list.size() / 20, IFluidHandler.FluidAction.EXECUTE);
                 AirBubblesSavedData.get().set(level.dimension(), uuid, list);
             }
         }
@@ -132,7 +139,11 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity implements 
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
+        tag.put("list", NbtHelper.writePosses(list));
+        tag.putInt("fill", maxFill);
+        tag.putBoolean("active", active);
         tag.putBoolean("enabled", enabled);
+        if (this.uuid != null) tag.putUUID("DisperserUUID", this.uuid);
         return tag;
     }
 
