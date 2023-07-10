@@ -31,6 +31,7 @@ import static net.minecraft.data.recipes.RecipeBuilder.ROOT_RECIPE_ADVANCEMENT;
 
 public class DyedParachuteRecipe extends CustomRecipe {
 
+    // TODO DOESNT APPEAR IN CRAFTING TABLE BOOK
     public DyedParachuteRecipe(ResourceLocation id, CraftingBookCategory category)
     {
         super(id, category);
@@ -39,9 +40,7 @@ public class DyedParachuteRecipe extends CustomRecipe {
     @Override
     public boolean matches(CraftingContainer inventory, Level worldIn) {
         if (inventory.getWidth() == 3 && inventory.getHeight() == 3) {
-            for (int i = 0; i < 3; i++) {
-                if (!inventory.getItem(i).is(ItemTags.WOOL)) return false;
-            }
+            for (int i = 0; i < 3; i++) if (!inventory.getItem(i).is(ItemTags.WOOL)) return false;
             return inventory.getItem(3).getItem() == Items.STRING && inventory.getItem(5).getItem() == Items.STRING && inventory.getItem(7).getItem() == Items.STRING;
         } else {
             return false;
@@ -72,9 +71,8 @@ public class DyedParachuteRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
-    {
-        return ItemStack.EMPTY;
+    public ItemStack getResultItem(RegistryAccess access) {
+        return new ItemStack(ModInit.PARACHUTE.get());
     }
 
     @Override

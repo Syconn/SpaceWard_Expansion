@@ -22,18 +22,6 @@ public class PixelImage {
         this.pixels = pixels;
     }
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int[][] getPixels() {
-        return pixels;
-    }
-
     public int[][] getPixelFromImage(NativeImage image){
         int[][] output = new int[image.getWidth()][image.getHeight()];
         for (int x = 0; x < image.getWidth(); x++) {

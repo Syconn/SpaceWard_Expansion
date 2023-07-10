@@ -2,20 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "n": {
+    "g": {
       "item": "minecraft:gold_ingot"
     },
-    "r": {
-      "item": "swe:iron_upgrade"
+    "i": {
+      "item": "minecraft:iron_block"
     }
   },
   "pattern": [
-    " n ",
-    "nrn",
-    " n "
+    "ggg",
+    "gig",
+    "g g"
   ],
   "result": {
-    "item": "swe:gold_upgrade"
+    "item": "swe:canister_filler"
   },
   "show_notification": true
 }

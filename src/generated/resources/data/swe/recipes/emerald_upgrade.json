@@ -6,7 +6,7 @@
       "item": "minecraft:emerald"
     },
     "r": {
-      "item": "minecraft:redstone"
+      "item": "swe:diamond_upgrade"
     }
   },
   "pattern": [

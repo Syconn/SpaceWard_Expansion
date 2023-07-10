@@ -1,21 +1,25 @@
-// 1.19.4	2023-06-22T23:04:55.6941971	Recipes
+// 1.19.4	2023-07-10T00:09:58.3811412	Recipes
 61662bf18cafe645d668887e6f836736bba72474 data/swe/advancements/recipes/combat/parachute.json
+8de36510f22044821c4d6cfa5eb86ff781a6cf54 data/swe/advancements/recipes/decorations/canister_filler.json
 4400b7cf06aea637b6c6b790d829530a23c84803 data/swe/advancements/recipes/misc/diamond_upgrade.json
 0b9b5dc40cdc38040f43522db1f5d2d7b7e4b2cd data/swe/advancements/recipes/misc/emerald_upgrade.json
 260ed375ef9cd4aa45707b1e0fb897e42fe4ba20 data/swe/advancements/recipes/misc/gold_upgrade.json
 c62259a108e22ca31e48ee93e9639816231c8383 data/swe/advancements/recipes/misc/iron_upgrade.json
 4838942ecce2320167a68b8dd96db3fe78926b76 data/swe/advancements/recipes/misc/netherite_upgrade.json
+a2406d31450f48beeb6fef097b63b14af3b83ca4 data/swe/advancements/recipes/tools/auto_fill_canister.json
 db9efb0c890a2d4080ecfafa1e7e24003c97a948 data/swe/advancements/recipes/tools/canister.json
 43d7fac9d14920ab60b8ce94cd5d5438ccfeaf19 data/swe/advancements/recipes/tools/wrench.json
 c3a9212e2902f818ef62ad9ea540052708306312 data/swe/advancements/recipes/transportation/fluid_pipe.json
 e81235a8ef639c09197092f86e01a586b86d0c5d data/swe/advancements/recipes/transportation/fluid_tank.json
+8992a4932da88e1913b5319e34a2d7c9990f9fd2 data/swe/recipes/auto_fill_canister.json
 847869284748458099a508e731671af6b566240d data/swe/recipes/canister.json
-9d6c5c6631574d9840029c5316518785d48ac7ae data/swe/recipes/diamond_upgrade.json
-ec992ef29b337cdd795b1caeb4ad17fafe46040a data/swe/recipes/emerald_upgrade.json
+2c8dcef4c8c872b8639080fc42c8b9dc4d581ec1 data/swe/recipes/canister_filler.json
+9dfb025cb6aeddc336015dbfecac8c1b8a3b6dfb data/swe/recipes/diamond_upgrade.json
+900cfec6c74970fc7aeda80193899625e14baa80 data/swe/recipes/emerald_upgrade.json
 5bfcc341fcfa1088d0e25a86544cb91def0168d1 data/swe/recipes/fluid_pipe.json
 a902118102cbc5d668a4fc3ab34f5f290dfb0bbc data/swe/recipes/fluid_tank.json
-990707df9483e61a9deb201a33fcc2719cc1bb01 data/swe/recipes/gold_upgrade.json
+a92f1fc796f7491b2df2161c66097a33e5527cb9 data/swe/recipes/gold_upgrade.json
 dc11fc9e23f67d416195a94793c3a9d1859afdad data/swe/recipes/iron_upgrade.json
-411d09d07fa41c88e56c7b69581a98f7b71ba667 data/swe/recipes/netherite_upgrade.json
+d270e7b2c4908aa0a4efdded384347e0ec415eb1 data/swe/recipes/netherite_upgrade.json
 54b11c93581fe7275634aaacaafcd84a14f86f27 data/swe/recipes/parachute.json
 2f8341354c278f478724936d675f88a1fbf56d49 data/swe/recipes/wrench.json

@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
 import syconn.swe.Main;
 import syconn.swe.init.ModInit;
@@ -27,7 +28,7 @@ public class BlockTagsGen extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModInit.FLUID_TANK.get(), ModInit.OXYGEN_DISPERSER.get());
-        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModInit.FLUID_TANK.get(), ModInit.OXYGEN_DISPERSER.get());
+        this.tag(BlockTags.NEEDS_IRON_TOOL).add(ModInit.FLUID_TANK.get(), ModInit.OXYGEN_DISPERSER.get(), ModInit.CANISTER_FILLER.get());
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ModInit.FLUID_TANK.get(), ModInit.OXYGEN_DISPERSER.get(), ModInit.CANISTER_FILLER.get());
     }
 }
