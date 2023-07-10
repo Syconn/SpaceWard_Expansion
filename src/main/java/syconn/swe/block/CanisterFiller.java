@@ -7,11 +7,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RespawnAnchorBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -20,7 +23,16 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
+import syconn.swe.common.be.AirBlockEntity;
 import syconn.swe.common.be.CanisterFillerBlockEntity;
+import syconn.swe.init.ModBlockEntity;
+
+import java.util.stream.Stream;
 
 public class CanisterFiller extends FluidBaseTopperBlock {
 
@@ -40,7 +52,7 @@ public class CanisterFiller extends FluidBaseTopperBlock {
                     return InteractionResult.SUCCESS;
                 } else {
                     if (ce.addCanister(heldItem)) {
-                        heldItem.shrink(1);
+                        p_60506_.getItemInHand(p_60507_).shrink(1);
                         return InteractionResult.SUCCESS;
                     }
                 }
@@ -48,6 +60,12 @@ public class CanisterFiller extends FluidBaseTopperBlock {
             }
         }
         return InteractionResult.CONSUME;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
+        return !p_153212_.isClientSide ? createTickerHelper(p_153214_, ModBlockEntity.FILLER.get(), CanisterFillerBlockEntity::serverTick) : null;
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext p_49820_) {
@@ -60,5 +78,10 @@ public class CanisterFiller extends FluidBaseTopperBlock {
 
     public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
         return new CanisterFillerBlockEntity(p_153215_, p_153216_);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+        return Block.box(1, 0, 1, 15, 14, 15);
     }
 }
