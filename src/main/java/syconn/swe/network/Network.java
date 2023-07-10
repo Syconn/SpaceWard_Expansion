@@ -5,10 +5,7 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import syconn.swe.Main;
-import syconn.swe.network.messages.IMessage;
-import syconn.swe.network.messages.MessageChange;
-import syconn.swe.network.messages.MessageClickArrow;
-import syconn.swe.network.messages.MessageClickTab;
+import syconn.swe.network.messages.*;
 
 import java.util.Optional;
 
@@ -29,6 +26,7 @@ public class Network {
         register(MessageClickTab.class, new MessageClickTab(), NetworkDirection.PLAY_TO_SERVER);
         register(MessageClickArrow.class, new MessageClickArrow(), NetworkDirection.PLAY_TO_SERVER);
         register(MessageChange.class, new MessageChange(), NetworkDirection.PLAY_TO_SERVER);
+        register(MessageToggleDisperser.class, new MessageToggleDisperser(), NetworkDirection.PLAY_TO_SERVER);
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message, NetworkDirection direction)

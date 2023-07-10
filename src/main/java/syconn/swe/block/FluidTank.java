@@ -44,7 +44,7 @@ public class FluidTank extends FluidBaseBlock implements FluidStorageBlock {
             if(FluidUtil.interactWithFluidHandler(p, p_48710_, l, pos, p_48711_.getDirection())) {
                 return InteractionResult.SUCCESS;
             }
-            else if (FluidHelper.interactWithFluidHandler(p.getItemInHand(p_48710_), l, pos)) {
+            else if (FluidHelper.interactWithFluidHandler(p.getItemInHand(p_48710_), l, pos, null)) {
                 return InteractionResult.SUCCESS;
             }
             BlockEntity blockentity = l.getBlockEntity(pos);

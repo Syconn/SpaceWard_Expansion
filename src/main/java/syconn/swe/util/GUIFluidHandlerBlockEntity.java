@@ -2,6 +2,7 @@ package syconn.swe.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,13 +15,15 @@ import net.minecraftforge.fluids.capability.FluidHandlerBlockEntity;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import syconn.swe.common.data.PixelImage;
 
-public abstract class GUIFluidHandlerBlockEntity extends FluidHandlerBlockEntity {
+import java.util.List;
+
+public abstract class GUIFluidHandlerBlockEntity extends SidedFluidHandlerBE {
 
     private PixelImage gfluid;
     private ResourceLocation gfluidLoc;
 
-    public GUIFluidHandlerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, int size) {
-        super(blockEntityType, pos, state);
+    public GUIFluidHandlerBlockEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState state, int size, List<Direction> side) {
+        super(blockEntityType, pos, state, side);
 
         this.tank = new FluidTank(size){
             @Override

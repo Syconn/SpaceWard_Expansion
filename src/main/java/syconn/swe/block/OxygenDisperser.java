@@ -3,9 +3,13 @@ package syconn.swe.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,29 +19,57 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
-import org.jetbrains.annotations.Nullable;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.network.NetworkHooks;
 import syconn.swe.common.be.DisperserBlockEntity;
+import syconn.swe.common.be.TankBlockEntity;
 import syconn.swe.init.ModBlockEntity;
 import syconn.swe.init.ModInit;
+import syconn.swe.util.FluidHelper;
 import syconn.swe.util.data.AirBubblesSavedData;
 
 import java.util.UUID;
 
 public class OxygenDisperser extends FluidBaseBlock {
 
+    // TODO BUG CAN SEE OUT OF FLUID TANK
+    
     public OxygenDisperser() {
         super(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
     }
 
-    @Override
-    public void onPlace(BlockState state, Level l, BlockPos pos, BlockState p_54113_, boolean p_54114_) {
-        l.getBlockEntity(pos, ModBlockEntity.DISPERSER.get()).get().setUUID(UUID.randomUUID());
-        addBlock(l, pos.relative(Direction.UP), pos, 1);
-        l.scheduleTick(pos, this, 25, TickPriority.NORMAL);
+    public RenderShape getRenderShape(BlockState p_49232_) {
+        return RenderShape.MODEL;
     }
 
     @Override
+    public InteractionResult use(BlockState p_60503_, Level p_60504_, BlockPos p_60505_, Player p_60506_, InteractionHand p_60507_, BlockHitResult p_60508_) {
+        if (p_60504_.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else { // TODO ONLY FILL OR ONLY PIPES
+            if(FluidUtil.interactWithFluidHandler(p_60506_, p_60507_, p_60504_, p_60505_, null)) {
+                return InteractionResult.SUCCESS;
+            }
+            else if (FluidHelper.interactWithFluidHandler(p_60506_.getItemInHand(p_60507_), p_60504_, p_60505_, null)) {
+                return InteractionResult.SUCCESS;
+            }
+            BlockEntity blockentity = p_60504_.getBlockEntity(p_60505_);
+            if (blockentity instanceof DisperserBlockEntity) {
+                NetworkHooks.openScreen((ServerPlayer) p_60506_, (MenuProvider) blockentity, p_60505_);
+            }
+            return InteractionResult.CONSUME;
+        }
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState p_60555_, BlockGetter p_60556_, BlockPos p_60557_, CollisionContext p_60558_) {
+        return Block.box(2, 0, 2, 14, 12, 14);
+    }
+
     public void onRemove(BlockState p_60515_, Level p_60516_, BlockPos p_60517_, BlockState p_60518_, boolean p_60519_) {
         if (p_60515_.hasBlockEntity() && (!p_60515_.is(p_60518_.getBlock()) || !p_60518_.hasBlockEntity()) && p_60516_.getBlockEntity(p_60517_) instanceof DisperserBlockEntity de) {
             AirBubblesSavedData.get().remove(p_60516_.dimension(), de.getUUID());
@@ -48,19 +80,14 @@ public class OxygenDisperser extends FluidBaseBlock {
         super.onRemove(p_60515_, p_60516_, p_60517_, p_60518_, p_60519_);
     }
 
-    @Override
     public void tick(BlockState p_222945_, ServerLevel p_222946_, BlockPos p_222947_, RandomSource p_222948_) {
         if (p_222946_.getBlockEntity(p_222947_) instanceof DisperserBlockEntity de) de.failed(false);
     }
 
-    @Nullable
-    @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_153212_, BlockState p_153213_, BlockEntityType<T> p_153214_) {
         return !p_153212_.isClientSide ? createTickerHelper(p_153214_, ModBlockEntity.DISPERSER.get(), DisperserBlockEntity::serverTick) : null;
     }
 
-    @Nullable
-    @Override
     public BlockEntity newBlockEntity(BlockPos p_153215_, BlockState p_153216_) {
         return new DisperserBlockEntity(p_153215_, p_153216_);
     }

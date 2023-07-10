@@ -28,6 +28,7 @@ import syconn.swe.client.renders.ber.CanisterBER;
 import syconn.swe.client.renders.ber.PipeBER;
 import syconn.swe.client.renders.ber.TankBER;
 import syconn.swe.client.renders.entity.layer.SpaceSuitLayer;
+import syconn.swe.client.screen.DisperserScreen;
 import syconn.swe.client.screen.PipeScreen;
 import syconn.swe.client.screen.RenderUtil;
 import syconn.swe.client.screen.TankScreen;
@@ -43,6 +44,7 @@ public class ClientHandler {
         registerProperties();
         MenuScreens.register(ModContainers.TANK_MENU.get(), TankScreen::new);
         MenuScreens.register(ModContainers.PIPE_MENU.get(), PipeScreen::new);
+        MenuScreens.register(ModContainers.DISPERSER_MENU.get(), DisperserScreen::new);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_O2_FLUID.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_O2_FLUID.get(), RenderType.translucent());
     }

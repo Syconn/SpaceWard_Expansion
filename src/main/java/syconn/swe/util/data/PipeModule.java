@@ -148,7 +148,7 @@ public class PipeModule {
 
     private static boolean isBlock(BlockPos pos, LevelAccessor l, Direction d){
         BlockPos pos2 = pos.offset(d.getStepX(), d.getStepY(), d.getStepZ());
-        return l.getBlockEntity(pos2) != null && l.getBlockEntity(pos2).getCapability(ForgeCapabilities.FLUID_HANDLER).isPresent();
+        return l.getBlockEntity(pos2) != null && l.getBlockEntity(pos2).getCapability(ForgeCapabilities.FLUID_HANDLER, d.getOpposite()).isPresent();
     }
 
     public String getModel(){
