@@ -46,4 +46,9 @@ public class AutoRefillCanister extends Canister {
     public ItemStack createEmpty() {
         return create(0, 8000, EMPTY, ModInit.AUTO_REFILL_CANISTER.get());
     }
+
+    @Override
+    public int getOutlineColor() {
+        return 0xA3954D;
+    }
 }

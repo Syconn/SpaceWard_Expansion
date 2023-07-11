@@ -172,4 +172,8 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
     public int getCapacity(ItemStack stack) {
         return getMaxValue(stack);
     }
+
+    public int getOutlineColor() {
+        return -1;
+    }
 }
