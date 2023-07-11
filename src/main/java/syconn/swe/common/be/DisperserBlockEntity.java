@@ -123,6 +123,12 @@ public class DisperserBlockEntity extends GUIFluidHandlerBlockEntity implements 
         return uuid;
     }
 
+    public void setUUID(UUID randomUUID) {
+        if(this.uuid == null) {
+            this.uuid = randomUUID;
+        }
+    }
+
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("list", NbtHelper.writePosses(list));

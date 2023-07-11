@@ -58,7 +58,7 @@ public class CommonHandler {
                 else if (p.fallDistance == 0) ss.parachute(false);
             } else ss.parachute(false);
         });
-        if (!DimSettingsManager.getSettings(p).breathable()){
+        if (!AirBubblesSavedData.get().breathable(p.level.dimension(), p.getOnPos())){
             if (!p.isCreative()) {
                 p.getCapability(ModCapabilities.SPACE_SUIT).ifPresent(ss -> {
                     ss.decreaseO2(p);

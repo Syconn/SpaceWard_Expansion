@@ -7,6 +7,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
+import syconn.swe.init.ModFluids;
 import syconn.swe.init.ModInit;
 import syconn.swe.util.data.AirBubblesSavedData;
 
@@ -19,17 +20,22 @@ public class AutoRefillCanister extends Canister {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level l, Entity e, int p_41407_, boolean p_41408_) {
-        if (e instanceof Player p && AirBubblesSavedData.get().breathable(e.level.dimension(), e.getOnPos().above(1))) {
-            if (getType(stack) != Fluids.EMPTY && getValue(stack) < getMaxValue(stack) && (p.getMainHandItem().equals(stack) || p.getOffhandItem().equals(stack)))
-                setAmount(stack, getValue(stack) + 1, getFluid(stack).getFluid());
+    public void inventoryTick(ItemStack stack, Level level, Entity e, int p_41407_, boolean p_41408_) {
+        if (e instanceof Player player) {
+            if (!level.isClientSide && AirBubblesSavedData.get().breathable(level.dimension(), player.getOnPos().above(1)) && SpaceArmor.hasFullKit(player)) {
+                if (getType(stack) == Fluids.EMPTY || getType(stack) == ModFluids.SOURCE_O2_FLUID.get() && getValue(stack) < getMaxValue(stack)) {
+                    increaseFluid(stack, new FluidStack(ModFluids.SOURCE_O2_FLUID.get(), 1));
+                }
+            }
         }
     }
 
     public void onEquipmentTick(ItemStack stack, Level level, Player player) {
         super.onEquipmentTick(stack, level, player);
-        if (AirBubblesSavedData.get().breathable(level.dimension(), player.getOnPos().above(1)) && getType(stack) != Fluids.EMPTY && getValue(stack) < getMaxValue(stack)) {
-            setAmount(stack, getValue(stack) + 1, getFluid(stack).getFluid());
+        if (!level.isClientSide && AirBubblesSavedData.get().breathable(level.dimension(), player.getOnPos().above(1)) && SpaceArmor.hasFullKit(player)) {
+            if (getType(stack) == Fluids.EMPTY || getType(stack) == ModFluids.SOURCE_O2_FLUID.get() && getValue(stack) < getMaxValue(stack)) {
+                increaseFluid(stack, new FluidStack(ModFluids.SOURCE_O2_FLUID.get(), 1));
+            }
         }
     }
 
