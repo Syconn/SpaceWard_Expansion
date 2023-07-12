@@ -140,14 +140,16 @@ public class Canister extends Item implements EquipmentItem, ItemFluidHandler {
         item.getOrCreateTag().putInt(COLOR, ResourceUtil.getColor(fluid.getFluid()));
     }
 
-    public static void increaseFluid(ItemStack item, FluidStack f) {
-        if (getType(item) == EMPTY || getType(item) == f.getFluid()) {
+    public static boolean increaseFluid(ItemStack item, FluidStack f) {
+        if (getType(item) == EMPTY || getType(item).isSame(f.getFluid())) {
             if (getType(item) != f.getFluid()) {
                 item.getOrCreateTag().putString(FLUID, ForgeRegistries.FLUIDS.getKey(f.getFluid()).toString());
                 item.getOrCreateTag().putInt(COLOR, ResourceUtil.getColor(f.getFluid()));
             }
             item.getOrCreateTag().putInt(CURRENT, getValue(item) + f.getAmount());
+            return true;
         }
+        return false;
     }
 
     public static void copy(ItemStack stack, ItemStack item){
